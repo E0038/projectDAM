@@ -33,9 +33,13 @@ public abstract class Level {
 
 //    protected abstract void onRestart();
 
+    public abstract void onEnd();
+    public abstract void onRestart();
+
     public enum Dificultat {
         FACIL(0.4f), NORMAL(0.6f), DIFICIL(1f);
         private float modificadorPuntos;
+
         Dificultat(float modificadorPuntos) {
             this.modificadorPuntos = modificadorPuntos;
         }

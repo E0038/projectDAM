@@ -10,7 +10,13 @@ public abstract class Cop implements NPC {
 
 
     private final Vector2 noSpeed = new Vector2(0, 0);
-    protected Vector2 position;
+    protected Vector2 posicion;
+    protected int range;
+
+    public int getRange() {
+        return range;
+    }
+
 
     protected abstract void onFireStart();
 
@@ -45,7 +51,7 @@ public abstract class Cop implements NPC {
 
     @Override
     public Vector2 getPosicion() {
-        return position;
+        return posicion;
     }
 
     protected class UpgradeLevel {
