@@ -3,7 +3,7 @@ package org.e38.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
-import org.e38.game.logic.AssertLoader;
+import org.e38.game.utils.AssertLoader;
 
 /**
  * Created by sergi on 4/22/16.
@@ -17,7 +17,6 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-
         new Thread(new Runnable() {
             @Override
             public void run() {

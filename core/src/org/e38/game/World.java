@@ -10,19 +10,19 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
-public class LevelWorld {
+public class World {
     public static final String FACIL = "FACIL", NORMAL = "NORMAL", DIFICIL = "DIFICIL";
     public static float volume = 1f;
     public static float lastVolum = volume;
     public static String selecteDificultat;
-    private static LevelWorld outInstance;
+    private static World outInstance;
     //    private Level.Dificultat dificultat = Level.Dificultat.valueOf(NORMAL);//defecto normal
     private List<Cop> cops = new ArrayList<Cop>();
     private List<Criminal> aliveCriminals = new ArrayList<Criminal>();
     private Level level;
     private boolean isMuted = false;
 
-    public LevelWorld(Level level) {
+    public World(Level level) {
         this.level = level;
     }
 
@@ -41,12 +41,12 @@ public class LevelWorld {
         volume = 0f;
     }
 
-//    public static LevelWorld getWorld(Level level) {
+//    public static World getWorld(Level level) {
 //        if (outInstance == null) {
-//            outInstance = new LevelWorld(level);
+//            outInstance = new World(level);
 //        } else {
 //            if (outInstance.level != level) {
-//                outInstance = new LevelWorld(level);
+//                outInstance = new World(level);
 //            }
 //        }
 //        return outInstance;

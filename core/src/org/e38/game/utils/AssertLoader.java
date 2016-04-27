@@ -1,4 +1,4 @@
-package org.e38.game.logic;
+package org.e38.game.utils;
 
 import com.badlogic.gdx.files.FileHandle;
 

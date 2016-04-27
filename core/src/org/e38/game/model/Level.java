@@ -1,7 +1,7 @@
 package org.e38.game.model;
 
 
-import org.e38.game.LevelWorld;
+import org.e38.game.World;
 
 
 /**
@@ -20,7 +20,7 @@ public abstract class Level {
 
     protected Level(int initialCoins) {
         this.coins = initialCoins;
-        dificultat = Dificultat.valueOf(LevelWorld.selecteDificultat);
+        dificultat = Dificultat.valueOf(World.selecteDificultat);
     }
 
     public int getScore() {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.e38.game.logic.AssertLoader;
+import org.e38.game.utils.AssertLoader;
 import org.e38.game.screens.SplashScreen;
 
 public class MainGame extends Game {

@@ -1,18 +1,26 @@
 package org.e38.game.screens;
 
 import com.badlogic.gdx.Screen;
+import org.e38.game.World;
 import org.e38.game.MainGame;
 
 /**
  * Created by sergi on 4/20/16.
  */
 public class MenuScreen implements Screen {
+    private MainGame game;
+
     public MenuScreen(MainGame game) {
 
     }
 
     public void onVolumeChange(float volumne) {
-        // TODO: 4/27/16
+        if (volumne > 1f) {
+            volumne = 1f;
+        } else if (volumne < 0) {
+            volumne = 0f;
+        }
+        World.volume = volumne;
     }
 
     public void onShowRanking() {
