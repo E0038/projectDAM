@@ -1,5 +1,6 @@
 package org.e38.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
 import org.e38.game.logic.AssertLoader;
@@ -16,9 +17,23 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-        if (AssertLoader.isLoaded.get()) {
-            game.setScreen(new MenuScreen(game));
-        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (AssertLoader.isLoaded.get()) {
+                        game.setScreen(new MenuScreen(game));
+                        break;
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Gdx.app.log(SplashScreen.class.getName(), e.getMessage());
+                    }
+                }
+            }
+        }, "loadWatcherTread").start();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class MainGame extends Game {
             public void run() {
                 AssertLoader.load();
             }
-        }).start();
+        }, "contextLoaderThread").start();
         setScreen(new SplashScreen(this));
     }
 
