@@ -1,0 +1,43 @@
+package org.e38.game.model.npc;
+
+import com.badlogic.gdx.math.Vector2;
+import org.e38.game.model.GameObject;
+
+
+public interface NPC extends GameObject {
+    /**
+     * called when npc god 0 HhPoins
+     */
+    void onDie();
+
+    /**
+     * called before object constructor
+     */
+    void onSpawn();
+
+    /**
+     * gets State of npc
+     * @return NPC State
+     */
+    State getCurrentState();
+
+    /**
+     * determines if npc still alive
+     */
+    boolean isAlive();
+
+    /**
+     * speed of npc
+     */
+    Vector2 getSpeed();
+
+    /**
+     * current posicion in pixels
+     */
+    Vector2 getPosicion();
+
+    enum State {
+        ALIVE, DEAD, DYING, SPAWING
+    }
+
+}
