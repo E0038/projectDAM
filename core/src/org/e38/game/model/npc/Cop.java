@@ -12,20 +12,26 @@ public abstract class Cop implements NPC {
 
     protected static CopLevel[] copLevels;
     private final Vector2 noSpeed = new Vector2(0, 0);
+    public volatile long updatesSinceLastFire;
     protected Vector2 posicion;
     protected int range;
     protected State state;
     /**
      * fire rate calculted with delta
      */
+    protected volatile boolean isAreaDamage = false;
     protected long fireRate;
     protected CopLevel nivel;
 
-    public abstract boolean mayFire();
-
+    /**
+     * default impl, override for extra updates
+     *
+     * @param delta
+     */
     @Override
     public void onUpdate(float delta) {
-// TODO: 4/28/16  
+// TODO: 4/28/16
+        updatesSinceLastFire++;
     }
 
     public CopLevel getNivel() {
@@ -35,10 +41,6 @@ public abstract class Cop implements NPC {
     public Cop setNivel(CopLevel nivel) {
         this.nivel = nivel;
         return this;
-    }
-
-    public State getState() {
-        return state;
     }
 
     public Cop setState(State state) {
@@ -55,7 +57,23 @@ public abstract class Cop implements NPC {
         return this;
     }
 
+    public void fire(Criminal... criminal) {
+        if (criminal.length == 0) return;
+        updatesSinceLastFire = 0;
+        Bullet bullet = nivel.newBullet();
+        onFire();
+        if (isAreaDamage) {
+            bullet.fireArea(this, criminal);
+        } else {
+            bullet.fireSingle(this, criminal[0]);
+        }
+    }
+
     public abstract void onFire();
+
+    public boolean mayFire() {
+        return fireRate >= updatesSinceLastFire;
+    }
 
     /**
      * determines if upgrade is supported
@@ -107,7 +125,7 @@ public abstract class Cop implements NPC {
     }
 
     @Override
-    public State getCurrentState() {
+    public State getState() {
         return state;
     }
 

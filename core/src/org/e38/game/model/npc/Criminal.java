@@ -21,7 +21,7 @@ public abstract class Criminal implements Hittable, NPC {
     }
 
     @Override
-    public State getCurrentState() {
+    public State getState() {
         return state;
     }
 
@@ -52,10 +52,6 @@ public abstract class Criminal implements Hittable, NPC {
         if (damage < 0) damage = 0;
         hpPoints -= damage;
         if (hpPoints <= 0) onDie();
-    }
-
-    public State getState() {
-        return state;
     }
 
     public Criminal setState(State state) {

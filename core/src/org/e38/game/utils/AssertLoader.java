@@ -1,6 +1,7 @@
 package org.e38.game.utils;
 
 import com.badlogic.gdx.files.FileHandle;
+import org.e38.game.persistance.ProfileManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,6 +15,7 @@ public class AssertLoader {
 
 
     public static void load() {
+        ProfileManager.getProfile();//load Static
         // TODO: 4/27/16 load asserts
         isLoaded.set(true);
     }

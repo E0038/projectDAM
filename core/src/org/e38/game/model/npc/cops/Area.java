@@ -17,7 +17,13 @@ public class Area extends Cop {
         };
     }
 
-    Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
+    private Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
+
+    @Override
+    public void onUpdate(float delta) {
+        super.onUpdate(delta);
+        // TODO: 4/28/16
+    }
 
     @Override
     public void onFire() {
@@ -37,18 +43,9 @@ public class Area extends Cop {
 
     @Override
     public void onSpawn() {
+        isAreaDamage = true;
+        fireRate = 60 * 5; // 5s a 60fps
         Collections.addAll(levels, copLevels);
         onUpgrade();//level 1
-    }
-
-
-    @Override
-    public boolean mayFire() {
-        return false;
-    }
-
-    @Override
-    public void onUpdate(float delta) {
-// TODO: 4/28/16
     }
 }

@@ -30,12 +30,12 @@ public class ProfileManager {
 //        System.out.println(Gdx.files.internal("data/profiles.json"));
 //       localPath= Gdx.files.getLocalStoragePath();
 //        File file = new File("data/profiles.json");
+
         profilesFile = Gdx.files.internal("data/profiles.json");
+        System.out.println(profilesFile);
         File file = profilesFile.file();
         if (!file.exists() || file.length() == 0) {
-            //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
-            //noinspection TypeMayBeWeakened
             Writer writer = new FileWriter(file);
             profile = new Profile();
             writer.write(new Gson().toJson(profile));
@@ -43,18 +43,9 @@ public class ProfileManager {
         } else {
             System.out.println("reading...");
             Reader reader = new FileReader(file);
-//            StringBuilder builder = new StringBuilder();
-//            char[] buffer = new char[1024];
-//            int len;
-//            while ((len = reader.read(buffer)) != -1) {
-//                reader.read(buffer, 0, len);
-//                builder.append(buffer);
-//            }
-//            System.out.println(builder);
             profile = new Gson().fromJson(reader, Profile.class);
             reader.close();
         }
-//        System.out.println(new Gson().toJson(profile));
     }
 
 

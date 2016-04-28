@@ -25,7 +25,7 @@ public interface NPC extends GameObject {
      *
      * @return NPC State
      */
-    State getCurrentState();
+    State getState();
 
     /**
      * determines if npc still alive

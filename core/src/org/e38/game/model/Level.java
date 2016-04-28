@@ -12,7 +12,7 @@ public abstract class Level {
     private static final float MODIFICADOR_VIDAS = 10;
     public Dificultat dificultat;
     protected int coins;
-    protected int vidas;
+    protected int lifes;
     protected Path path;
     /**
      * C style boolean : 0 false , 1 true
@@ -25,7 +25,7 @@ public abstract class Level {
     }
 
     public int getScore() {
-        return (int) ((coins * dificultat.modificadorPuntos) + (vidas * MODIFICADOR_VIDAS)) * isWined;
+        return (int) ((coins * dificultat.modificadorPuntos) + (lifes * MODIFICADOR_VIDAS)) * isWined;
     }
 
     protected abstract void onStart();
