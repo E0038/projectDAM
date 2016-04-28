@@ -13,10 +13,16 @@ public interface NPC extends GameObject {
     /**
      * called before object constructor
      */
+    void spawn();
+
+    /**
+     * event
+     */
     void onSpawn();
 
     /**
      * gets State of npc
+     *
      * @return NPC State
      */
     State getCurrentState();

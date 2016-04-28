@@ -53,4 +53,51 @@ public abstract class Criminal implements Hittable, NPC {
         hpPoints -= damage;
         if (hpPoints <= 0) onDie();
     }
+
+    public State getState() {
+        return state;
+    }
+
+    public Criminal setState(State state) {
+        this.state = state;
+        return this;
+    }
+
+    public float getHpPoints() {
+        return hpPoints;
+    }
+
+    public Criminal setHpPoints(float hpPoints) {
+        this.hpPoints = hpPoints;
+        return this;
+    }
+
+    @Override
+    public float getDodgeRate() {
+        return dodgeRate;
+    }
+
+    public Criminal setDodgeRate(float dodgeRate) {
+        this.dodgeRate = dodgeRate;
+        return this;
+    }
+
+    public Criminal setProtecion(float protecion) {
+        this.protecion = protecion;
+        return this;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public Criminal setPosition(Vector2 position) {
+        this.position = position;
+        return this;
+    }
+
+    public Criminal setSpeed(Vector2 speed) {
+        this.speed = speed;
+        return this;
+    }
 }
