@@ -2,7 +2,6 @@ package org.e38.game.persistance;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.StringBuilder;
 import com.google.gson.Gson;
 import org.e38.game.model.Level;
 
@@ -27,11 +26,9 @@ public class ProfileManager {
     private Profile profile;
 
     private ProfileManager() throws IOException {
-//        System.out.println(Gdx.files.internal("data/profiles.json"));
-//       localPath= Gdx.files.getLocalStoragePath();
-//        File file = new File("data/profiles.json");
-
-        profilesFile = Gdx.files.internal("data/profiles.json");
+        FileHandle dir = Gdx.files.local("data");
+        if (!dir.exists()) dir.file().mkdir();
+        profilesFile = Gdx.files.local("data/profile.json");
         System.out.println(profilesFile);
         File file = profilesFile.file();
         if (!file.exists() || file.length() == 0) {
