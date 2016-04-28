@@ -13,6 +13,7 @@ public abstract class Level {
     public Dificultat dificultat;
     protected int coins;
     protected int vidas;
+    protected Path path;
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -34,6 +35,7 @@ public abstract class Level {
 //    protected abstract void onRestart();
 
     public abstract void onEnd();
+
     public abstract void onRestart();
 
     public enum Dificultat {

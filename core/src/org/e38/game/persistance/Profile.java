@@ -12,4 +12,12 @@ public class Profile {
     private List<Integer> completeLevels= new ArrayList<Integer>();
     public Profile() {
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Profile{");
+        sb.append("completeLevels=").append(completeLevels);
+        sb.append('}');
+        return sb.toString();
+    }
 }
