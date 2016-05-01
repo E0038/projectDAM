@@ -37,11 +37,6 @@ public interface NPC extends GameObject {
      */
     Vector2 getSpeed();
 
-    /**
-     * current posicion in pixels
-     */
-    Vector2 getPosicion();
-
     enum State {
         ALIVE, DEAD, DYING, SPAWING
     }

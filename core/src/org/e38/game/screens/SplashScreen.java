@@ -21,18 +21,28 @@ public class SplashScreen implements Screen {
             @Override
             public void run() {
                 while (true) {
-                    if (AssertLoader.isLoaded.get()) {
-                        game.setScreen(new MenuScreen(game));
-                        break;
-                    }
                     try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        Gdx.app.log(SplashScreen.class.getName(), e.getMessage());
+                        if (AssertLoader.isLoaded.get()) {
+                            game.setScreen(new MenuScreen(game));
+                            return;
+                        }
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            Gdx.app.log(SplashScreen.class.getName(), e.getMessage(), e);
+                        }
+                    } catch (Throwable throwable) {
+                        Gdx.app.log(SplashScreen.class.getName(), throwable.getMessage(), throwable);
+                        initError(throwable);
                     }
                 }
             }
         }, "loadWatcherTread").start();
+    }
+
+    private void initError(Throwable throwable) {
+        // TODO: 5/1/16 show error message
+        System.exit(-1);
     }
 
     @Override
