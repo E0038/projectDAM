@@ -2,7 +2,9 @@ package org.e38.game.model;
 
 
 import org.e38.game.World;
+import org.e38.game.model.npc.Cop;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,6 +15,8 @@ public abstract class Level {
 
     private static final float MODIFICADOR_VIDAS = 10;
     public Dificultat dificultat;
+    public List<Cop> cops = new ArrayList<Cop>();
+    public List<Wave> remaingWaves = new ArrayList<Wave>();
     protected int coins;
     protected int lifes;
     protected Path path;
@@ -21,7 +25,7 @@ public abstract class Level {
     /**
      * C style boolean : 0 false , 1 true
      */
-    private int isWined = 0;
+    private byte isWined = 0;
 
     protected Level(int initialCoins, int levelUID) {
         this.coins = initialCoins;
@@ -38,11 +42,11 @@ public abstract class Level {
         this.onEndListerners.remove(onEndListerner);
     }
 
-    public int getIsWined() {
+    public byte getIsWined() {
         return isWined;
     }
 
-    public Level setIsWined(int isWined) {
+    public Level setIsWined(byte isWined) {
         this.isWined = isWined;
         return this;
     }
