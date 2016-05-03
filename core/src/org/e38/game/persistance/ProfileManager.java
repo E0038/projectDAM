@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import org.e38.game.model.Level;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 
@@ -21,6 +22,7 @@ public class ProfileManager {
         }
     }
 
+    public final FileHandle localBackup = Gdx.files.local("profile.json.bak");
     private String localPath;
 
     private FileHandle profilesFile;
@@ -63,11 +65,51 @@ public class ProfileManager {
     }
 
     public void save(Level level) {
+        List<Level> list = profile.getCompleteLevels();
+        if (list.contains(level)) {
+            int idx = list.indexOf(level);
+            if (level.getScore() > list.get(idx).getScore()) {
+                list.remove(level);
+                profile.getCompleteLevels().add(level);
+            }
+        } else {
+            profile.getCompleteLevels().add(level);
+        }
 
     }
 
+    /**
+     * save to persistent file  <b>NOT USE</b> on Main Game Thread
+     *
+     * @throws IOException
+     */
+    public void persistSave() throws IOException {
+        profilesFile.copyTo(localBackup);
+        try {
+            profilesFile.delete();//truncate
+            if (!profilesFile.file().createNewFile()) throw new IOException("file not truncated");
+            Writer writer = new FileWriter(profilesFile.file());
+            gson.toJson(profile, writer);
+            writer.close();
+        } catch (IOException e) {
+            localBackup.copyTo(profilesFile);//restore bak if fail
+            throw e;
+        }
+    }
+
+    /**
+     * gets de scrore of a saved level on the current profile
+     *
+     * @param level
+     * @return -1 if not found , the saved Scorre if found
+     */
     public Integer getScrore(Level level) {
-        return 0;
+        List<Level> levels = profile.getCompleteLevels();
+        int idx = levels.indexOf(level);
+        if (idx < 0) {
+            return -1;
+        }
+        return levels.get(idx).getScore();
     }
 
     /**

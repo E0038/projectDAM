@@ -16,6 +16,10 @@ public class Profile {
     public Profile() {
     }
 
+    public List<Level> getCompleteLevels() {
+        return completeLevels;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Profile{");
