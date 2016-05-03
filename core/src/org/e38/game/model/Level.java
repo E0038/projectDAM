@@ -3,11 +3,13 @@ package org.e38.game.model;
 
 import org.e38.game.World;
 
+import java.util.List;
+
 
 /**
  * Created by sergi on 4/20/16.
  */
-public abstract class Level{
+public abstract class Level {
 
     private static final float MODIFICADOR_VIDAS = 10;
     public Dificultat dificultat;
@@ -15,16 +17,25 @@ public abstract class Level{
     protected int lifes;
     protected Path path;
     protected int levelUID;
+    private List<OnEndListerner> onEndListerners;
     /**
      * C style boolean : 0 false , 1 true
      */
     private int isWined = 0;
 
-
     protected Level(int initialCoins, int levelUID) {
         this.coins = initialCoins;
         this.levelUID = levelUID;
         dificultat = Dificultat.valueOf(World.selecteDificultat);
+    }
+
+
+    public void addOnEndListerner(OnEndListerner onEndListerners) {
+        this.onEndListerners.add(onEndListerners);
+    }
+
+    public void removeOnEndListerner(OnEndListerner onEndListerner) {
+        this.onEndListerners.remove(onEndListerner);
     }
 
     public int getIsWined() {
@@ -89,11 +100,25 @@ public abstract class Level{
 
     protected abstract void onDestroy();
 
-//    protected abstract void onRestart();
+    public void fail() {
+        isWined = 0;
+        onEnd();
+    }
 
-    public abstract void onEnd();
+    public void onEnd() {
+        for (OnEndListerner listerner : onEndListerners) {
+            listerner.onEnd(isWined == 1);
+        }
+    }
+
+    public void win() {
+        isWined = 1;
+        onEnd();
+    }
 
     public abstract void onRestart();
+
+    public abstract Level fromJson();
 
     public enum Dificultat {
         FACIL(0.4f), NORMAL(0.6f), DIFICIL(1f);
@@ -103,5 +128,8 @@ public abstract class Level{
             this.modificadorPuntos = modificadorPuntos;
         }
     }
-    public abstract Level fromJson();
+
+    public interface OnEndListerner {
+        void onEnd(boolean isWined);
+    }
 }

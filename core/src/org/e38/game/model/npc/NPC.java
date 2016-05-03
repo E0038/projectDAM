@@ -38,7 +38,7 @@ public interface NPC extends GameObject {
     Vector2 getSpeed();
 
     enum State {
-        ALIVE, DEAD, DYING, SPAWING
+        ALIVE, DEAD, DYING, SPAWING, DESPAWNING, DESPAWNED;
     }
 
 }
