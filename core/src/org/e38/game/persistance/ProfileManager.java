@@ -22,7 +22,7 @@ public class ProfileManager {
         }
     }
 
-    public final FileHandle localBackup = Gdx.files.local("profile.json.bak");
+    public FileHandle localBackup;
     private String localPath;
 
     private FileHandle profilesFile;
@@ -36,12 +36,8 @@ public class ProfileManager {
     }
 
     private void load() {
-        gsonBuilder.registerTypeAdapter(LevelSerializer.class, new LevelSerializer());
-//        gsonBuilder.registerTypeAdapter()
-        FileHandle dir = Gdx.files.local("data");
-        if (!dir.exists()) dir.file().mkdir();
-        profilesFile = Gdx.files.local("data/profile.json");
-        gson = gsonBuilder.create();
+        configureJson();
+        loadStructure();
     }
 
     private void dataInit() throws IOException {
@@ -60,6 +56,18 @@ public class ProfileManager {
         }
     }
 
+    private void configureJson() {
+        gsonBuilder.registerTypeAdapter(LevelSerializer.class, new LevelSerializer());
+        gson = gsonBuilder.create();
+    }
+
+    private void loadStructure() {
+        FileHandle dir = Gdx.files.local("data");
+        if (!dir.exists()) dir.file().mkdir();
+        profilesFile = Gdx.files.local("data/profile.json");
+        localBackup = Gdx.files.local("data/profile.json.bak");
+    }
+
     public static ProfileManager getProfile() {
         return ourInstance;
     }
@@ -75,7 +83,6 @@ public class ProfileManager {
         } else {
             profile.getCompleteLevels().add(level);
         }
-
     }
 
     /**

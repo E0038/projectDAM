@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import org.e38.game.model.Level;
 import org.e38.game.model.npc.Cop;
 import org.e38.game.model.npc.Criminal;
+import org.e38.game.persistance.ProfileManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class World {
 
     }
 
+    public World() {
+    }
 
     public static void onSwichMuteUnMute() {
         if (volume == 0f) onUnMute();
@@ -45,6 +49,11 @@ public class World {
     }
 
     public void exit() {
+        try {
+            ProfileManager.getProfile().persistSave();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Gdx.app.exit();
     }
 
