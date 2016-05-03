@@ -122,6 +122,7 @@ nbbuild/
 dist/
 nbdist/
 /.idea
+/android/assets/data/profile.json
 nbactions.xml
 nb-configuration.xml
 
