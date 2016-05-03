@@ -2,13 +2,9 @@ package org.e38.game;
 
 import com.badlogic.gdx.Gdx;
 import org.e38.game.model.Level;
-import org.e38.game.model.npc.Cop;
-import org.e38.game.model.npc.Criminal;
 import org.e38.game.persistance.ProfileManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sergi on 4/20/16.
@@ -40,7 +36,7 @@ public class World {
     }
 
     public static void onUnMute() {
-        volume = lastVolum;
+        volume = lastVolum != 0f ? lastVolum : 0.5f;
     }
 
     public static void onMute() {

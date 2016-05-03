@@ -3,7 +3,7 @@ package org.e38.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
-import org.e38.game.utils.AssertLoader;
+import org.e38.game.grafics.AssertLoader;
 
 /**
  * Created by sergi on 4/22/16.

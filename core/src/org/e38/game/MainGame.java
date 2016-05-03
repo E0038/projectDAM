@@ -6,9 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.e38.game.persistance.ProfileManager;
 import org.e38.game.screens.SplashScreen;
-import org.e38.game.utils.AssertLoader;
+import org.e38.game.grafics.AssertLoader;
 
 public class MainGame extends Game {
     SpriteBatch batch;

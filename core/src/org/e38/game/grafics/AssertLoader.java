@@ -1,4 +1,4 @@
-package org.e38.game.utils;
+package org.e38.game.grafics;
 
 import com.badlogic.gdx.files.FileHandle;
 import org.e38.game.persistance.ProfileManager;
