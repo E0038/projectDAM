@@ -27,8 +27,32 @@ public abstract class Criminal implements Hittable, NPC {
     }
 
     @Override
+    public Vector2 getPosicion() {
+        return position;
+    }
+
+    /**
+     * get the points (Money) of Criminal
+     *
+     * @return the points that give on die
+     */
+    public abstract int getPoints();
+
+    @Override
+    public void spawn() {
+        state = State.SPAWING;
+        onSpawn();
+        state = State.ALIVE;
+    }
+
+    @Override
     public State getState() {
         return state;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return state == State.ALIVE;
     }
 
     @Override
@@ -57,22 +81,12 @@ public abstract class Criminal implements Hittable, NPC {
         return this;
     }
 
-    @Override
-    public Vector2 getPosicion() {
-        return position;
-    }
-
-    /**
-     * get the points (Money) of Criminal
-     *
-     * @return the points that give on die
-     */
-    public abstract int getPoints();
-
     /**
      * determines if is dead
      */
-    protected abstract boolean isDead();
+    public boolean isDead() {
+        return state == State.DEAD;
+    }
 
     public float getHpPoints() {
         return hpPoints;
