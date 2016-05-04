@@ -22,7 +22,7 @@ public abstract class Cop implements NPC {
     protected volatile boolean isAreaDamage = false;
     protected long fireRate;
     protected CopLevel nivel;
-    protected Orientation orientation;
+    protected Orientation orientation = Orientation.RIGHT;
 
     public long getFireRate() {
         return fireRate;
