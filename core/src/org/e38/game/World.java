@@ -48,7 +48,7 @@ public class World {
         try {
             ProfileManager.getProfile().persistSave();
         } catch (IOException e) {
-            e.printStackTrace();
+            Gdx.app.log(ProfileManager.class.getName(), "save failed", e);
         }
         Gdx.app.exit();
     }

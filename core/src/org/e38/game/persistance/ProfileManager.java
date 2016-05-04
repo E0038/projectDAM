@@ -31,11 +31,11 @@ public class ProfileManager {
     private Gson gson;
 
     private ProfileManager() throws IOException {
-        load();
+        conf();
         dataInit();
     }
 
-    private void load() {
+    private void conf() {
         configureJson();
         loadStructure();
     }
@@ -43,21 +43,14 @@ public class ProfileManager {
     private void dataInit() throws IOException {
         File file = profilesFile.file();
         if (!file.exists() || file.length() == 0) {
-            file.createNewFile();
-            Writer writer = new FileWriter(file);
-            profile = new Profile();
-            writer.write(gson.toJson(profile));
-            writer.close();
+            createFiles(file);
         } else {
-            Gdx.app.log(ProfileManager.class.getName(), "reading saved profile...");
-            Reader reader = new FileReader(file);
-            profile = gson.fromJson(reader, Profile.class);
-            reader.close();
+            loadFiles(file);
         }
     }
 
     private void configureJson() {
-        gsonBuilder.registerTypeAdapter(LevelSerializer.class, new LevelSerializer());
+        gsonBuilder.registerTypeAdapter(Level.class, new LevelSerializer());
         gson = gsonBuilder.create();
     }
 
@@ -66,6 +59,26 @@ public class ProfileManager {
         if (!dir.exists()) dir.file().mkdir();
         profilesFile = Gdx.files.local("data/profile.json");
         localBackup = Gdx.files.local("data/profile.json.bak");
+    }
+
+    private void createFiles(File file) throws IOException {
+        if (localBackup.length() == 0) localBackup.delete();//backup no valida
+        if (!localBackup.exists()) {
+            file.createNewFile();
+            Writer writer = new FileWriter(file);
+            profile = new Profile();
+            writer.write(gson.toJson(profile));
+            writer.close();
+        } else {
+            localBackup.copyTo(profilesFile);
+        }
+    }
+
+    private void loadFiles(File file) throws IOException {
+        Gdx.app.log(ProfileManager.class.getName(), "reading saved profile...");
+        Reader reader = new FileReader(file);
+        profile = gson.fromJson(reader, Profile.class);
+        reader.close();
     }
 
     public static ProfileManager getProfile() {
