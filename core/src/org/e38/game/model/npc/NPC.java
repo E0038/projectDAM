@@ -37,8 +37,16 @@ public interface NPC extends GameObject {
      */
     Vector2 getSpeed();
 
+    Orientation getOrientation();
+
+    NPC setOrientation(Orientation orientation);
+
     enum State {
         ALIVE, DEAD, DYING, SPAWING, DESPAWNING, DESPAWNED;
+    }
+
+    enum Orientation {
+        LEFT, RIGHT, TOP, DOWN
     }
 
 }

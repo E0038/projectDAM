@@ -15,9 +15,15 @@ public abstract class Criminal implements Hittable, NPC {
     protected float protecion;
     protected Vector2 position;
     protected Vector2 speed;
+    protected Orientation orientation = Orientation.LEFT;
 
     public float getProtecion() {
         return protecion;
+    }
+
+    public Criminal setProtecion(float protecion) {
+        this.protecion = protecion;
+        return this;
     }
 
     @Override
@@ -28,6 +34,27 @@ public abstract class Criminal implements Hittable, NPC {
     @Override
     public Vector2 getSpeed() {
         return speed;
+    }
+
+    @Override
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    @Override
+    public Criminal setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+        return this;
+    }
+
+    public Criminal setSpeed(Vector2 speed) {
+        this.speed = speed;
+        return this;
+    }
+
+    public Criminal setState(State state) {
+        this.state = state;
+        return this;
     }
 
     @Override
@@ -47,18 +74,6 @@ public abstract class Criminal implements Hittable, NPC {
      */
     protected abstract boolean isDead();
 
-    @Override
-    public void onHit(float damage) {
-        if (damage < 0) damage = 0;
-        hpPoints -= damage;
-        if (hpPoints <= 0) onDie();
-    }
-
-    public Criminal setState(State state) {
-        this.state = state;
-        return this;
-    }
-
     public float getHpPoints() {
         return hpPoints;
     }
@@ -73,13 +88,15 @@ public abstract class Criminal implements Hittable, NPC {
         return dodgeRate;
     }
 
-    public Criminal setDodgeRate(float dodgeRate) {
-        this.dodgeRate = dodgeRate;
-        return this;
+    @Override
+    public void onHit(float damage) {
+        if (damage < 0) damage = 0;
+        hpPoints -= damage;
+        if (hpPoints <= 0) onDie();
     }
 
-    public Criminal setProtecion(float protecion) {
-        this.protecion = protecion;
+    public Criminal setDodgeRate(float dodgeRate) {
+        this.dodgeRate = dodgeRate;
         return this;
     }
 
@@ -89,11 +106,6 @@ public abstract class Criminal implements Hittable, NPC {
 
     public Criminal setPosition(Vector2 position) {
         this.position = position;
-        return this;
-    }
-
-    public Criminal setSpeed(Vector2 speed) {
-        this.speed = speed;
         return this;
     }
 }

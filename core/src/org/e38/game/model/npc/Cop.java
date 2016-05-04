@@ -22,6 +22,25 @@ public abstract class Cop implements NPC {
     protected volatile boolean isAreaDamage = false;
     protected long fireRate;
     protected CopLevel nivel;
+    protected Orientation orientation;
+
+    public long getFireRate() {
+        return fireRate;
+    }
+
+    public Cop setFireRate(long fireRate) {
+        this.fireRate = fireRate;
+        return this;
+    }
+
+    public boolean isAreaDamage() {
+        return isAreaDamage;
+    }
+
+    public Cop setAreaDamage(boolean areaDamage) {
+        isAreaDamage = areaDamage;
+        return this;
+    }
 
     /**
      * default impl, override for extra updates
@@ -34,17 +53,22 @@ public abstract class Cop implements NPC {
         updatesSinceLastFire++;
     }
 
+    @Override
+    public Vector2 getPosicion() {
+        return posicion;
+    }
+
+    public Cop setPosicion(Vector2 posicion) {
+        this.posicion = posicion;
+        return this;
+    }
+
     public CopLevel getNivel() {
         return nivel;
     }
 
     public Cop setNivel(CopLevel nivel) {
         this.nivel = nivel;
-        return this;
-    }
-
-    public Cop setState(State state) {
-        this.state = state;
         return this;
     }
 
@@ -129,6 +153,11 @@ public abstract class Cop implements NPC {
         return state;
     }
 
+    public Cop setState(State state) {
+        this.state = state;
+        return this;
+    }
+
     @Override
     public boolean isAlive() {
         return state == ALIVE;
@@ -145,12 +174,13 @@ public abstract class Cop implements NPC {
     }
 
     @Override
-    public Vector2 getPosicion() {
-        return posicion;
+    public Orientation getOrientation() {
+        return orientation;
     }
 
-    public Cop setPosicion(Vector2 posicion) {
-        this.posicion = posicion;
+    @Override
+    public Cop setOrientation(Orientation orientation) {
+        this.orientation = orientation;
         return this;
     }
 
