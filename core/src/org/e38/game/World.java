@@ -1,6 +1,7 @@
 package org.e38.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import org.e38.game.model.Level;
 import org.e38.game.persistance.ProfileManager;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class World {
     public static final String FACIL = "FACIL", NORMAL = "NORMAL", DIFICIL = "DIFICIL";
     public static final float MAX_SPEED = 3.0f;
-    public static float volume = 1f;
+    private static float volume = 0.5f;
     public static float lastVolum = volume;
     /**
      * valueOf Enum dificultat the enum will be restored with Level.Dificultat.valueOf();
@@ -44,6 +45,10 @@ public class World {
         volume = 0f;
     }
 
+    public static void play(Sound sound) {
+        sound.play(volume);
+    }
+
     public void exit() {
         try {
             ProfileManager.getProfile().persistSave();
@@ -51,6 +56,16 @@ public class World {
             Gdx.app.log(ProfileManager.class.getName(), "save failed", e);
         }
         Gdx.app.exit();
+    }
+
+
+    public void volumeChange(float volumne) {
+        if (volumne > 1f) {
+            volumne = 1f;
+        } else if (volumne < 0f) {
+            volumne = 0f;
+        }
+        World.volume = volumne;
     }
 
     /**

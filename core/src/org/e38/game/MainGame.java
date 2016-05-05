@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.e38.game.screens.SplashScreen;
-import org.e38.game.grafics.AssertLoader;
+import org.e38.game.grafics.Recurses;
 
 public class MainGame extends Game {
     SpriteBatch batch;
@@ -21,7 +21,7 @@ public class MainGame extends Game {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                AssertLoader.load();
+                Recurses.load();//does nothing ,but jvm will call static initializer
             }
         }, "contextLoaderThread").start();
         setScreen(new SplashScreen(this));

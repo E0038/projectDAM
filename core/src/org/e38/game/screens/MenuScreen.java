@@ -1,8 +1,9 @@
 package org.e38.game.screens;
 
 import com.badlogic.gdx.Screen;
-import org.e38.game.World;
 import org.e38.game.MainGame;
+import org.e38.game.World;
+import org.e38.game.grafics.Recurses;
 
 /**
  * Created by sergi on 4/20/16.
@@ -11,17 +12,17 @@ public class MenuScreen implements Screen {
     private MainGame game;
 
     public MenuScreen(MainGame game) {
-
-    }
-
-    public void onVolumeChange(float volumne) {
-        if (volumne > 1f) {
-            volumne = 1f;
-        } else if (volumne < 0) {
-            volumne = 0f;
+        for (int i = 0; i < 5; i++) {
+            World.play(Recurses.GUN);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            World.play(Recurses.GUN);
         }
-        World.volume = volumne;
     }
+
 
     public void onShowRanking() {
 

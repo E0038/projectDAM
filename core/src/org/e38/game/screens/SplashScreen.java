@@ -3,7 +3,7 @@ package org.e38.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
-import org.e38.game.grafics.AssertLoader;
+import org.e38.game.grafics.Recurses;
 
 /**
  * Created by sergi on 4/22/16.
@@ -22,7 +22,7 @@ public class SplashScreen implements Screen {
             public void run() {
                 while (true) {
                     try {
-                        if (AssertLoader.isLoaded.get()) {
+                        if (Recurses.isLoaded.get()) {
                             game.setScreen(new MenuScreen(game));
                             return;
                         }
