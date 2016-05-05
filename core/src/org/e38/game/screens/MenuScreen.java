@@ -1,6 +1,7 @@
 package org.e38.game.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.e38.game.MainGame;
 import org.e38.game.World;
 import org.e38.game.grafics.Recurses;
@@ -10,10 +11,12 @@ import org.e38.game.grafics.Recurses;
  */
 public class MenuScreen implements Screen {
     private MainGame game;
+    private SpriteBatch batcher;
 
     public MenuScreen(MainGame game) {
+        batcher = new SpriteBatch();
         for (int i = 0; i < 5; i++) {
-            World.play(Recurses.GUN);
+            batcher.draw(Recurses.POLICEBAZOOKAFRONT, 0, 0);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {

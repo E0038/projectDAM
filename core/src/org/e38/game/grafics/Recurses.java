@@ -35,19 +35,19 @@ public class Recurses {
         SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
 
         //TEXTURAS
-        POLICEGUN = new Texture("/data/textures/policiaBueno.png");
+        POLICEGUN = new Texture("data/textures/policiaBueno.png");
         POLICEGUNFRONT = new TextureRegion(POLICEGUN, 0, 0, 27, 32);
         POLICEGUNLEFT = new TextureRegion(POLICEGUN, 0, 32, 27, 32);
         POLICEGUNRIGHT = new TextureRegion(POLICEGUN, 0, 64, 27, 32);
         POLICEGUNBACK = new TextureRegion(POLICEGUN, 0, 86, 27, 32);
 
-        POLICEBAZOOKA = new Texture("/data/textures/policiaBazooka.png");
+        POLICEBAZOOKA = new Texture("data/textures/policiaBazooka.png");
         POLICEBAZOOKAFRONT = new TextureRegion(POLICEBAZOOKA, 0, 0, 27, 47);
         POLICEBAZOOKALEFT = new TextureRegion(POLICEBAZOOKA, 0, 32, 27, 47);
         POLICEBAZOOKARIGHT = new TextureRegion(POLICEBAZOOKA, 0, 64, 27, 47);
         POLICEBAZOOKABACK = new TextureRegion(POLICEBAZOOKA, 0, 86, 27, 47);
 
-        POLICESHOTGUN = new Texture("/data/textures/policiaEscopeta.png");
+        POLICESHOTGUN = new Texture("data/textures/policiaEscopeta.png");
         POLICESHOTGUNFRONT = new TextureRegion(POLICESHOTGUN, 0, 0, 27, 56);
         POLICESHOTGUNLEFT = new TextureRegion(POLICESHOTGUN, 0, 32, 27, 56);
         POLICESHOTGUNRIGHT = new TextureRegion(POLICESHOTGUN, 0, 64, 27, 56);
