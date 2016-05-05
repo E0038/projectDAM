@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.e38.game.World;
 import org.e38.game.model.Level;
 
 import java.io.*;
@@ -23,8 +24,8 @@ public class ProfileManager {
     }
 
     public FileHandle localBackup;
+    private FileHandle configFile = Gdx.files.local("data/app.conf");
     private String localPath;
-
     private FileHandle profilesFile;
     private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
@@ -38,6 +39,8 @@ public class ProfileManager {
     private void conf() {
         configureJson();
         loadStructure();
+        Configuration configuration = readConfig();
+        applyConf(configuration);
     }
 
     private void dataInit() throws IOException {
@@ -59,6 +62,31 @@ public class ProfileManager {
         if (!dir.exists()) dir.file().mkdir();
         profilesFile = Gdx.files.local("data/profile.json");
         localBackup = Gdx.files.local("data/profile.json.bak");
+    }
+
+    public Configuration readConfig() {
+        if (configFile.exists()) {
+            try {
+                Reader reader = new FileReader(configFile.file());
+                Configuration configuration = gson.fromJson(reader, Configuration.class);
+                reader.close();
+                return configuration;
+            } catch (IOException e) {
+                Gdx.app.log(getClass().getName(), "readConfError", e);
+            }
+        } else {
+            try {
+                configFile.file().createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new Configuration();//with defaults
+    }
+
+    public void applyConf(Configuration configuration) {
+        World.volumeChange(configuration.volume);
+        //etc
     }
 
     private void createFiles(File file) throws IOException {
@@ -139,5 +167,22 @@ public class ProfileManager {
      */
     public Map<Integer, Integer> getGameProgres() {
         return null;
+    }
+
+    public void writeConfig(Configuration configuration) {
+        configFile.delete();
+        try {
+            configFile.file().createNewFile();
+            Writer writer = new FileWriter(configFile.file());
+            gson.toJson(configuration, writer);
+            writer.close();
+        } catch (IOException e) {
+            Gdx.app.log(getClass().getName(), "writeConfError", e);
+        }
+    }
+
+    public static class Configuration {
+        public float volume = 0.5f;
+        //etc
     }
 }

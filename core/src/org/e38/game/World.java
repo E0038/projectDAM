@@ -1,6 +1,7 @@
 package org.e38.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import org.e38.game.model.Level;
 import org.e38.game.persistance.ProfileManager;
@@ -13,13 +14,13 @@ import java.io.IOException;
 public class World {
     public static final String FACIL = "FACIL", NORMAL = "NORMAL", DIFICIL = "DIFICIL";
     public static final float MAX_SPEED = 3.0f;
-    private static float volume = 0.5f;
-    public static float lastVolum = volume;
     /**
      * valueOf Enum dificultat the enum will be restored with Level.Dificultat.valueOf();
      * default: NORMAL
      */
     public static String selecteDificultat = NORMAL;
+    private static float volume = 0.5f;
+    public static float lastVolum = volume;
     public float speed = 1.0f;
     private Level level;
 
@@ -49,6 +50,20 @@ public class World {
         sound.play(volume);
     }
 
+    public static void play(Music music) {
+        music.setVolume(volume);
+        music.play();
+    }
+
+    public static void volumeChange(float volumne) {
+        if (volumne > 1f) {
+            volumne = 1f;
+        } else if (volumne < 0f) {
+            volumne = 0f;
+        }
+        World.volume = volumne;
+    }
+
     public void exit() {
         try {
             ProfileManager.getProfile().persistSave();
@@ -56,16 +71,6 @@ public class World {
             Gdx.app.log(ProfileManager.class.getName(), "save failed", e);
         }
         Gdx.app.exit();
-    }
-
-
-    public void volumeChange(float volumne) {
-        if (volumne > 1f) {
-            volumne = 1f;
-        } else if (volumne < 0f) {
-            volumne = 0f;
-        }
-        World.volume = volumne;
     }
 
     /**

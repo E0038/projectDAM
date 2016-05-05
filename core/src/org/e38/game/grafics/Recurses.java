@@ -13,7 +13,7 @@ public class Recurses {
     public final static AtomicBoolean isLoaded = new AtomicBoolean(false);
     public static final Sound MACHINE_GUN,
             SILENCER, ALARM, MP5_SMG,
-            GUN,
+            GUN, SNIPER_SHOT,
             SHOTGUN, EXPLOCION;
 
 
@@ -25,6 +25,7 @@ public class Recurses {
         MP5_SMG = Gdx.audio.newSound(Gdx.files.internal("audio/MP5_SMG.mp3"));
         EXPLOCION = Gdx.audio.newSound(Gdx.files.internal("audio/Grenade_Explosion.mp3"));
         GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
+        SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
     }
 
     public static void load() {

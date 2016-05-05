@@ -1,5 +1,7 @@
 package org.e38.game.model.npc.cops;
 
+import org.e38.game.World;
+import org.e38.game.grafics.Recurses;
 import org.e38.game.model.npc.Cop;
 
 import java.util.ArrayDeque;
@@ -27,7 +29,7 @@ public class Lento extends Cop {
 
     @Override
     public void onFire() {
-        // TODO: 4/28/16
+        World.play(Recurses.SNIPER_SHOT);
     }
 
     @Override
