@@ -3,6 +3,7 @@ package org.e38.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,12 +13,14 @@ import org.e38.game.grafics.Recurses;
 public class MainGame extends Game {
     SpriteBatch batch;
     Texture img;
+    AssetManager am;
+
 
     @Override
     public void create() {
 //        ProfileManager.getProfile();
         batch = new SpriteBatch();
-        img = new Texture("grafics/badlogic.jpg");
+        img = new Texture("data/textures/policiaBueno.png");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -25,6 +28,7 @@ public class MainGame extends Game {
             }
         }, "contextLoaderThread").start();
         setScreen(new SplashScreen(this));
+        am = Recurses.load();
     }
 
     @Override
