@@ -34,12 +34,10 @@ public class SplashScreen implements Screen {
 
     @Override
     public void pause() {
-        game.pause();
     }
 
     @Override
     public void resume() {
-        game.resume();
     }
 
     @Override

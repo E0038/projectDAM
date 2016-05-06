@@ -35,9 +35,8 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         batcher.begin();
         for (int i = 0; i < 10; i++) {
-
-
-        batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BAZOOKA, NPC.Orientation.DOWN), i * 30, 0);}
+            batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BAZOOKA, NPC.Orientation.DOWN), i * 30, 0);
+        }
         batcher.end();
     }
 

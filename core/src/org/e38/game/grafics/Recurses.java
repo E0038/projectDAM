@@ -36,20 +36,19 @@ public class Recurses {
     }
 
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
+    private final TextureAtlas ALTLAS_POLICIAS;
     private AssetManager manager;
 
+    public Recurses() {
+        ALTLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK);
+    }
+
     public TextureRegion getPolicia(String name, NPC.Orientation orientation) {
-        TextureAtlas atlas;
-        if (manager.isLoaded(GRAFICS_TEXTURES_POLICIAS_PACK)){
-            atlas = manager.get(GRAFICS_TEXTURES_POLICIAS_PACK);
-        }else {
-            atlas = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK);
-        }
-        return getNpc(atlas, name, orientation);
+        return getNpc(ALTLAS_POLICIAS, name, orientation);
     }
 
     public TextureRegion getNpc(TextureAtlas atlas, String name, NPC.Orientation orientation) {
-        String sufix = "";
+        String sufix;
         switch (orientation) {
             case DOWN:
                 sufix = "0-0";
@@ -75,8 +74,8 @@ public class Recurses {
 
         ProfileManager.getProfile();//init persistence Static Context
         // TODO: 4/27/16 init asserts
-        manager = new AssetManager();
-        manager.load(GRAFICS_TEXTURES_POLICIAS_PACK, TextureAtlas.class);
+//        manager = new AssetManager();
+//        manager.load(GRAFICS_TEXTURES_POLICIAS_PACK, TextureAtlas.class);
 
         //TEXTURAS
 //        POLICEGUN = new Texture(TEXTURES_POLICIA_BUENO);
