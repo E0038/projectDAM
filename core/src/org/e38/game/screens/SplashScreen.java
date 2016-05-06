@@ -3,51 +3,30 @@ package org.e38.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
-import org.e38.game.grafics.Recurses;
+import org.e38.game.World;
 
 /**
  * Created by sergi on 4/22/16.
  */
 public class SplashScreen implements Screen {
-    private MainGame game;
+    private final MainGame game;
 
-    public SplashScreen(MainGame game) {
+    public SplashScreen(final MainGame game) {
         this.game = game;
+        System.out.println("SPLASH CONTRUCTOR");
     }
 
     @Override
     public void show() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        if (Recurses.isLoaded.get()) {
-                            game.setScreen(new MenuScreen(game));
-                            return;
-                        }
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            Gdx.app.log(SplashScreen.class.getName(), e.getMessage(), e);
-                        }
-                    } catch (Throwable throwable) {
-                        Gdx.app.log(SplashScreen.class.getName(), throwable.getMessage(), throwable);
-                        initError(throwable);
-                    }
-                }
-            }
-        }, "loadWatcherTread").start();
-    }
-
-    private void initError(Throwable throwable) {
-        // TODO: 5/1/16 show error message
-        System.exit(-1);
     }
 
     @Override
     public void render(float delta) {
-
+        if (World.getRecurses().isLoaded.get()) {
+            game.setScreen(new MenuScreen(game));
+        } else {
+            System.out.println("loading...");
+        }
     }
 
     @Override
@@ -73,5 +52,10 @@ public class SplashScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    private void initError(Throwable throwable) {
+        // TODO: 5/1/16 show error message
+        System.exit(-1);
     }
 }

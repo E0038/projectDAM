@@ -65,10 +65,11 @@ public class ProfileManager {
     }
 
     public Configuration readConfig() {
+        Configuration configuration = new Configuration();
         if (configFile.exists()) {
             try {
                 Reader reader = new FileReader(configFile.file());
-                Configuration configuration = gson.fromJson(reader, Configuration.class);
+                configuration = gson.fromJson(reader, Configuration.class);
                 reader.close();
                 return configuration;
             } catch (IOException e) {
@@ -77,11 +78,12 @@ public class ProfileManager {
         } else {
             try {
                 configFile.file().createNewFile();
+                writeConfig(configuration);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return new Configuration();//with defaults
+        return configuration;//with defaults
     }
 
     public void applyConf(Configuration configuration) {
@@ -109,6 +111,18 @@ public class ProfileManager {
         reader.close();
     }
 
+    public void writeConfig(Configuration configuration) {
+        configFile.delete();
+        try {
+            configFile.file().createNewFile();
+            Writer writer = new FileWriter(configFile.file());
+            gson.toJson(configuration, writer);
+            writer.close();
+        } catch (IOException e) {
+            Gdx.app.log(getClass().getName(), "writeConfError", e);
+        }
+    }
+
     public static ProfileManager getProfile() {
         return ourInstance;
     }
@@ -127,7 +141,7 @@ public class ProfileManager {
     }
 
     /**
-     * save to persistent file  <b>NOT USE</b> on Main Game Thread
+     * save to persistent files  <b>NOT USE</b> on Main Game Thread
      *
      * @throws IOException
      */
@@ -142,7 +156,17 @@ public class ProfileManager {
         } catch (IOException e) {
             localBackup.copyTo(profilesFile);//restore bak if fail
             throw e;
+        } finally {
+            writeConfig(extractRunTimeConfig());
         }
+    }
+
+    private Configuration extractRunTimeConfig() {
+        Configuration configuration = new Configuration();
+        configuration.volume = World.getVolume();
+        configuration.selecteDificultat = World.selecteDificultat;
+        configuration.speed = World.speed;
+        return configuration;
     }
 
     /**
@@ -169,20 +193,4 @@ public class ProfileManager {
         return null;
     }
 
-    public void writeConfig(Configuration configuration) {
-        configFile.delete();
-        try {
-            configFile.file().createNewFile();
-            Writer writer = new FileWriter(configFile.file());
-            gson.toJson(configuration, writer);
-            writer.close();
-        } catch (IOException e) {
-            Gdx.app.log(getClass().getName(), "writeConfError", e);
-        }
-    }
-
-    public static class Configuration {
-        public float volume = 0.5f;
-        //etc
-    }
 }

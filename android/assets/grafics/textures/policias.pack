@@ -1,0 +1,117 @@
+
+policias.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sniperBueno1-0
+  rotate: false
+  xy: 1, 205
+  size: 60, 32
+  orig: 60, 32
+  offset: 0, 0
+  index: -1
+sniperBueno3-0
+  rotate: false
+  xy: 1, 171
+  size: 60, 32
+  orig: 60, 32
+  offset: 0, 0
+  index: -1
+sniperBueno0-0
+  rotate: false
+  xy: 63, 205
+  size: 60, 32
+  orig: 60, 32
+  offset: 0, 0
+  index: -1
+sniperBueno2-0
+  rotate: false
+  xy: 1, 137
+  size: 60, 32
+  orig: 60, 32
+  offset: 0, 0
+  index: -1
+policiaEscopeta1-0
+  rotate: false
+  xy: 63, 171
+  size: 56, 32
+  orig: 56, 32
+  offset: 0, 0
+  index: -1
+policiaEscopeta3-0
+  rotate: false
+  xy: 1, 103
+  size: 56, 32
+  orig: 56, 32
+  offset: 0, 0
+  index: -1
+policiaEscopeta2-0
+  rotate: false
+  xy: 63, 137
+  size: 56, 32
+  orig: 56, 32
+  offset: 0, 0
+  index: -1
+policiaEscopeta0-0
+  rotate: false
+  xy: 1, 69
+  size: 56, 32
+  orig: 56, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka0-0
+  rotate: false
+  xy: 59, 103
+  size: 47, 32
+  orig: 47, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka2-0
+  rotate: false
+  xy: 1, 35
+  size: 47, 32
+  orig: 47, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka3-0
+  rotate: false
+  xy: 59, 69
+  size: 47, 32
+  orig: 47, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka1-0
+  rotate: false
+  xy: 1, 1
+  size: 47, 32
+  orig: 47, 32
+  offset: 0, 0
+  index: -1
+policiaBueno0-0
+  rotate: false
+  xy: 50, 35
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+policiaBueno1-0
+  rotate: false
+  xy: 50, 1
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+policiaBueno3-0
+  rotate: false
+  xy: 79, 35
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+policiaBueno2-0
+  rotate: false
+  xy: 79, 1
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1

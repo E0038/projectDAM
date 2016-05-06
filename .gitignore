@@ -1,3 +1,5 @@
+*.py
+/android/assets/data
 ### Eclipse template
 
 bin/

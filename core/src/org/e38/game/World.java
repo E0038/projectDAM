@@ -3,6 +3,7 @@ package org.e38.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import org.e38.game.grafics.Recurses;
 import org.e38.game.model.Level;
 import org.e38.game.persistance.ProfileManager;
 
@@ -21,8 +22,9 @@ public class World {
     public static String selecteDificultat = NORMAL;
     private static float volume = 0.5f;
     public static float lastVolum = volume;
-    public float speed = 1.0f;
+    public static float speed = 1.0f;
     private Level level;
+    private static Recurses recurses;
 
     public World(Level level) {
         this.level = level;
@@ -64,6 +66,13 @@ public class World {
         World.volume = volumne;
     }
 
+    public static void setRecurses(Recurses recurses) {
+        World.recurses = recurses;
+    }
+    public static float getVolume() {
+        return volume;
+    }
+
     public void exit() {
         try {
             ProfileManager.getProfile().persistSave();
@@ -82,5 +91,9 @@ public class World {
         } else {
             speed = 1f;
         }
+    }
+
+    public static Recurses getRecurses() {
+        return recurses;
     }
 }
