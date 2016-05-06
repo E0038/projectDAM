@@ -27,48 +27,38 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log(getClass().getName(), "MENU SHOW");
+        batcher = new SpriteBatch();
+        World.play(Recurses.SILENCER);
     }
 
     @Override
     public void render(float delta) {
-        batcher = new SpriteBatch();
         batcher.begin();
-        for (int i = 0; i < 5; i++) {
-            batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BAZOOKA, NPC.Orientation.DOWN), i * 30, 0);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-//            World.play(Recurses.GUN);
-        }
+        for (int i = 0; i < 10; i++) {
+
+
+        batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BAZOOKA, NPC.Orientation.DOWN), i * 30, 0);}
         batcher.end();
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 
 

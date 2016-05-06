@@ -1,6 +1,5 @@
 package org.e38.game.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
 import org.e38.game.World;
@@ -13,7 +12,6 @@ public class SplashScreen implements Screen {
 
     public SplashScreen(final MainGame game) {
         this.game = game;
-        System.out.println("SPLASH CONTRUCTOR");
     }
 
     @Override
@@ -36,22 +34,20 @@ public class SplashScreen implements Screen {
 
     @Override
     public void pause() {
-
+        game.pause();
     }
 
     @Override
     public void resume() {
-
+        game.resume();
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 
     private void initError(Throwable throwable) {
