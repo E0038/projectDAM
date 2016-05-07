@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.e38.game.MainGame;
 import org.e38.game.World;
-import org.e38.game.grafics.Recurses;
+import org.e38.game.Recurses;
 import org.e38.game.model.npc.NPC;
 
 /**

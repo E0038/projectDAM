@@ -1,10 +1,10 @@
-package org.e38.game.grafics;
+package org.e38.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import org.e38.game.model.npc.Cop;
 import org.e38.game.model.npc.NPC;
 import org.e38.game.persistance.ProfileManager;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Recurses {
     public static final Sound MACHINE_GUN,
             SILENCER, ALARM, MP5_SMG,
-            GUN, SNIPER_SHOT,
+            GUN, SNIPER_SHOT, RPG,
             SHOTGUN, EXPLOCION;
     public static final String SNIPER_BUENO = "sniperBueno",
             POLICIA_ESCOPETA = "policiaEscopeta",
@@ -33,18 +33,18 @@ public class Recurses {
         EXPLOCION = Gdx.audio.newSound(Gdx.files.internal("audio/Grenade_Explosion.mp3"));
         GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
         SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
+        RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
     }
 
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
-    private final TextureAtlas ALTLAS_POLICIAS;
-    private AssetManager manager;
+    private final TextureAtlas ATLAS_POLICIAS;
 
     public Recurses() {
-        ALTLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK);
+        ATLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK);
     }
 
-    public TextureRegion getPolicia(String name, NPC.Orientation orientation) {
-        return getNpc(ALTLAS_POLICIAS, name, orientation);
+    public TextureRegion getPolicia(Cop cop) {
+        return getNpc(ATLAS_POLICIAS, cop.getName(), cop.getOrientation());
     }
 
     public TextureRegion getNpc(TextureAtlas atlas, String name, NPC.Orientation orientation) {
@@ -69,39 +69,21 @@ public class Recurses {
         return atlas.findRegion(name + sufix);
     }
 
+    public TextureRegion getPolicia(String name, NPC.Orientation orientation) {
+        return getNpc(ATLAS_POLICIAS, name, orientation);
+    }
 
+    public TextureRegion getNpc(TextureAtlas atlas, NPC npc) {
+        return getNpc(atlas, npc.getName(), npc.getOrientation());
+    }
+
+    /**
+     * do all hard IO load operations here
+     */
     public void load() {
 
         ProfileManager.getProfile();//init persistence Static Context
         // TODO: 4/27/16 init asserts
-//        manager = new AssetManager();
-//        manager.load(GRAFICS_TEXTURES_POLICIAS_PACK, TextureAtlas.class);
-
-        //TEXTURAS
-//        POLICEGUN = new Texture(TEXTURES_POLICIA_BUENO);
-//        POLICEGUNFRONT = new TextureRegion(POLICEGUN, 0, 0, 27, 32);
-//        POLICEGUNLEFT = new TextureRegion(POLICEGUN, 0, 32, 27, 32);
-//        POLICEGUNRIGHT = new TextureRegion(POLICEGUN, 0, 64, 27, 32);
-//        POLICEGUNBACK = new TextureRegion(POLICEGUN, 0, 86, 27, 32);
-//
-//        POLICEBAZOOKA = new Texture(TEXTURES_POLICIA_BAZOOKA);
-//        POLICEBAZOOKAFRONT = new TextureRegion(POLICEBAZOOKA, 0, 0, 27, 47);
-//        POLICEBAZOOKALEFT = new TextureRegion(POLICEBAZOOKA, 0, 32, 27, 47);
-//        POLICEBAZOOKARIGHT = new TextureRegion(POLICEBAZOOKA, 0, 64, 27, 47);
-//        POLICEBAZOOKABACK = new TextureRegion(POLICEBAZOOKA, 0, 86, 27, 47);
-//
-//        POLICESHOTGUN = new Texture(TEXTURES_POLICIA_ESCOPETA);
-//        POLICESHOTGUNFRONT = new TextureRegion(POLICESHOTGUN, 0, 0, 27, 56);
-//        POLICESHOTGUNLEFT = new TextureRegion(POLICESHOTGUN, 0, 32, 27, 56);
-//        POLICESHOTGUNRIGHT = new TextureRegion(POLICESHOTGUN, 0, 64, 27, 56);
-//        POLICESHOTGUNBACK = new TextureRegion(POLICESHOTGUN, 0, 86, 27, 56);
-//
-//        POLICESNIPER = new Texture(TEXTURES_SNIPER_BUENO);
-//        POLICESNIPERFRONT = new TextureRegion(POLICESNIPER, 0, 0, 27, 60);
-//        POLICESNIPERLEFT = new TextureRegion(POLICESNIPER, 0, 32, 27, 60);
-//        POLICESNIPERRIGHT = new TextureRegion(POLICESNIPER, 0, 64, 27, 60);
-//        POLICESNIPERBACK = new TextureRegion(POLICESNIPER, 0, 86, 27, 60);
-
         isLoaded.set(true);
 //        return am;
     }

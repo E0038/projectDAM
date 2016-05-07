@@ -1,6 +1,7 @@
 package org.e38.game.model.npc;
 
 import com.badlogic.gdx.math.Vector2;
+import org.e38.game.Recurses;
 import org.e38.game.model.Bullet;
 
 import static org.e38.game.model.npc.NPC.State.*;
@@ -30,6 +31,69 @@ public abstract class Cop implements NPC {
 
     public Cop setFireRate(long fireRate) {
         this.fireRate = fireRate;
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        return Recurses.POLICIA_BUENO;
+    }
+
+    /**
+     * default impl ,this is called when cop was removed
+     */
+    @Override
+    public void onDie() {
+        state = DEAD;
+    }
+
+    @Override
+    public void spawn() {
+        state = SPAWING;
+        onSpawn();
+        state = ALIVE;
+    }
+
+    /**
+     * default impl does nothing ,override to initialize
+     */
+    @Override
+    public void onSpawn() {
+    }
+
+    @Override
+    public State getState() {
+        return state;
+    }
+
+    public Cop setState(State state) {
+        this.state = state;
+        return this;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return state == ALIVE;
+    }
+
+    /**
+     * all are in Static places
+     *
+     * @return 0
+     */
+    @Override
+    public Vector2 getSpeed() {
+        return noSpeed;
+    }
+
+    @Override
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    @Override
+    public Cop setOrientation(Orientation orientation) {
+        this.orientation = orientation;
         return this;
     }
 
@@ -124,64 +188,6 @@ public abstract class Cop implements NPC {
      * default impl does nothing , override to play sell animations
      */
     protected void onSell() {
-    }
-
-    /**
-     * default impl ,this is called when cop was removed
-     */
-    @Override
-    public void onDie() {
-        state = DEAD;
-    }
-
-    @Override
-    public void spawn() {
-        state = SPAWING;
-        onSpawn();
-        state = ALIVE;
-    }
-
-    /**
-     * default impl does nothing ,override to initialize
-     */
-    @Override
-    public void onSpawn() {
-    }
-
-    @Override
-    public State getState() {
-        return state;
-    }
-
-    public Cop setState(State state) {
-        this.state = state;
-        return this;
-    }
-
-    @Override
-    public boolean isAlive() {
-        return state == ALIVE;
-    }
-
-    /**
-     * all are in Static places
-     *
-     * @return 0
-     */
-    @Override
-    public Vector2 getSpeed() {
-        return noSpeed;
-    }
-
-    @Override
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    @Override
-    public Cop setOrientation(Orientation orientation) {
-        this.orientation = orientation;
-        return this;
     }
 
     protected static class CopLevel {

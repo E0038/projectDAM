@@ -1,7 +1,7 @@
 package org.e38.game.model.npc.cops;
 
 import org.e38.game.World;
-import org.e38.game.grafics.Recurses;
+import org.e38.game.Recurses;
 import org.e38.game.model.npc.Cop;
 
 import java.util.ArrayDeque;
@@ -49,5 +49,10 @@ public class Lento extends Cop {
         fireRate = 60 * 2; // 2s a 60fps
         Collections.addAll(levels, copLevels);
         onUpgrade();//level 1
+    }
+
+    @Override
+    public String getName() {
+        return Recurses.SNIPER_BUENO;
     }
 }

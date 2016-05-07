@@ -6,6 +6,11 @@ import org.e38.game.model.GameObject;
 
 public interface NPC extends GameObject {
     /**
+     * nombre interno del npc
+     */
+    String getName();
+
+    /**
      * called when npc god 0 HhPoins
      */
     void onDie();

@@ -1,10 +1,6 @@
 package org.e38.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.e38.game.grafics.Recurses;
 import org.e38.game.screens.SplashScreen;
 
 public class MainGame extends Game {
