@@ -17,6 +17,11 @@ public class SimpleCriminal extends Criminal {
     }
 
     @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
     public void onDie() {
 
     }
