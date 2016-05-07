@@ -14,33 +14,32 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by sergi on 4/27/16.
  */
 public class Recurses {
-    public static final Sound MACHINE_GUN,
-            SILENCER, ALARM, MP5_SMG,
-            GUN, SNIPER_SHOT, RPG,
-            SHOTGUN, EXPLOCION;
     public static final String SNIPER_BUENO = "sniperBueno",
             POLICIA_ESCOPETA = "policiaEscopeta",
             POLICIA_BAZOOKA = "policiaBazooka",
             POLICIA_BUENO = "policiaBueno";
     public static final String GRAFICS_TEXTURES_POLICIAS_PACK = "grafics/textures/policias.pack";
+    public static Sound MACHINE_GUN,
+            SILENCER, ALARM, MP5_SMG,
+            GUN, SNIPER_SHOT, RPG,
+            SHOTGUN, EXPLOCION;
 
     static {
-        MACHINE_GUN = Gdx.audio.newSound(Gdx.files.internal("audio/Automatic_MachineGun.mp3"));
-        SILENCER = Gdx.audio.newSound(Gdx.files.internal("audio/Silencer.mp3"));
-        ALARM = Gdx.audio.newSound(Gdx.files.internal("audio/Police_Siren.mp3"));
-        SHOTGUN = Gdx.audio.newSound(Gdx.files.internal("audio/shot_gun.mp3"));
-        MP5_SMG = Gdx.audio.newSound(Gdx.files.internal("audio/MP5_SMG.mp3"));
-        EXPLOCION = Gdx.audio.newSound(Gdx.files.internal("audio/Grenade_Explosion.mp3"));
-        GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
-        SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
-        RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
     }
 
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
     private final TextureAtlas ATLAS_POLICIAS;
 
+    /**
+     * NOTE : create the istance in Gdx thread and call load in a separate Tread
+     */
     public Recurses() {
         ATLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK);
+        createGrafics();
+    }
+
+    private void createGrafics() {
+        //create no final Texture Here
     }
 
     public TextureRegion getPolicia(Cop cop) {
@@ -78,13 +77,26 @@ public class Recurses {
     }
 
     /**
-     * do all hard IO load operations here
+     * Do all hard IO load operations here this is Gdx threading safe.
+     * Is recommended to run this on separate thread
      */
     public void load() {
-
         ProfileManager.getProfile();//init persistence Static Context
+        createSounds();
         // TODO: 4/27/16 init asserts
         isLoaded.set(true);
 //        return am;
+    }
+
+    private void createSounds() {
+        MACHINE_GUN = Gdx.audio.newSound(Gdx.files.internal("audio/Automatic_MachineGun.mp3"));
+        SILENCER = Gdx.audio.newSound(Gdx.files.internal("audio/Silencer.mp3"));
+        ALARM = Gdx.audio.newSound(Gdx.files.internal("audio/Police_Siren.mp3"));
+        SHOTGUN = Gdx.audio.newSound(Gdx.files.internal("audio/shot_gun.mp3"));
+        MP5_SMG = Gdx.audio.newSound(Gdx.files.internal("audio/MP5_SMG.mp3"));
+        EXPLOCION = Gdx.audio.newSound(Gdx.files.internal("audio/Grenade_Explosion.mp3"));
+        GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
+        SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
+        RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
     }
 }
