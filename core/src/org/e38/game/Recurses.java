@@ -31,10 +31,16 @@ public class Recurses {
     private final TextureAtlas ATLAS_POLICIAS;
 
     /**
-     * NOTE : create the istance in Gdx thread and call load in a separate Tread
+     * NOTE : create the instance in Gdx thread and call load in a separate Tread
      */
     public Recurses() {
-        ATLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK);
+        ATLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK) {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();//automatic dispose on GC
+                super.finalize();
+            }
+        };
         createGrafics();
     }
 
@@ -77,7 +83,7 @@ public class Recurses {
     }
 
     /**
-     * Do all hard IO load operations here this is Gdx threading safe.
+     * Do all hard IO load operations ,NO Texture Load here !!.
      * Is recommended to run this on separate thread
      */
     public void load() {
