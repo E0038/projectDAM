@@ -22,6 +22,7 @@ public class MainGame extends Game {
     @Override
     public void pause() {
         doRender = false;
+        super.pause();
     }
 
     @Override

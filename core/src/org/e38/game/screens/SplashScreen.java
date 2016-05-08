@@ -42,6 +42,7 @@ public class SplashScreen implements Screen {
 
     @Override
     public void hide() {
+        game.pause();
     }
 
     @Override
