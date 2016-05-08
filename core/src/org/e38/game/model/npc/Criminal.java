@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by sergi on 4/20/16.
  */
-public abstract class Criminal implements Hittable, NPC {
+public abstract class Criminal implements Hittable {
     protected State state = State.SPAWING;
     protected float hpPoints;
     /**

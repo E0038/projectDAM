@@ -3,7 +3,7 @@ package org.e38.game.model.npc;
 /**
  * Created by sergi on 4/20/16.
  */
-public interface Hittable {
+public interface Hittable extends NPC {
     /**
      * @return a float between 0 and 1
      */
