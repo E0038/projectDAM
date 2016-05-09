@@ -16,7 +16,7 @@ public interface NPC extends GameObject {
     void onDie();
 
     /**
-     * called before object constructor
+     * called after object constructor
      */
     void spawn();
 
