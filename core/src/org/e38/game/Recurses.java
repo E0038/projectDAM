@@ -24,32 +24,29 @@ public class Recurses {
             GUN, SNIPER_SHOT, RPG,
             SHOTGUN, EXPLOCION;
 
-    static {
-    }
-
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
-    private final TextureAtlas ATLAS_POLICIAS;
+    private TextureAtlas atlasPolicias;
 
     /**
      * NOTE : create the instance in Gdx thread and call load in a separate Tread
      */
     public Recurses() {
-        ATLAS_POLICIAS = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK) {
+        createGrafics();
+    }
+
+    private void createGrafics() {
+        //create no final Texture Here
+        atlasPolicias = new TextureAtlas(GRAFICS_TEXTURES_POLICIAS_PACK) {
             @Override
             protected void finalize() throws Throwable {
                 dispose();//automatic dispose on GC
                 super.finalize();
             }
         };
-        createGrafics();
-    }
-
-    private void createGrafics() {
-        //create no final Texture Here
     }
 
     public TextureRegion getPolicia(Cop cop) {
-        return getNpc(ATLAS_POLICIAS, cop.getName(), cop.getOrientation());
+        return getNpc(atlasPolicias, cop.getName(), cop.getOrientation());
     }
 
     public TextureRegion getNpc(TextureAtlas atlas, String name, NPC.Orientation orientation) {
@@ -75,7 +72,7 @@ public class Recurses {
     }
 
     public TextureRegion getPolicia(String name, NPC.Orientation orientation) {
-        return getNpc(ATLAS_POLICIAS, name, orientation);
+        return getNpc(atlasPolicias, name, orientation);
     }
 
     public TextureRegion getNpc(TextureAtlas atlas, NPC npc) {
@@ -91,7 +88,6 @@ public class Recurses {
         createSounds();
         // TODO: 4/27/16 init asserts
         isLoaded.set(true);
-//        return am;
     }
 
     private void createSounds() {
