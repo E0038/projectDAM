@@ -3,13 +3,6 @@ package org.e38.game;
 import com.badlogic.gdx.Game;
 import org.e38.game.screens.SplashScreen;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import java.io.*;
-import java.security.KeyRep;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-
 public class MainGame extends Game {
     public boolean doRender = true;
 
