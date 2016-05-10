@@ -17,6 +17,7 @@ public class MenuScreen implements Screen {
     private final MainGame game;
     private String[] polis = new String[]{Recurses.POLICIA_ESCOPETA, Recurses.POLICIA_BAZOOKA, Recurses.SNIPER_BUENO, Recurses.POLICIA_BUENO};
     private SpriteBatch batcher;
+    private Recurses.AnimatedCriminals[] criminals = Recurses.AnimatedCriminals.values();
 
 
     public MenuScreen(final MainGame game) {
@@ -38,6 +39,7 @@ public class MenuScreen implements Screen {
             System.out.println(poli + "{\nwidth = " + region.getRegionWidth() + "\nheight = " + region.getRegionHeight() + "\n}");
         }
 
+
     }
 
     @Override
@@ -51,6 +53,8 @@ public class MenuScreen implements Screen {
             TextureRegion region = World.getRecurses().getPolicia(polis[i % polis.length], NPC.Orientation.LEFT);
             batcher.draw(region, x, 0);
             x += region.getRegionWidth();
+            System.out.println(criminals[i % criminals.length].name());
+            batcher.draw(World.getRecurses().getCriminal(criminals[i % criminals.length].name(), NPC.Orientation.DOWN), i * 50, 100);
         }
         batcher.end();
     }
