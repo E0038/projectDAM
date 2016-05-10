@@ -6,112 +6,112 @@ repeat: none
 sniperBueno1-0
   rotate: false
   xy: 1, 205
-  size: 60, 32
-  orig: 60, 32
-  offset: 0, 0
-  index: -1
-sniperBueno3-0
-  rotate: false
-  xy: 1, 171
-  size: 60, 32
-  orig: 60, 32
-  offset: 0, 0
-  index: -1
-sniperBueno0-0
-  rotate: false
-  xy: 63, 205
-  size: 60, 32
-  orig: 60, 32
+  size: 43, 32
+  orig: 43, 32
   offset: 0, 0
   index: -1
 sniperBueno2-0
   rotate: false
+  xy: 1, 171
+  size: 42, 32
+  orig: 42, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka2-0
+  rotate: false
+  xy: 46, 205
+  size: 40, 32
+  orig: 40, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka1-0
+  rotate: false
   xy: 1, 137
-  size: 60, 32
-  orig: 60, 32
+  size: 40, 32
+  orig: 40, 32
   offset: 0, 0
   index: -1
 policiaEscopeta1-0
   rotate: false
-  xy: 63, 171
-  size: 56, 32
-  orig: 56, 32
-  offset: 0, 0
-  index: -1
-policiaEscopeta3-0
-  rotate: false
-  xy: 1, 103
-  size: 56, 32
-  orig: 56, 32
+  xy: 45, 171
+  size: 34, 32
+  orig: 34, 32
   offset: 0, 0
   index: -1
 policiaEscopeta2-0
   rotate: false
-  xy: 63, 137
-  size: 56, 32
-  orig: 56, 32
+  xy: 88, 205
+  size: 34, 32
+  orig: 34, 32
+  offset: 0, 0
+  index: -1
+policiaBazooka0-0
+  rotate: false
+  xy: 1, 103
+  size: 28, 32
+  orig: 28, 32
+  offset: 0, 0
+  index: -1
+policiaBueno0-0
+  rotate: false
+  xy: 43, 137
+  size: 27, 32
+  orig: 27, 32
+  offset: 0, 0
+  index: -1
+sniperBueno0-0
+  rotate: false
+  xy: 81, 171
+  size: 27, 32
+  orig: 27, 32
   offset: 0, 0
   index: -1
 policiaEscopeta0-0
   rotate: false
   xy: 1, 69
-  size: 56, 32
-  orig: 56, 32
+  size: 27, 32
+  orig: 27, 32
   offset: 0, 0
   index: -1
-policiaBazooka0-0
+policiaEscopeta3-0
   rotate: false
-  xy: 59, 103
-  size: 47, 32
-  orig: 47, 32
-  offset: 0, 0
-  index: -1
-policiaBazooka2-0
-  rotate: false
-  xy: 1, 35
-  size: 47, 32
-  orig: 47, 32
+  xy: 31, 103
+  size: 26, 32
+  orig: 26, 32
   offset: 0, 0
   index: -1
 policiaBazooka3-0
   rotate: false
-  xy: 59, 69
-  size: 47, 32
-  orig: 47, 32
-  offset: 0, 0
-  index: -1
-policiaBazooka1-0
-  rotate: false
-  xy: 1, 1
-  size: 47, 32
-  orig: 47, 32
-  offset: 0, 0
-  index: -1
-policiaBueno0-0
-  rotate: false
-  xy: 50, 35
-  size: 27, 32
-  orig: 27, 32
+  xy: 72, 137
+  size: 24, 32
+  orig: 24, 32
   offset: 0, 0
   index: -1
 policiaBueno1-0
   rotate: false
-  xy: 50, 1
-  size: 27, 32
-  orig: 27, 32
+  xy: 1, 35
+  size: 23, 32
+  orig: 23, 32
   offset: 0, 0
   index: -1
 policiaBueno3-0
   rotate: false
-  xy: 79, 35
-  size: 27, 32
-  orig: 27, 32
+  xy: 30, 69
+  size: 23, 32
+  orig: 23, 32
+  offset: 0, 0
+  index: -1
+sniperBueno3-0
+  rotate: false
+  xy: 59, 103
+  size: 23, 32
+  orig: 23, 32
   offset: 0, 0
   index: -1
 policiaBueno2-0
   rotate: false
-  xy: 79, 1
-  size: 27, 32
-  orig: 27, 32
+  xy: 1, 1
+  size: 23, 32
+  orig: 23, 32
   offset: 0, 0
   index: -1
