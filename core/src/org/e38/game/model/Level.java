@@ -1,6 +1,9 @@
 package org.e38.game.model;
 
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
@@ -22,6 +25,9 @@ public abstract class Level {
     protected Path path;
     protected int levelUID;
     private List<OnEndListerner> onEndListerners;
+    private OrthogonalTiledMapRenderer renderer;
+    private TiledMap map;
+
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -31,6 +37,8 @@ public abstract class Level {
         this.coins = initialCoins;
         this.levelUID = levelUID;
         dificultat = Dificultat.valueOf(World.selecteDificultat);
+        map = new TmxMapLoader().load("grafics/maps/lvl1/prototipoMapa.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map);
     }
 
 
@@ -94,6 +102,14 @@ public abstract class Level {
     public Level setDificultat(Dificultat dificultat) {
         this.dificultat = dificultat;
         return this;
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public OrthogonalTiledMapRenderer getRenderer() {
+        return renderer;
     }
 
     public int getScore() {

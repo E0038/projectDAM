@@ -1,6 +1,8 @@
 package org.e38.game;
 
 import com.badlogic.gdx.Game;
+import org.e38.game.model.Level;
+import org.e38.game.screens.LevelScreen;
 import org.e38.game.screens.SplashScreen;
 
 public class MainGame extends Game {

@@ -1,6 +1,7 @@
 package org.e38.game.screens;
 
 import com.badlogic.gdx.Screen;
+import org.e38.game.LevelImpl;
 import org.e38.game.MainGame;
 import org.e38.game.World;
 
@@ -21,7 +22,8 @@ public class SplashScreen implements Screen {
     @Override
     public void render(float delta) {
         if (World.getRecurses().isLoaded.get()) {
-            game.setScreen(new MenuScreen(game));
+            LevelImpl lvl = new LevelImpl(0, 0) ;
+            game.setScreen(new LevelScreen(lvl, game));
         } else {
 //            System.out.println("loading...");
         }

@@ -6,7 +6,10 @@ import org.e38.game.MainGame;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        new LwjglApplication(new MainGame(), config);
+        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        cfg.title = "Juego ladrones";
+        cfg.height = 600;
+        cfg.width = 800;
+        new LwjglApplication(new MainGame(), cfg);
     }
 }
