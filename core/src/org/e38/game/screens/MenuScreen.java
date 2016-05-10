@@ -32,8 +32,6 @@ public class MenuScreen implements Screen {
     public void show() {
         batcher = new SpriteBatch();
         World.play(Recurses.ALARM);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.resume();//fix false pause state
         for (String poli : polis) {
             TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
@@ -45,6 +43,8 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 //        Gdx.app.log(getClass().getName(), "RENDER");
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batcher.begin();
         int x = 0;
         for (int i = 0; i < 10; i++) {

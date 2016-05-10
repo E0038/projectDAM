@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.e38.game.model.npc.Cop;
+import org.e38.game.model.npc.Criminal;
 import org.e38.game.model.npc.NPC;
 import org.e38.game.persistance.ProfileManager;
 
@@ -18,14 +19,16 @@ public class Recurses {
             POLICIA_ESCOPETA = "policiaEscopeta",
             POLICIA_BAZOOKA = "policiaBazooka",
             POLICIA_BUENO = "policiaBueno";
+
     public static final String GRAFICS_TEXTURES_POLICIAS_PACK = "grafics/textures/policias.pack";
+    public static final String GRAFICS_TEXTURES_ACRIMINALS_PACK = "grafics/textures/Acriminals.pack";
     public static Sound MACHINE_GUN,
             SILENCER, ALARM, MP5_SMG,
             GUN, SNIPER_SHOT, RPG,
             SHOTGUN, EXPLOCION;
-
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
     private TextureAtlas atlasPolicias;
+    private TextureAtlas atlasAnimCriminals;
 
     /**
      * NOTE : create the instance in Gdx thread and call load in a separate Tread
@@ -40,6 +43,13 @@ public class Recurses {
             @Override
             protected void finalize() throws Throwable {
                 dispose();//automatic dispose on GC
+                super.finalize();
+            }
+        };
+        atlasAnimCriminals = new TextureAtlas(GRAFICS_TEXTURES_ACRIMINALS_PACK) {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
                 super.finalize();
             }
         };
@@ -71,12 +81,20 @@ public class Recurses {
         return atlas.findRegion(name + sufix);
     }
 
-    public TextureRegion getPolicia(String name, NPC.Orientation orientation) {
-        return getNpc(atlasPolicias, name, orientation);
+    public TextureRegion getCriminal(Criminal criminal) {
+        return getNpc(atlasAnimCriminals, criminal);
     }
 
     public TextureRegion getNpc(TextureAtlas atlas, NPC npc) {
         return getNpc(atlas, npc.getName(), npc.getOrientation());
+    }
+
+    public TextureRegion getCriminal(String name, NPC.Orientation orientation) {
+        return getNpc(atlasAnimCriminals, name, orientation);
+    }
+
+    public TextureRegion getPolicia(String name, NPC.Orientation orientation) {
+        return getNpc(atlasPolicias, name, orientation);
     }
 
     /**
@@ -100,5 +118,10 @@ public class Recurses {
         GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
         SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
         RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
+    }
+
+
+    public enum AnimatedCriminals {
+        bane, bicicletaFinal, enemigoEspadon, ladronEscopetaBueno;
     }
 }

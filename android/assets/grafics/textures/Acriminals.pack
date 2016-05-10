@@ -1,0 +1,89 @@
+
+Acriminals.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ladronEscopetaBueno3-0
+  rotate: false
+  xy: 1, 81
+  size: 91, 46
+  orig: 91, 46
+  offset: 0, 0
+  index: -1
+enemigoEspadon1-0
+  rotate: false
+  xy: 94, 84
+  size: 93, 43
+  orig: 96, 48
+  offset: 3, 1
+  index: -1
+enemigoEspadon2-0
+  rotate: false
+  xy: 189, 84
+  size: 93, 43
+  orig: 96, 48
+  offset: 2, 1
+  index: -1
+enemigoEspadon0-0
+  rotate: false
+  xy: 1, 35
+  size: 92, 44
+  orig: 96, 48
+  offset: 2, 1
+  index: -1
+bane0-0
+  rotate: false
+  xy: 1, 1
+  size: 91, 32
+  orig: 96, 32
+  offset: 3, 0
+  index: -1
+ladronEscopetaBueno0-0
+  rotate: false
+  xy: 284, 84
+  size: 91, 43
+  orig: 91, 46
+  offset: 0, 3
+  index: -1
+ladronEscopetaBueno1-0
+  rotate: false
+  xy: 377, 83
+  size: 91, 44
+  orig: 91, 46
+  offset: 0, 0
+  index: -1
+enemigoEspadon3-0
+  rotate: false
+  xy: 95, 39
+  size: 90, 43
+  orig: 96, 48
+  offset: 4, 1
+  index: -1
+ladronEscopetaBueno2-0
+  rotate: false
+  xy: 187, 40
+  size: 89, 42
+  orig: 91, 46
+  offset: 2, 0
+  index: -1
+bane3-0
+  rotate: false
+  xy: 94, 1
+  size: 87, 32
+  orig: 96, 32
+  offset: 5, 0
+  index: -1
+bane2-0
+  rotate: false
+  xy: 278, 50
+  size: 82, 32
+  orig: 96, 32
+  offset: 7, 0
+  index: -1
+bane1-0
+  rotate: false
+  xy: 362, 49
+  size: 82, 32
+  orig: 96, 32
+  offset: 7, 0
+  index: -1
