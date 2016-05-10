@@ -23,7 +23,7 @@ public class SplashScreen implements Screen {
         if (World.getRecurses().isLoaded.get()) {
             game.setScreen(new MenuScreen(game));
         } else {
-            System.out.println("loading...");
+//            System.out.println("loading...");
         }
     }
 

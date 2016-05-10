@@ -7,22 +7,31 @@ import com.google.gson.GsonBuilder;
 import org.e38.game.World;
 import org.e38.game.model.Level;
 
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 
 public class ProfileManager {
+    public static final String ALGORIM = "AES";
     private static ProfileManager ourInstance;
 
     static {
         try {
+
             ourInstance = new ProfileManager();
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e);
         }
     }
 
+    private final Base64.Encoder base64Encoder = Base64.getEncoder();
+    private final Base64.Decoder base64Decoder = Base64.getDecoder();
     public FileHandle localBackup;
     private FileHandle configFile = Gdx.files.local("data/app.conf");
     private String localPath;
@@ -30,13 +39,19 @@ public class ProfileManager {
     private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
     private Gson gson;
+    private FileHandle key = Gdx.files.internal("key");
+    private SecretKey secretKey;
+    private Cipher decrypter;
+    private Cipher encryper;
+
 
     private ProfileManager() throws IOException {
         conf();
         dataInit();
     }
 
-    private void conf() {
+    private void conf() throws IOException {
+        configureChiper();
         configureJson();
         loadStructure();
         Configuration configuration = readConfig();
@@ -50,6 +65,20 @@ public class ProfileManager {
         } else {
             loadFiles(file);
         }
+    }
+
+    private void configureChiper() throws IOException {
+        byte[] decodedKey = base64Decoder.decode(readChars(key.file()));
+        secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        try {
+            decrypter = Cipher.getInstance(ALGORIM);
+            encryper = Cipher.getInstance(ALGORIM);
+            encryper.init(Cipher.ENCRYPT_MODE, secretKey);
+            decrypter.init(Cipher.DECRYPT_MODE, secretKey);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
+            Gdx.app.log(getClass().getName(), "KEY error", e);
+        }
+
     }
 
     private void configureJson() {
@@ -68,9 +97,8 @@ public class ProfileManager {
         Configuration configuration = new Configuration();
         if (configFile.exists()) {
             try {
-                Reader reader = new FileReader(configFile.file());
-                configuration = gson.fromJson(reader, Configuration.class);
-                reader.close();
+                String json = readChars(configFile.file());
+                configuration = gson.fromJson(json, Configuration.class);
                 return configuration;
             } catch (IOException e) {
                 Gdx.app.log(getClass().getName(), "readConfError", e);
@@ -97,8 +125,14 @@ public class ProfileManager {
             file.createNewFile();
             Writer writer = new FileWriter(file);
             profile = new Profile();
-            writer.write(gson.toJson(profile));
-            writer.close();
+            try {
+                byte[] crypt = encryper.doFinal(gson.toJson(profile).getBytes());
+                writer.write(base64Encoder.encodeToString(crypt));
+                writer.close();
+            } catch (IllegalBlockSizeException | BadPaddingException e) {
+                throw new IOException(e);
+            }
+
         } else {
             localBackup.copyTo(profilesFile);
         }
@@ -106,9 +140,26 @@ public class ProfileManager {
 
     private void loadFiles(File file) throws IOException {
         Gdx.app.log(ProfileManager.class.getName(), "reading saved profile...");
+        String readed = readChars(file);
+        try {
+            byte[] bytes = decrypter.doFinal(base64Decoder.decode(readed));
+            String p = new String(bytes);
+            profile = gson.fromJson(p, Profile.class);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            throw new IOException(e);
+        }
+    }
+
+    private String readChars(File file) throws IOException {
         Reader reader = new FileReader(file);
-        profile = gson.fromJson(reader, Profile.class);
+        char[] chars = new char[1024];
+        StringBuilder builder = new StringBuilder();
+        int n;
+        while ((n = reader.read(chars)) != -1) {
+            builder.append(chars, 0, n);
+        }
         reader.close();
+        return builder.toString();
     }
 
     public void writeConfig(Configuration configuration) {
@@ -151,8 +202,13 @@ public class ProfileManager {
             profilesFile.delete();//truncate
             if (!profilesFile.file().createNewFile()) throw new IOException("file not truncated");
             Writer writer = new FileWriter(profilesFile.file());
-            gson.toJson(profile, writer);
-            writer.close();
+            try {
+                writer.write(base64Encoder.encodeToString(encryper.doFinal(gson.toJson(profile).getBytes())));
+            } catch (IllegalBlockSizeException | BadPaddingException e) {
+                throw new IOException(e);
+            } finally {
+                writer.close();
+            }
         } catch (IOException e) {
             localBackup.copyTo(profilesFile);//restore bak if fail
             throw e;
