@@ -15,10 +15,12 @@ import org.e38.game.model.npc.NPC;
  */
 public class MenuScreen implements Screen {
     private final MainGame game;
+    int count = 0;
+    AnimationManager[] animationManagers;
+    float stateTime = 0;
     private String[] polis = new String[]{Recurses.POLICIA_ESCOPETA, Recurses.POLICIA_BAZOOKA, Recurses.SNIPER_BUENO, Recurses.POLICIA_BUENO};
     private SpriteBatch batcher;
     private Recurses.AnimatedCriminals[] criminals = Recurses.AnimatedCriminals.values();
-
 
     public MenuScreen(final MainGame game) {
         this.game = game;
@@ -32,14 +34,16 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         batcher = new SpriteBatch();
-        World.play(Recurses.ALARM);
+//        World.play(Recurses.ALARM);
         game.resume();//fix false pause state
         for (String poli : polis) {
             TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
             System.out.println(poli + "{\nwidth = " + region.getRegionWidth() + "\nheight = " + region.getRegionHeight() + "\n}");
         }
-
-
+        animationManagers = new AnimationManager[criminals.length];
+        for (int i = 0; i < animationManagers.length; i++) {
+            animationManagers[i] = new AnimationManager(World.getRecurses().getACriminal(criminals[i].name(), NPC.Orientation.DOWN));
+        }
     }
 
     @Override
@@ -53,10 +57,10 @@ public class MenuScreen implements Screen {
             TextureRegion region = World.getRecurses().getPolicia(polis[i % polis.length], NPC.Orientation.LEFT);
             batcher.draw(region, x, 0);
             x += region.getRegionWidth();
-            System.out.println(criminals[i % criminals.length].name());
-            batcher.draw(World.getRecurses().getCriminal(criminals[i % criminals.length].name(), NPC.Orientation.DOWN), i * 50, 100);
+            batcher.draw(animationManagers[i % criminals.length].update(delta), i * 50, 100);
         }
         batcher.end();
+        count++;
     }
 
     @Override

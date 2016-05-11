@@ -22,10 +22,11 @@ public class SplashScreen implements Screen {
     @Override
     public void render(float delta) {
         if (World.getRecurses().isLoaded.get()) {
-            LevelImpl lvl = new LevelImpl(0, 0) ;
-            game.setScreen(new LevelScreen(lvl, game));
+            LevelImpl lvl = new LevelImpl(0, 0);
+//            game.setScreen(new LevelScreen(lvl, game));
+            game.setScreen(new MenuScreen(game));
         } else {
-//            System.out.println("loading...");
+            System.out.println("loading...");
         }
     }
 

@@ -2,6 +2,7 @@ package org.e38.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.e38.game.model.npc.Cop;
@@ -22,6 +23,8 @@ public class Recurses {
 
     public static final String GRAFICS_TEXTURES_POLICIAS_PACK = "grafics/textures/policias.pack";
     public static final String GRAFICS_TEXTURES_ACRIMINALS_PACK = "grafics/textures/Acriminals.pack";
+    public static final int CRIMINAL_PARTS = 3;
+    public static final float FRAME_DURATION = 0.25f;
     public static Sound MACHINE_GUN,
             SILENCER, ALARM, MP5_SMG,
             GUN, SNIPER_SHOT, RPG,
@@ -81,16 +84,28 @@ public class Recurses {
         return atlas.findRegion(name + sufix);
     }
 
+    public Animation getACriminal(Criminal criminal) {
+        return getACriminal(criminal.getName(), criminal.getOrientation());
+    }
+
+    public Animation getACriminal(String name, NPC.Orientation orientation) {
+        TextureRegion region = getCriminal(name, orientation);
+        TextureRegion[][] regions = region.split(region.getRegionWidth() / CRIMINAL_PARTS, region.getRegionHeight());
+        Animation animation = new Animation(FRAME_DURATION, regions[0]);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+        return animation;
+    }
+
+    public TextureRegion getCriminal(String name, NPC.Orientation orientation) {
+        return getNpc(atlasAnimCriminals, name, orientation);
+    }
+
     public TextureRegion getCriminal(Criminal criminal) {
         return getNpc(atlasAnimCriminals, criminal);
     }
 
     public TextureRegion getNpc(TextureAtlas atlas, NPC npc) {
         return getNpc(atlas, npc.getName(), npc.getOrientation());
-    }
-
-    public TextureRegion getCriminal(String name, NPC.Orientation orientation) {
-        return getNpc(atlasAnimCriminals, name, orientation);
     }
 
     public TextureRegion getPolicia(String name, NPC.Orientation orientation) {

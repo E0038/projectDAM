@@ -46,12 +46,20 @@ public interface NPC extends GameObject {
 
     NPC setOrientation(Orientation orientation);
 
+    NPC setOrientationListener(OrientationListener listener);
+
+    OrientationListener getOrientationListener();
+
     enum State {
         ALIVE, DEAD, DYING, SPAWING, DESPAWNING, DESPAWNED;
     }
 
     enum Orientation {
         LEFT, RIGHT, TOP, DOWN
+    }
+
+    interface OrientationListener {
+        void onChange(Orientation old, Orientation nueva);
     }
 
 }

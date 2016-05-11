@@ -16,6 +16,7 @@ public abstract class Criminal implements Hittable {
     protected Vector2 position;
     protected Vector2 speed;
     protected Orientation orientation = Orientation.LEFT;
+    protected OrientationListener listener;
 
     public float getProtecion() {
         return protecion;
@@ -67,8 +68,21 @@ public abstract class Criminal implements Hittable {
 
     @Override
     public Criminal setOrientation(Orientation orientation) {
+        Orientation old = this.orientation;
         this.orientation = orientation;
+        if (listener != null)  listener.onChange(old, this.orientation);
         return this;
+    }
+
+    @Override
+    public NPC setOrientationListener(OrientationListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    @Override
+    public OrientationListener getOrientationListener() {
+        return listener;
     }
 
     public Criminal setSpeed(Vector2 speed) {

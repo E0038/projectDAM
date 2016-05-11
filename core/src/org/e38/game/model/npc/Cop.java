@@ -24,6 +24,7 @@ public abstract class Cop implements NPC {
     protected long fireRate;
     protected CopLevel nivel;
     protected Orientation orientation = Orientation.RIGHT;
+    protected OrientationListener listener;
 
     public long getFireRate() {
         return fireRate;
@@ -93,8 +94,21 @@ public abstract class Cop implements NPC {
 
     @Override
     public Cop setOrientation(Orientation orientation) {
+        Orientation old = this.orientation;
         this.orientation = orientation;
+        if (listener != null) listener.onChange(old, this.orientation);
         return this;
+    }
+
+    @Override
+    public NPC setOrientationListener(OrientationListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    @Override
+    public OrientationListener getOrientationListener() {
+        return listener;
     }
 
     public boolean isAreaDamage() {
