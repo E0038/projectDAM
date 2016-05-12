@@ -42,7 +42,7 @@ public class MenuScreen implements Screen {
         }
         animationManagers = new AnimationManager[criminals.length];
         for (int i = 0; i < animationManagers.length; i++) {
-            animationManagers[i] = new AnimationManager(World.getRecurses().getACriminal(criminals[i].name(), NPC.Orientation.DOWN));
+            animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), NPC.Orientation.DOWN);
         }
     }
 

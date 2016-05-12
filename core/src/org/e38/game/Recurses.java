@@ -9,6 +9,7 @@ import org.e38.game.model.npc.Cop;
 import org.e38.game.model.npc.Criminal;
 import org.e38.game.model.npc.NPC;
 import org.e38.game.persistance.ProfileManager;
+import org.e38.game.screens.AnimationManager;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,7 +25,7 @@ public class Recurses {
     public static final String GRAFICS_TEXTURES_POLICIAS_PACK = "grafics/textures/policias.pack";
     public static final String GRAFICS_TEXTURES_ACRIMINALS_PACK = "grafics/textures/Acriminals.pack";
     public static final int CRIMINAL_PARTS = 3;
-    public static final float FRAME_DURATION = 0.25f;
+    public static final float FRAME_DURATION = 0.5f;
     public static Sound MACHINE_GUN,
             SILENCER, ALARM, MP5_SMG,
             GUN, SNIPER_SHOT, RPG,
@@ -84,16 +85,16 @@ public class Recurses {
         return atlas.findRegion(name + sufix);
     }
 
-    public Animation getACriminal(Criminal criminal) {
+    public AnimationManager getACriminal(Criminal criminal) {
         return getACriminal(criminal.getName(), criminal.getOrientation());
     }
 
-    public Animation getACriminal(String name, NPC.Orientation orientation) {
+    public AnimationManager getACriminal(String name, NPC.Orientation orientation) {
         TextureRegion region = getCriminal(name, orientation);
         TextureRegion[][] regions = region.split(region.getRegionWidth() / CRIMINAL_PARTS, region.getRegionHeight());
         Animation animation = new Animation(FRAME_DURATION, regions[0]);
-        animation.setPlayMode(Animation.PlayMode.LOOP);
-        return animation;
+        animation.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
+        return new AnimationManager(animation);
     }
 
     public TextureRegion getCriminal(String name, NPC.Orientation orientation) {

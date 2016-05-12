@@ -29,7 +29,7 @@ public class AnimationManager {
     }
 
     public TextureRegion update(float delta) {
-        timeState = timeState > frameDuration * frames ? 0 : timeState;//reset
+        timeState = timeState > (frameDuration * frames) + animation.getPlayMode().ordinal() ? 0 : timeState;//reset
         timeState += delta;
         return animation.getKeyFrame(timeState);
     }
