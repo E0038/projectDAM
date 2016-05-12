@@ -24,13 +24,13 @@ public class LevelScreen implements Screen {
         this.level = level;
         this.game = game;
         camera = new OrthographicCamera();
-        moneyCount = new MoneyCount(camera);
+        moneyCount = new MoneyCount(0, 0);
     }
 
     @Override
     public void show() {
         ot = level.getRenderer();
-
+        moneyCount.stage.draw();
 
         camera.position.set(400,300,0);
         camera.update();
@@ -42,11 +42,9 @@ public class LevelScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ot.setView(camera);
+
         ot.render();
         moneyCount.stage.draw();
-
-
-
     }
 
     @Override
@@ -74,5 +72,9 @@ public class LevelScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public MoneyCount getMoneyCount() {
+        return moneyCount;
     }
 }

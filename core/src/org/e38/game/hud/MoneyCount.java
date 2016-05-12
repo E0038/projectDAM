@@ -1,13 +1,10 @@
 package org.e38.game.hud;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -15,46 +12,52 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sun.media.jfxmediaimpl.MediaDisposer;
 
-/**
- * Created by ALUMNEDAM on 11/05/2016.
- */
 public class MoneyCount implements MediaDisposer.Disposable {
     public Stage stage;
+    OrthographicCamera cam;
     private Viewport viewport;
-    private Label money;
+    private Label moneyl;
+    private Label labelsl;
     Skin skin;
+    private int money, labels;
 
-    //  TO DO VOLVER A PONER 2 CAMARAS Y SETEAR EL X Y
-    public MoneyCount(OrthographicCamera cam){
+    public MoneyCount(int money, int labels){
+        this.money = money;
+        this.labels = labels;
+        cam = new OrthographicCamera();
         skin = new Skin();
         viewport = new FitViewport(300, 200, cam);
-        //new com.badlogic.gdx.utils.viewport.ScalingViewport()
-        stage = new Stage(viewport);
-        skin.add("white", new Texture("grafics/hud/top_bar.png"));
 
-        //define a table used to organize our grafics.hud's labels
+        stage = new Stage(viewport);
+        skin.add("top_bar", new Texture("grafics/hud/top_bar.png"));
+
         Table table = new Table();
 
-        table.background(skin.newDrawable("white"));
-        table.setHeight(10);
-        table.setWidth(80);
-        //Top-Align table
-        table.top();
-        //make the table fill the entire stage
-        table.setFillParent(true);
+        table.background(skin.newDrawable("top_bar"));
 
-        //define our labels using the String, and a Label style consisting of a font and color
-        money = new Label(String.format("%03d", 888), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        table.setSize(300, 26);
 
-        //add our labels to our table, padding the top, and giving them all equal width with expandX
-        table.add(money).expandX().padTop(10);
+        table.setX(0);
+        table.setY(174);
 
-        //add our table to the stage
+        moneyl = new Label(String.format("%03d", money), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        labelsl = new Label(String.format("%03d", labels), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+
+        table.add(moneyl).padLeft((table.getWidth()/10)*3).padRight(1);
+        table.add(labelsl).padLeft((table.getWidth()/10)*1);
+
         stage.addActor(table);
-
-        //table.add(new Image(skin.newDrawable("white"))).size(260, 25);
-
     }
+
+   public void updateMoney(int money){
+        this.money = money;
+        moneyl.setText(String.format("%03d", money));
+   }
+
+   public void updateLabels(int labels){
+        this.labels = labels;
+        labelsl.setText(String.format("%03d", labels));
+   }
 
     @Override
     public void dispose() {
