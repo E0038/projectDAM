@@ -1,6 +1,7 @@
 package org.e38.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import org.e38.game.screens.SplashScreen;
 
@@ -49,7 +50,12 @@ public class MainGame extends Game {
 
     @Override
     public void setScreen(Screen screen) {
-        super.setScreen(screen);
-        doRender = true;
+        if (this.screen != null) this.screen.hide();
+        this.screen = screen;
+        if (this.screen != null) {
+            this.screen.show();
+            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            resume();
+        }
     }
 }
