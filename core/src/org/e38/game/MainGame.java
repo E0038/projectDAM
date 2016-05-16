@@ -1,8 +1,7 @@
 package org.e38.game;
 
 import com.badlogic.gdx.Game;
-import org.e38.game.model.Level;
-import org.e38.game.screens.LevelScreen;
+import com.badlogic.gdx.Screen;
 import org.e38.game.screens.SplashScreen;
 
 public class MainGame extends Game {
@@ -46,5 +45,11 @@ public class MainGame extends Game {
     @Override
     public void render() {
         if (doRender) super.render();
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        super.setScreen(screen);
+        doRender = true;
     }
 }
