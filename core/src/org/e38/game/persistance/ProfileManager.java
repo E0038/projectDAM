@@ -40,7 +40,7 @@ public class ProfileManager {
     private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
     private Gson gson;
-    private FileHandle key = Gdx.files.internal("key.aes");
+    private FileHandle key = Gdx.files.internal("raw/key.aes");
     private SecretKey secretKey;
     private Cipher decrypter;
     private Cipher encryper;
