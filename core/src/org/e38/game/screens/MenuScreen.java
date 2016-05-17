@@ -36,13 +36,15 @@ public class MenuScreen implements Screen {
         batcher = new SpriteBatch();
 //        World.play(Recurses.ALARM);
         game.resume();//fix false pause state
-        for (String poli : polis) {
+        for (int i = 0; i < polis.length; i++) {
+            String poli = polis[i];
             TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
             System.out.println(poli + "{\nwidth = " + region.getRegionWidth() + "\nheight = " + region.getRegionHeight() + "\n}");
         }
         animationManagers = new AnimationManager[criminals.length];
         for (int i = 0; i < animationManagers.length; i++) {
-            animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), NPC.Orientation.DOWN);
+            animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), NPC.Orientation.values()[(int) (Math.random() * 4)]);
+            ;
         }
     }
 
@@ -53,11 +55,15 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batcher.begin();
         int x = 0;
+        int x2 = 0;
         for (int i = 0; i < 10; i++) {
+
             TextureRegion region = World.getRecurses().getPolicia(polis[i % polis.length], NPC.Orientation.LEFT);
             batcher.draw(region, x, 0);
             x += region.getRegionWidth();
-            batcher.draw(animationManagers[i % criminals.length].update(delta), i * 50, 100);
+            TextureRegion criminal = animationManagers[i % criminals.length].update(delta);
+            batcher.draw(criminal, x2, 100);
+            x2 += criminal.getRegionWidth();
         }
         batcher.end();
         count++;

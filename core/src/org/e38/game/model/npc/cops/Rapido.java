@@ -1,5 +1,7 @@
 package org.e38.game.model.npc.cops;
 
+import org.e38.game.Recurses;
+import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
 import java.util.ArrayDeque;
@@ -19,6 +21,19 @@ public class Rapido extends Cop {
     private Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
 
     @Override
+    public String getName() {
+        return Recurses.POLICIA_BUENO;
+    }
+
+    @Override
+    public void onSpawn() {
+        isAreaDamage = true;
+        fireRate = 30; // 0.5s
+        Collections.addAll(levels, copLevels);
+        onUpgrade();//level 1
+    }
+
+    @Override
     public void onUpdate(float delta) {
         super.onUpdate(delta);
         // TODO: 4/28/16
@@ -26,7 +41,7 @@ public class Rapido extends Cop {
 
     @Override
     public void onFire() {
-        // TODO: 4/28/16
+        World.play(Recurses.GUN);
     }
 
     @Override
@@ -38,13 +53,5 @@ public class Rapido extends Cop {
     public void onUpgrade() {
         if (isUpgradeAvailable())
             nivel = levels.poll();
-    }
-
-    @Override
-    public void onSpawn() {
-        isAreaDamage = true;
-        fireRate = 30; // 0.5s
-        Collections.addAll(levels, copLevels);
-        onUpgrade();//level 1
     }
 }
