@@ -2,6 +2,8 @@ package org.e38.game.model;
 
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import org.e38.game.World;
@@ -37,7 +39,9 @@ public abstract class Level {
         this.coins = initialCoins;
         this.levelUID = levelUID;
         dificultat = Dificultat.valueOf(World.selecteDificultat);
-        map = new TmxMapLoader().load("grafics/maps/lvl1/prototipoMapa.tmx");
+        map = new TmxMapLoader().load("grafics/maps/lvl1/Mapa_lvl1.tmx");
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        layer.getCell(0, 0).getTile().getProperties();
         renderer = new OrthogonalTiledMapRenderer(map);
     }
 

@@ -12,52 +12,40 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sun.media.jfxmediaimpl.MediaDisposer;
 
-public class MoneyCount implements MediaDisposer.Disposable {
+public class CopsBar implements MediaDisposer.Disposable {
     public Stage stage;
     OrthographicCamera cam;
     private Viewport viewport;
-    private Label moneyl;
-    private Label labelsl;
     Skin skin;
-    private int money, labels;
+    private int money;
+    private Table table;
 
-    public MoneyCount(int money, int labels){
+    public CopsBar(int money){
         this.money = money;
-        this.labels = labels;
         cam = new OrthographicCamera();
         skin = new Skin();
         viewport = new FitViewport(300, 200, cam);
 
         stage = new Stage(viewport);
-        skin.add("top_bar", new Texture("grafics/hud/top_bar.png"));
+        skin.add("cop_bar", new Texture("grafics/hud/cops/5.png"));
 
-        Table table = new Table();
+        table = new Table();
 
-        table.background(skin.newDrawable("top_bar"));
+        table.background(skin.newDrawable("cop_bar"));
 
         table.setSize(300, 26);
 
         table.setX(0);
-        table.setY(174);
-
-        moneyl = new Label(String.format("%03d", money), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        labelsl = new Label(String.format("%03d", labels), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
-        table.add(moneyl).padLeft((table.getWidth()/10)*3).padRight(1);
-        table.add(labelsl).padLeft((table.getWidth()/10)*1);
+        table.setY(300);
 
         stage.addActor(table);
     }
 
-   public void updateMoney(int money){
-        this.money = money;
-        moneyl.setText(String.format("%03d", money));
+   public void updateBar(int money){
+       skin.add("cop_bar", new Texture("grafics/hud/cops/0.png"));
+       table.background(skin.newDrawable("cop_bar"));
    }
 
-   public void updateLabels(int labels){
-        this.labels = labels;
-        labelsl.setText(String.format("%03d", labels));
-   }
 
     @Override
     public void dispose() {

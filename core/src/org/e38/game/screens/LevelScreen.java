@@ -6,7 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import org.e38.game.hud.MoneyCount;
+import org.e38.game.hud.CopsBar;
+import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
 
 /**
@@ -17,20 +18,23 @@ public class LevelScreen implements Screen {
     private Game game;
     private OrthogonalTiledMapRenderer ot;
     private OrthographicCamera camera;
-    private MoneyCount moneyCount;
+    private TopBar topBar;
+    private CopsBar copsBar;
 
 
     public LevelScreen(Level level, Game game) {
         this.level = level;
         this.game = game;
         camera = new OrthographicCamera();
-        moneyCount = new MoneyCount(0, 0);
+        topBar = new TopBar(0, 0);
+        copsBar = new CopsBar(0);
     }
 
     @Override
     public void show() {
         ot = level.getRenderer();
-        moneyCount.stage.draw();
+        topBar.stage.draw();
+        copsBar.stage.draw();
 
         camera.position.set(400,300,0);
         camera.update();
@@ -44,7 +48,7 @@ public class LevelScreen implements Screen {
         ot.setView(camera);
 
         ot.render();
-        moneyCount.stage.draw();
+        topBar.stage.draw();
     }
 
     @Override
@@ -74,7 +78,7 @@ public class LevelScreen implements Screen {
 
     }
 
-    public MoneyCount getMoneyCount() {
-        return moneyCount;
+    public TopBar getTopBar() {
+        return topBar;
     }
 }
