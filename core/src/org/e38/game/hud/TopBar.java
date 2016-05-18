@@ -20,6 +20,7 @@ public class TopBar implements MediaDisposer.Disposable {
     private Label labelsl;
     Skin skin;
     private int money, labels;
+    public Table table;
 
     public TopBar(int money, int labels){
         this.money = money;
@@ -31,7 +32,7 @@ public class TopBar implements MediaDisposer.Disposable {
         stage = new Stage(viewport);
         skin.add("top_bar", new Texture("grafics/hud/top_bar.png"));
 
-        Table table = new Table();
+        table = new Table();
 
         table.background(skin.newDrawable("top_bar"));
 

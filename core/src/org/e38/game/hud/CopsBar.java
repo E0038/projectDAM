@@ -18,7 +18,7 @@ public class CopsBar implements MediaDisposer.Disposable {
     private Viewport viewport;
     Skin skin;
     private int money;
-    private Table table;
+    public Table table;
 
     public CopsBar(int money){
         this.money = money;
@@ -27,7 +27,7 @@ public class CopsBar implements MediaDisposer.Disposable {
         viewport = new FitViewport(300, 200, cam);
 
         stage = new Stage(viewport);
-        skin.add("cop_bar", new Texture("grafics/hud/cops/5.png"));
+        skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png"));
 
         table = new Table();
 
@@ -36,13 +36,15 @@ public class CopsBar implements MediaDisposer.Disposable {
         table.setSize(300, 26);
 
         table.setX(0);
-        table.setY(300);
+        table.setY(190);
 
         stage.addActor(table);
     }
 
    public void updateBar(int money){
-       skin.add("cop_bar", new Texture("grafics/hud/cops/0.png"));
+       if(money < 10)
+            skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png"));
+       else if (money < 20)
        table.background(skin.newDrawable("cop_bar"));
    }
 

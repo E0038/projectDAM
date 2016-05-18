@@ -39,9 +39,9 @@ public abstract class Level {
         this.coins = initialCoins;
         this.levelUID = levelUID;
         dificultat = Dificultat.valueOf(World.selecteDificultat);
-        map = new TmxMapLoader().load("grafics/maps/lvl1/Mapa_lvl1.tmx");
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
-        layer.getCell(0, 0).getTile().getProperties();
+        map = new TmxMapLoader().load("grafics/map1/Mapa_lvl1.tmx");
+        //TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        //layer.getCell(0, 0).getTile().getProperties();
         renderer = new OrthogonalTiledMapRenderer(map);
     }
 
