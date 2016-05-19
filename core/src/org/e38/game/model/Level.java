@@ -1,9 +1,8 @@
 package org.e38.game.model;
 
 
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import org.e38.game.World;
@@ -29,6 +28,7 @@ public abstract class Level {
     private List<OnEndListerner> onEndListerners;
     private OrthogonalTiledMapRenderer renderer;
     private TiledMap map;
+    private MapLayer layer;
 
     /**
      * C style boolean : 0 false , 1 true
@@ -40,7 +40,7 @@ public abstract class Level {
         this.levelUID = levelUID;
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         map = new TmxMapLoader().load("grafics/map1/Mapa_lvl1.tmx");
-        //TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        layer =  map.getLayers().get("objetos");
         //layer.getCell(0, 0).getTile().getProperties();
         renderer = new OrthogonalTiledMapRenderer(map);
     }
@@ -108,9 +108,9 @@ public abstract class Level {
         return this;
     }
 
-    public TiledMap getMap() {
-        return map;
-    }
+    public TiledMap getMap() { return map; }
+
+    public MapLayer getLayer() { return layer; }
 
     public OrthogonalTiledMapRenderer getRenderer() {
         return renderer;

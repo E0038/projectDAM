@@ -6,11 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
+import org.e38.game.InputHandler;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
 
 /**
  * Created by sergi on 4/20/16.
@@ -23,14 +27,21 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
 
-
     public LevelScreen(Level level, Game game) {
         this.level = level;
         this.game = game;
         camera = new OrthographicCamera();
+
+        //------------ TESTEO coordenadas del on touch y de las cells del tiled
+        camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        //-----------------------------------------
+
         topBar = new TopBar(0, 0);
-        copsBar = new CopsBar(0);
-        copsBar.table.setY(topBar.table.getY()-topBar.table.getHeight());
+        copsBar = new CopsBar(0, topBar.table.getY()-topBar.table.getHeight());
+
+        //set de la clase que recibe las acciones
+
+        Gdx.input.setInputProcessor(new InputHandler(this));
     }
 
     @Override
@@ -40,20 +51,8 @@ public class LevelScreen implements Screen {
         camera.position.set(400,300,0);
         camera.update();
         game.resume();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                showBar.set(!showBar.get());}
-            }
-        }).start();
     }
-private AtomicBoolean showBar= new AtomicBoolean(true);
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -62,8 +61,9 @@ private AtomicBoolean showBar= new AtomicBoolean(true);
 
         ot.render();
         topBar.stage.draw();
-        if (showBar.get())
-            copsBar.stage.draw();
+        copsBar.stage.draw();
+
+        copsBar.table.setY(topBar.table.getY()-topBar.table.getHeight());
     }
 
     @Override
@@ -93,7 +93,12 @@ private AtomicBoolean showBar= new AtomicBoolean(true);
 
     }
 
-    public TopBar getTopBar() {
-        return topBar;
+    //getters para la prueba de click sobre HUD de cops
+    public CopsBar getCopsBar() {
+        return copsBar;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 }
