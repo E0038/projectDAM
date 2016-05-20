@@ -24,6 +24,7 @@ import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
 import org.e38.game.model.npc.NPC;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
@@ -38,40 +39,43 @@ public class LevelScreen implements Screen {
     private OrthographicCamera camera;
     private TopBar topBar;
     private CopsBar copsBar;
-    private OrthogonalTiledMapRenderer batcher;
 
     public LevelScreen(Level level, Game game) {
         this.level = level;
         this.game = game;
-        float ratio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
+//        float ratio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         camera = new OrthographicCamera();
 
 
-        //topBar = new TopBar(0, 0);
-        //copsBar = new CopsBar(0, topBar.table.getY()-topBar.table.getHeight());
+        topBar = new TopBar(0, 0);
+        copsBar = new CopsBar(0, topBar.table.getY()-topBar.table.getHeight());
 
         //Stage stage = new TiledMapStage(level.getMap());
-        Gdx.input.setInputProcessor(new InputHandler(level));
+        Gdx.input.setInputProcessor(new InputHandler(level, this));
 
     }
 
     @Override
     public void show() {
+        ArrayList ar = new ArrayList<>();
+        for (MapObject object : level.getLayer().getObjects()) {
+            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("plaza")){
+                float x3 = ((Float) object.getProperties().get("x"));
+                float y = ((Float) object.getProperties().get("y"));
+                object.getProperties().put("y",(float) object.getProperties().get("height") + y);
+                ar.add(object);
+                System.out.println();
+
+            }
+        }
         ot = new OrthogonalTiledMapRenderer(level.map) {
             @Override
             protected void endRender() {
-
                 for (MapObject object : level.getLayer().getObjects()) {
-//            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("camino")){
                     float x3 = ((Float) object.getProperties().get("x"));
                     float y = ((Float) object.getProperties().get("y"));
-//                System.out.println(x + " : " +y);
                     getBatch().draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x3, y);
-
-//            }
                 }
-
-
                 super.endRender();
             }
         };
@@ -87,17 +91,13 @@ public class LevelScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ot.setView(camera);
-        batcher = ot;
 
+        ot.render();
 
+        topBar.stage.draw();
+        copsBar.stage.draw();
 
-ot.render();
-
-
-        /*topBar.stage.draw();
-        copsBar.stage.draw();*/
-
-//        copsBar.table.setY(topBar.table.getY()-topBar.table.getHeight());
+        copsBar.table.setY(topBar.table.getY()-topBar.table.getHeight());
     }
 
     @Override

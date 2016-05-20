@@ -48,7 +48,7 @@ public class MenuScreen implements Screen {
             System.out.println(orientation.name());
             animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), orientation);
         }
-        Gdx.input.setInputProcessor(new InputHandler(level));
+        //Gdx.input.setInputProcessor(new InputHandler(level, ));
     }
 
     @Override

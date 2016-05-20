@@ -1,5 +1,6 @@
 package org.e38.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -15,10 +16,12 @@ import java.util.List;
  */
 public class InputHandler implements InputProcessor {
     Level lvl;
+    LevelScreen lScr;
     private MapObject[][] mapObjects = new MapObject[100][100];
 
-    public InputHandler(Level lvl) {
+    public InputHandler(Level lvl, LevelScreen lScr) {
         this.lvl = lvl;
+        this.lScr = lScr;
         int c = 0;
         List<MapObject> objects = iterToList(lvl.getLayer().getObjects().iterator());
         for (MapObject object : objects) {
@@ -37,8 +40,8 @@ public class InputHandler implements InputProcessor {
             mapObjects[x][y] = object;
             int xCasillas = Math.round(width / 8);
             int yCasillas = Math.round(height / 6);
-            for (int i = x - xCasillas ; i < x + xCasillas; i++) {
-                for (int j = y - yCasillas ; j < y + yCasillas; j++) {
+            for (int i = x - xCasillas; i < x + xCasillas; i++) {
+                for (int j = y - yCasillas; j < y + yCasillas; j++) {
                     mapObjects[i][j] = object;
                 }
             }
@@ -85,23 +88,17 @@ public class InputHandler implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         MapProperties properties;
         try {
-            screenY = 600 - screenY;//normalizar y
+            screenY = Gdx.graphics.getHeight() - screenY;//normalizar y
 //
             System.out.println(screenX + " : " + screenY);
             MapObject properties2 = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)];
-            if (properties2 != null) {
-                 properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
+            properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
 
-            }else {
-                screenY-=80;
-                 properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
-
-            }
             System.out.println(propetresToString(properties));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        //lvl.getCopsBar().updateBar(30);
+        lScr.getCopsBar().updateBar(30);
         //use touch.x and touch.y as your new touch point
 
         return false;
