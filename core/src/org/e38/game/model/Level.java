@@ -1,10 +1,16 @@
 package org.e38.game.model;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSets;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.ObjectMap;
+import org.e38.game.TiledMapStage;
 import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
@@ -27,7 +33,7 @@ public abstract class Level {
     protected int levelUID;
     private List<OnEndListerner> onEndListerners;
     private OrthogonalTiledMapRenderer renderer;
-    private TiledMap map;
+    public TiledMap map;
     private MapLayer layer;
 
     /**
@@ -40,9 +46,15 @@ public abstract class Level {
         this.levelUID = levelUID;
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         map = new TmxMapLoader().load("grafics/map1/Mapa_lvl1.tmx");
-        layer =  map.getLayers().get("objetos");
-        //layer.getCell(0, 0).getTile().getProperties();
-        renderer = new OrthogonalTiledMapRenderer(map);
+        layer = map.getLayers().get("objetos");
+        renderer = new OrthogonalTiledMapRenderer(map){
+            @Override
+            protected void beginRender() {
+
+                super.beginRender();
+
+            }
+        };
     }
 
 

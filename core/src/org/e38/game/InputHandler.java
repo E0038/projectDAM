@@ -3,6 +3,7 @@ package org.e38.game;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
+import org.e38.game.model.Level;
 import org.e38.game.screens.LevelScreen;
 
 import java.util.ArrayList;
@@ -13,13 +14,13 @@ import java.util.List;
  * Created by joel on 18/05/2016.
  */
 public class InputHandler implements InputProcessor {
-    LevelScreen lvl;
+    Level lvl;
     private MapObject[][] mapObjects = new MapObject[100][100];
 
-    public InputHandler(LevelScreen lvl) {
+    public InputHandler(Level lvl) {
         this.lvl = lvl;
         int c = 0;
-        List<MapObject> objects = iterToList(lvl.getLevel().getLayer().getObjects().iterator());
+        List<MapObject> objects = iterToList(lvl.getLayer().getObjects().iterator());
         for (MapObject object : objects) {
             if (object.getProperties().get("type") != null && !object.getProperties().get("type").equals("camino")) {
                 System.out.println(propetresToString(object.getProperties()));
@@ -36,13 +37,13 @@ public class InputHandler implements InputProcessor {
             mapObjects[x][y] = object;
             int xCasillas = Math.round(width / 8);
             int yCasillas = Math.round(height / 6);
-            for (int i = x - xCasillas / 2; i < x + xCasillas / 2; i++) {
-                for (int j = y - yCasillas / 2; j < y + yCasillas / 2; j++) {
+            for (int i = x - xCasillas ; i < x + xCasillas; i++) {
+                for (int j = y - yCasillas ; j < y + yCasillas; j++) {
                     mapObjects[i][j] = object;
                 }
             }
         }
-        lvl.getLevel().getLayer().getObjects().iterator();
+        lvl.getLayer().getObjects().iterator();
     }
 
     private <T> List<T> iterToList(Iterator<T> tIterator) {
@@ -82,15 +83,25 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        MapProperties properties;
         try {
-//            screenY = 600 - screenY;//normalizar y
+            screenY = 600 - screenY;//normalizar y
+//
             System.out.println(screenX + " : " + screenY);
-            MapProperties properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
+            MapObject properties2 = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)];
+            if (properties2 != null) {
+                 properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
+
+            }else {
+                screenY-=80;
+                 properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
+
+            }
             System.out.println(propetresToString(properties));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        lvl.getCopsBar().updateBar(30);
+        //lvl.getCopsBar().updateBar(30);
         //use touch.x and touch.y as your new touch point
 
         return false;

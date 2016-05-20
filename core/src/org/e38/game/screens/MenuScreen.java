@@ -5,9 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.e38.game.MainGame;
-import org.e38.game.Recurses;
-import org.e38.game.World;
+import com.badlogic.gdx.maps.MapObject;
+import org.e38.game.*;
+import org.e38.game.model.Level;
 import org.e38.game.model.npc.NPC;
 
 /**
@@ -48,6 +48,7 @@ public class MenuScreen implements Screen {
             System.out.println(orientation.name());
             animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), orientation);
         }
+        Gdx.input.setInputProcessor(new InputHandler(level));
     }
 
     @Override
@@ -67,10 +68,20 @@ public class MenuScreen implements Screen {
             batcher.draw(criminal, x2, 100);
             x2 += criminal.getRegionWidth();
         }
+
+        for (MapObject object: level.getLayer().getObjects()) {
+//            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("camino")){
+                float x3 =  ((Float) object.getProperties().get("x") );
+                float y =  ((Float) object.getProperties().get("y"));
+//                System.out.println(x + " : " +y);
+                batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT),x3,y);
+
+//            }
+        }
         batcher.end();
         count++;
     }
-
+    Level level = new LevelImpl(0,0);
     @Override
     public void resize(int width, int height) {
     }
