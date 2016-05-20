@@ -1,6 +1,7 @@
 package org.e38.game.model;
 
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -21,14 +22,16 @@ public abstract class Level {
     public Dificultat dificultat;
     public List<Cop> cops = new ArrayList<Cop>();
     public List<Wave> remaingWaves = new ArrayList<Wave>();
+    public TiledMap map;
     protected int coins;
     protected int lifes;
     protected Path path;
     protected int levelUID;
     private List<OnEndListerner> onEndListerners;
     private OrthogonalTiledMapRenderer renderer;
-    public TiledMap map;
     private MapLayer layer;
+    public FileHandle waves;
+
 
     /**
      * C style boolean : 0 false , 1 true
@@ -107,9 +110,13 @@ public abstract class Level {
         return this;
     }
 
-    public TiledMap getMap() { return map; }
+    public TiledMap getMap() {
+        return map;
+    }
 
-    public MapLayer getLayer() { return layer; }
+    public MapLayer getLayer() {
+        return layer;
+    }
 
     public OrthogonalTiledMapRenderer getRenderer() {
         return renderer;

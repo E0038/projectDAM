@@ -25,7 +25,8 @@ public class LevelSerializer implements JsonDeserializer<Level>, JsonSerializer<
         element.addProperty(dificultat, src.dificultat.name());
         element.addProperty(coins, src.getCoins());
         element.addProperty(lifes, src.getLifes());
-        element.add(path, context.serialize(src.getPath()));
+//        element.add(path, context.serialize(src.getPath()));
+        element.addProperty(path, src.waves.path());
         element.addProperty(uid, src.getLevelUID());
         return element;
     }
