@@ -40,8 +40,8 @@ public class InputHandler implements InputProcessor {
             mapObjects[x][y] = object;
             int xCasillas = Math.round(width / 8);
             int yCasillas = Math.round(height / 6);
-            for (int i = x - xCasillas; i < x + xCasillas; i++) {
-                for (int j = y - yCasillas; j < y + yCasillas; j++) {
+            for (int i = x - xCasillas ; i < x + xCasillas; i++) {
+                for (int j = y - yCasillas ; j < y + yCasillas; j++) {
                     mapObjects[i][j] = object;
                 }
             }
@@ -92,9 +92,16 @@ public class InputHandler implements InputProcessor {
 //
             System.out.println(screenX + " : " + screenY);
             MapObject properties2 = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)];
-            properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
+            if (properties2 != null) {
+                 properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
 
-            System.out.println(propetresToString(properties));
+            }
+            else {
+                screenY-=80;
+                 properties = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)].getProperties();
+
+            }
+            System.out.println(properties2.getName() +"\n"+ propetresToString(properties));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
