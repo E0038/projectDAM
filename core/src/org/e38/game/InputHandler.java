@@ -116,7 +116,7 @@ public class InputHandler implements InputProcessor {
         lScr.getCopsBar().updateBar(30);
         //use touch.x and touch.y as your new touch point
 
-        return false;
+        return true;
     }
 
     @Override
