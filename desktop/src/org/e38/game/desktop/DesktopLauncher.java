@@ -10,6 +10,7 @@ public class DesktopLauncher {
         cfg.title = "Juego ladrones";
         cfg.height = 600;
         cfg.width = 800;
+        cfg.resizable=false;
         new LwjglApplication(new MainGame(), cfg);
     }
 }

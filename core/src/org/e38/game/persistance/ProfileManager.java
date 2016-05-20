@@ -2,9 +2,9 @@ package org.e38.game.persistance;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Base64Coder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import org.e38.game.World;
 import org.e38.game.model.Level;
 
@@ -15,7 +15,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-import com.badlogic.gdx.utils.Base64Coder;
 //import java.util.Base64;
 
 
@@ -35,12 +34,12 @@ public class ProfileManager {
     //    private final Base64.Encoder base64Encoder = Base64.getEncoder();
 //    private final Base64.Decoder base64Decoder = Base64.getDecoder();
     public FileHandle localBackup;
+    public Gson gson;
     private FileHandle configFile = Gdx.files.local("data/app.conf");
     private String localPath;
     private FileHandle profilesFile;
     private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
-    private Gson gson;
     private FileHandle key = Gdx.files.internal("raw/key.aes");
     private SecretKey secretKey;
     private Cipher decrypter;
@@ -73,8 +72,8 @@ public class ProfileManager {
 //            byte[] decodedKey = Base64.decodeBase64(readChars(key.file()));
 //            secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 //        }
-            byte[] decodedKey = Base64Coder.decode(b64Key);
-            secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        byte[] decodedKey = Base64Coder.decode(b64Key);
+        secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
         try {
             decrypter = Cipher.getInstance(ALGORIM);
             encryper = Cipher.getInstance(ALGORIM);
