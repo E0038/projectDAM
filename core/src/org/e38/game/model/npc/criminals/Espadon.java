@@ -1,11 +1,13 @@
 package org.e38.game.model.npc.criminals;
 
+import org.e38.game.Recurses;
 import org.e38.game.model.npc.Criminal;
 
 /**
- * Created by sergi on 5/3/16.
+ * Created by sergi on 5/20/16.
  */
-public class SimpleCriminal extends Criminal {
+public class Espadon extends Criminal {
+
     @Override
     public int getPoints() {
         return 0;
@@ -18,14 +20,13 @@ public class SimpleCriminal extends Criminal {
 
     @Override
     public String getName() {
-        return "";
+        return Recurses.AnimatedCriminals.bicicletaFinal.name();
     }
 
     @Override
     public void onDie() {
 
     }
-
 
     @Override
     public void onSpawn() {
