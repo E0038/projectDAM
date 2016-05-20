@@ -35,7 +35,6 @@ public class InputHandler implements InputProcessor {
 //                y = (float) object.getProperties().get("height") + y;
                 float height = (float) object.getProperties().get("height");
                 float width = (float) object.getProperties().get("width");
-//                object.getProperties().put("y", y);
                 RectangleMapObject rectangleMapObject = new RectangleMapObject(x, height + y, height, width);
                 rectangleMapObject.getProperties().putAll(object.getProperties());
                 plazas.add(rectangleMapObject);
@@ -96,9 +95,9 @@ public class InputHandler implements InputProcessor {
 //
             System.out.println(screenX + " : " + screenY);
             for (RectangleMapObject plaza : plazas) {
-                if (plaza.getRectangle().contains(screenX,screenY)){
-
+                if (plaza.getRectangle().contains(screenX, screenY)) {
                     System.out.println(plaza.getName() + "\n" + propetresToString(plaza.getProperties()));
+                    break;
                 }
             }
 //            MapObject properties2 = mapObjects[Math.round(screenX / 8)][Math.round(screenY / 6)];

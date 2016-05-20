@@ -6,28 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.e38.game.InputHandler;
 import org.e38.game.Recurses;
-import org.e38.game.TiledMapStage;
 import org.e38.game.World;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
 import org.e38.game.model.npc.NPC;
-
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static com.badlogic.gdx.graphics.g3d.particles.ParticleShader.Setters.screenWidth;
 
 /**
  * Created by sergi on 4/20/16.
@@ -48,7 +35,7 @@ public class LevelScreen implements Screen {
 
 
         topBar = new TopBar(0, 0);
-        copsBar = new CopsBar(0, topBar.table.getY()-topBar.table.getHeight());
+        copsBar = new CopsBar(0, topBar.table.getY() - topBar.table.getHeight());
 
         //Stage stage = new TiledMapStage(level.getMap());
         Gdx.input.setInputProcessor(new InputHandler(level, this));
@@ -57,25 +44,17 @@ public class LevelScreen implements Screen {
 
     @Override
     public void show() {
-        ArrayList ar = new ArrayList<>();
         for (MapObject object : level.getLayer().getObjects()) {
-            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("plaza")){
-                float x3 = ((Float) object.getProperties().get("x"));
-                float y = ((Float) object.getProperties().get("y"));
-                object.getProperties().put("y",(float) object.getProperties().get("height") + y);
-                ar.add(object);
-                System.out.println();
-
+            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
+                float x = (Float) object.getProperties().get("x");
+                float y = (Float) object.getProperties().get("y");
+                object.getProperties().put("y", (float) object.getProperties().get("height") + y);
             }
         }
         ot = new OrthogonalTiledMapRenderer(level.map) {
             @Override
             protected void endRender() {
-                for (MapObject object : level.getLayer().getObjects()) {
-                    float x3 = ((Float) object.getProperties().get("x"));
-                    float y = ((Float) object.getProperties().get("y"));
-                    getBatch().draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x3, y);
-                }
+                renderLevel(getBatch());
                 super.endRender();
             }
         };
@@ -83,7 +62,14 @@ public class LevelScreen implements Screen {
         camera.position.set(400, 300, 0);
         camera.update();
         game.resume();
+    }
 
+    private void renderLevel(Batch batch) {
+        for (MapObject object : level.getLayer().getObjects()) {
+            float x = (Float) object.getProperties().get("x");
+            float y = (Float) object.getProperties().get("y");
+            batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
+        }
     }
 
     @Override
@@ -97,7 +83,7 @@ public class LevelScreen implements Screen {
         topBar.stage.draw();
         copsBar.stage.draw();
 
-        copsBar.table.setY(topBar.table.getY()-topBar.table.getHeight());
+        copsBar.table.setY(topBar.table.getY() - topBar.table.getHeight());
     }
 
     @Override
@@ -105,7 +91,6 @@ public class LevelScreen implements Screen {
         camera.viewportWidth = 800;
         camera.viewportHeight = 600;
         camera.update();
-
     }
 
     @Override
