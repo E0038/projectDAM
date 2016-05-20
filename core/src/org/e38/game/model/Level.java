@@ -30,7 +30,7 @@ public abstract class Level {
     private List<OnEndListerner> onEndListerners;
     private OrthogonalTiledMapRenderer renderer;
     private MapLayer layer;
-    public FileHandle waves;
+    public ArrayList<Wave> waves;
 
 
     /**
