@@ -12,5 +12,5 @@ public interface GameObject {
     /**
      * current posicion in pixels
      */
-    Vector2 getPosicion();
+    Vector2 getPosition();
 }

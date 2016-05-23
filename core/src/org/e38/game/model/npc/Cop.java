@@ -132,7 +132,7 @@ public abstract class Cop implements NPC {
     }
 
     @Override
-    public Vector2 getPosicion() {
+    public Vector2 getPosition() {
         return posicion;
     }
 

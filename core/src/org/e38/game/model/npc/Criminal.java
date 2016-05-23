@@ -1,11 +1,14 @@
 package org.e38.game.model.npc;
 
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
+import org.e38.game.Recurses;
+import org.e38.game.model.Level;
 
 /**
  * Created by sergi on 4/20/16.
  */
-public abstract class Criminal implements Hittable {
+public class Criminal implements Hittable {
     protected State state = State.SPAWING;
     protected float hpPoints;
     /**
@@ -13,10 +16,38 @@ public abstract class Criminal implements Hittable {
      */
     protected float dodgeRate;
     protected float protecion;
-    protected Vector2 position;
     protected Vector2 speed;
     protected Orientation orientation = Orientation.LEFT;
     protected OrientationListener listener;
+    protected int pathPointer = 0;
+    protected Level level;
+    protected float totalHpPoins = 10f;
+    protected String name = Recurses.AnimatedCriminals.bane.name();
+
+    public Criminal() {
+    }
+
+    public Criminal(Level level) {
+        this.level = level;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public Criminal setLevel(Level level) {
+        this.level = level;
+        return this;
+    }
+
+    public OrientationListener getListener() {
+        return listener;
+    }
+
+    public Criminal setListener(OrientationListener listener) {
+        this.listener = listener;
+        return this;
+    }
 
     public float getProtecion() {
         return protecion;
@@ -27,72 +58,19 @@ public abstract class Criminal implements Hittable {
         return this;
     }
 
-    @Override
-    public Vector2 getPosicion() {
-        return position;
+    public void nextPosition() {
+        pathPointer++;
     }
+
 
     /**
      * get the points (Money) of Criminal
      *
      * @return the points that give on die
      */
-    public abstract int getPoints();
-
-    @Override
-    public void spawn() {
-        state = State.SPAWING;
-        onSpawn();
-        state = State.ALIVE;
-    }
-
-    @Override
-    public State getState() {
-        return state;
-    }
-
-    @Override
-    public boolean isAlive() {
-        return state == State.ALIVE;
-    }
-
-    @Override
-    public Vector2 getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    @Override
-    public Criminal setOrientation(Orientation orientation) {
-        Orientation old = this.orientation;
-        this.orientation = orientation;
-        if (listener != null)  listener.onChange(old, this.orientation);
-        return this;
-    }
-
-    @Override
-    public NPC setOrientationListener(OrientationListener listener) {
-        this.listener = listener;
-        return this;
-    }
-
-    @Override
-    public OrientationListener getOrientationListener() {
-        return listener;
-    }
-
-    public Criminal setSpeed(Vector2 speed) {
-        this.speed = speed;
-        return this;
-    }
-
-    public Criminal setState(State state) {
-        this.state = state;
-        return this;
+    public int getPoints() {
+        //// TODO: 5/23/16 find poins ideal criteria formula
+        return (int) (totalHpPoins * dodgeRate * (speed.x + speed.y));
     }
 
     /**
@@ -123,17 +101,106 @@ public abstract class Criminal implements Hittable {
         if (hpPoints <= 0) onDie();
     }
 
+    @Override
+    public void onDodge() {
+
+    }
+
     public Criminal setDodgeRate(float dodgeRate) {
         this.dodgeRate = dodgeRate;
         return this;
     }
 
-    public Vector2 getPosition() {
-        return position;
+    @Override
+    public String getName() {
+        return name;
     }
 
-    public Criminal setPosition(Vector2 position) {
-        this.position = position;
+    @Override
+    public void onDie() {
+
+    }
+
+    @Override
+    public void spawn() {
+        state = State.SPAWING;
+        onSpawn();
+        state = State.ALIVE;
+    }
+
+    @Override
+    public void onSpawn() {
+        state = State.ALIVE;
+        pathPointer = 0;
+        hpPoints = totalHpPoins;
+    }
+
+    @Override
+    public State getState() {
+        return state;
+    }
+
+    @Override
+    public boolean isAlive() {
+        return state == State.ALIVE;
+    }
+
+    @Override
+    public Vector2 getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    @Override
+    public Criminal setOrientation(Orientation orientation) {
+        Orientation old = this.orientation;
+        this.orientation = orientation;
+        if (listener != null) listener.onChange(old, this.orientation);
         return this;
     }
+
+    @Override
+    public NPC setOrientationListener(OrientationListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    @Override
+    public OrientationListener getOrientationListener() {
+        return listener;
+    }
+
+    public Criminal setSpeed(Vector2 speed) {
+        this.speed = speed;
+        return this;
+    }
+
+    public Criminal setState(State state) {
+        this.state = state;
+        return this;
+    }
+
+    @Override
+    public void onUpdate(float delta) {
+        //// TODO: 5/23/16
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return getPositionRetativeTo(level);
+    }
+
+    protected Vector2 getPositionRetativeTo(Level level) {
+        float x, y;
+        MapProperties camino = level.getPath().get(pathPointer).getProperties();
+        x = (float) camino.get("x");
+        y = (float) camino.get("y");
+        return new Vector2(x, y);
+    }
+
+
 }

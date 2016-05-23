@@ -1,8 +1,8 @@
 package org.e38.game.model;
 
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -10,6 +10,8 @@ import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -23,16 +25,14 @@ public abstract class Level {
     public List<Cop> cops = new ArrayList<Cop>();
     public List<Wave> remaingWaves = new ArrayList<Wave>();
     public TiledMap map;
+    public ArrayList<Wave> waves;
     protected int coins;
     protected int lifes;
-    protected Path path;
+    protected List<MapObject> path = new ArrayList<>();
     protected int levelUID;
     private List<OnEndListerner> onEndListerners;
     private OrthogonalTiledMapRenderer renderer;
     private MapLayer layer;
-    public ArrayList<Wave> waves;
-
-
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -45,6 +45,35 @@ public abstract class Level {
         map = new TmxMapLoader().load("grafics/map1/Mapa_lvl1.tmx");
         layer = map.getLayers().get("objetos");
         renderer = new OrthogonalTiledMapRenderer(map);
+        path = buildPath(4);
+    }
+
+    private List<MapObject> buildPath(final int pading) {
+        List<MapObject> caminos = new ArrayList<>();
+        for (MapObject object : layer.getObjects()) {
+            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("camino")) {
+                caminos.add(object);
+            }
+        }
+        Collections.sort(caminos, new Comparator<MapObject>() {
+            @Override
+            public int compare(MapObject o1, MapObject o2) {
+
+                String name1 = "camino" + addPading(o1.getName().substring(6));
+                String name2 = "camino" + addPading(o2.getName().substring(6));
+                return name1.compareTo(name2);
+            }
+
+            private String addPading(String s) {
+                StringBuilder builder = new StringBuilder();
+                for (int i = s.length(); i < pading; i++) {
+                    builder.append('0');
+                }
+                builder.append(s);
+                return builder.toString();
+            }
+        });
+        return caminos;
     }
 
 
@@ -83,11 +112,11 @@ public abstract class Level {
         return this;
     }
 
-    public Path getPath() {
+    public List<MapObject> getPath() {
         return path;
     }
 
-    public Level setPath(Path path) {
+    public Level setPath(List<MapObject> path) {
         this.path = path;
         return this;
     }
