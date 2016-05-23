@@ -7,34 +7,4 @@ import org.e38.game.model.npc.Criminal;
  */
 public class Bicicleta extends Criminal {
 
-
-    @Override
-    public int getPoints() {
-        return 0;
-    }
-
-    @Override
-    public void onDodge() {
-
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public void onDie() {
-
-    }
-
-    @Override
-    public void onSpawn() {
-
-    }
-
-    @Override
-    public void onUpdate(float delta) {
-
-    }
 }
