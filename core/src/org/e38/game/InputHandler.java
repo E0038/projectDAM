@@ -3,9 +3,9 @@ package org.e38.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import org.e38.game.model.Level;
 import org.e38.game.screens.LevelScreen;
 
@@ -25,11 +25,8 @@ public class InputHandler implements InputProcessor {
     public InputHandler(Level lvl, LevelScreen lScr) {
         this.lvl = lvl;
         this.lScr = lScr;
-
-        List<MapObject> objects = iterToList(lvl.getLayer().getObjects().iterator());
-        for (MapObject object : objects) {
+        for (MapObject object : lvl.getLayer().getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
-                TiledMapTileMapObject mapObject = (TiledMapTileMapObject) object;
                 float x = (float) object.getProperties().get("x");
                 float y = (float) object.getProperties().get("y");
 //                y = (float) object.getProperties().get("height") + y;

@@ -3,9 +3,11 @@ package org.e38.game.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import org.e38.game.InputHandler;
@@ -26,6 +28,7 @@ public class LevelScreen implements Screen {
     private OrthographicCamera camera;
     private TopBar topBar;
     private CopsBar copsBar;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public LevelScreen(Level level, Game game) {
         this.level = level;
@@ -65,10 +68,25 @@ public class LevelScreen implements Screen {
     }
 
     private void renderLevel(Batch batch) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.LIME);
         for (MapObject object : level.getLayer().getObjects()) {
             float x = (Float) object.getProperties().get("x");
             float y = (Float) object.getProperties().get("y");
+            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
+                drawPlaza(object, x, y);
+            }
             batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
+        }
+        shapeRenderer.end();
+    }
+
+    private void drawPlaza(MapObject object, float x, float y) {
+        float width = (float) object.getProperties().get("width");
+        float heght = (float) object.getProperties().get("height");
+        if (object.getProperties().get("isSelected") != null) {
+            if ((boolean) object.getProperties().get("isSelected"))
+                shapeRenderer.rect(x, y, width, heght);
         }
     }
 
