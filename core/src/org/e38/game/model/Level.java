@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
@@ -18,39 +17,46 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
-public abstract class Level {
+public class Level {
 
     private static final float MODIFICADOR_VIDAS = 10;
     public Dificultat dificultat;
-    public List<Cop> cops = new ArrayList<Cop>();
-    public List<Wave> remaingWaves = new ArrayList<Wave>();
+    public List<Cop> cops = new ArrayList<>();
     public TiledMap map;
     public ArrayList<Wave> waves;
+    //    public List<Wave> remaingWaves = new ArrayList<Wave>();
+    public int wavePointer = 0;
+    public String mapPath;
+    public float waveGap = 3000f;
     protected int coins;
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
-    protected int levelUID;
+    //    private MapLayer layer;
     private List<OnEndListerner> onEndListerners;
-    private OrthogonalTiledMapRenderer renderer;
-    private MapLayer layer;
     /**
      * C style boolean : 0 false , 1 true
      */
     private byte isWined = 0;
 
-    protected Level(int initialCoins, int levelUID) {
+    public Level() {
+    }
+
+    public Level(int initialCoins, String path) {
+        this.mapPath = path;
         this.coins = initialCoins;
-        this.levelUID = levelUID;
+//        this.levelUID = levelUID;
+        onStart();
+    }
+
+    protected void onStart() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
-        map = new TmxMapLoader().load("grafics/map1/Mapa_lvl1.tmx");
-        layer = map.getLayers().get("objetos");
-        renderer = new OrthogonalTiledMapRenderer(map);
-        path = buildPath(4);
+        map = new TmxMapLoader().load(mapPath);
+        this.path = buildPath(4);
     }
 
     private List<MapObject> buildPath(final int pading) {
         List<MapObject> caminos = new ArrayList<>();
-        for (MapObject object : layer.getObjects()) {
+        for (MapObject object : getLayer().getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("camino")) {
                 caminos.add(object);
             }
@@ -76,6 +82,19 @@ public abstract class Level {
         return caminos;
     }
 
+    public MapLayer getLayer() {
+        return map.getLayers().get("objetos");
+    }
+
+    public String getMapPath() {
+        return mapPath;
+    }
+
+    public Level setMapPath(String mapPath) {
+        this.mapPath = mapPath;
+        map = new TmxMapLoader().load(mapPath);
+        return this;
+    }
 
     public void addOnEndListerner(OnEndListerner onEndListerners) {
         this.onEndListerners.add(onEndListerners);
@@ -121,15 +140,6 @@ public abstract class Level {
         return this;
     }
 
-    public int getLevelUID() {
-        return levelUID;
-    }
-
-    public Level setLevelUID(int levelUID) {
-        this.levelUID = levelUID;
-        return this;
-    }
-
     public Dificultat getDificultat() {
         return dificultat;
     }
@@ -143,21 +153,12 @@ public abstract class Level {
         return map;
     }
 
-    public MapLayer getLayer() {
-        return layer;
-    }
-
-    public OrthogonalTiledMapRenderer getRenderer() {
-        return renderer;
-    }
-
     public int getScore() {
         return (int) ((coins * dificultat.modificadorPuntos) + (lifes * MODIFICADOR_VIDAS)) * isWined;
     }
 
-    protected abstract void onStart();
-
-    protected abstract void onDestroy();
+    protected void onDestroy() {
+    }
 
     public void fail() {
         isWined = 0;
@@ -175,9 +176,11 @@ public abstract class Level {
         onEnd();
     }
 
-    public abstract void onRestart();
-
-    public abstract Level fromJson();
+    public void onRestart() {
+        isWined = 0;
+        wavePointer = 0;
+        onStart();
+    }
 
     public enum Dificultat {
         FACIL(0.4f), NORMAL(0.6f), DIFICIL(1f);

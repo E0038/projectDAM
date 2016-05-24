@@ -81,7 +81,7 @@ public class MenuScreen implements Screen {
         batcher.end();
         count++;
     }
-    Level level = new LevelImpl(0,0);
+    Level level = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
     @Override
     public void resize(int width, int height) {
     }
