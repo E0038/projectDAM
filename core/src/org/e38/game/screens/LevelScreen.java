@@ -16,7 +16,12 @@ import org.e38.game.World;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
+import org.e38.game.model.Wave;
+import org.e38.game.model.npc.Criminal;
 import org.e38.game.model.npc.NPC;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by sergi on 4/20/16.
@@ -29,6 +34,13 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private float tiempo = 0;
+
+    //testeo spawn criminales
+    private ArrayList<Criminal> aliveCriminals = new ArrayList<>();
+    private int waveCount = 0;
+    private int criminalCount = 0;
+    private boolean canSpawn = true;
 
     public LevelScreen(Level level, Game game) {
         this.level = level;
@@ -58,6 +70,7 @@ public class LevelScreen implements Screen {
             @Override
             protected void endRender() {
                 renderLevel(getBatch());
+                renderCriminals(getBatch());
                 super.endRender();
             }
         };
@@ -79,6 +92,36 @@ public class LevelScreen implements Screen {
             batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
         }
         shapeRenderer.end();
+    }
+
+//    private void renderCriminals(Batch batch){
+//        MapObject spawn = level.getLayer().getObjects().get("spawn");
+//        float x = (float) spawn.getProperties().get("x");
+//        float y = (float) spawn.getProperties().get("y");
+//        for (Wave w : level.getWaves()) {
+//            for (Criminal c : w) {
+//                batch.draw(World.getRecurses().getACriminal(c.getName(), NPC.Orientation.DOWN).update(Gdx.graphics.getDeltaTime()), x, y);
+//            }
+//        }
+//    }
+
+    private void renderCriminals(Batch batch) {
+        MapObject spawn = level.getLayer().getObjects().get("spawn");
+        float x = (float) spawn.getProperties().get("x");
+        float y = (float) spawn.getProperties().get("y");
+
+        if (canSpawn) {
+            aliveCriminals.add(level.waves.get(waveCount).get(criminalCount));
+            batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size()).getName(), NPC.Orientation.DOWN).update(Gdx.graphics.getDeltaTime()), x, y);
+            canSpawn = false;
+        } else {
+            if (tiempo > 5000) {
+                tiempo = 0;
+                canSpawn = true;
+            }
+            tiempo += Gdx.graphics.getDeltaTime();
+        }
+
     }
 
     private void drawPlaza(MapObject object, float x, float y) {
