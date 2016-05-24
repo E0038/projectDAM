@@ -189,6 +189,11 @@ public class Criminal implements Hittable {
         return this;
     }
 
+    public Criminal setPathPointer(int pathPointer) {
+        this.pathPointer = pathPointer;
+        return this;
+    }
+
     @Override
     public void onUpdate(float delta) {
         //// TODO: 5/23/16

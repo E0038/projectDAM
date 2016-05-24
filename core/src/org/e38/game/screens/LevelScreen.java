@@ -89,42 +89,27 @@ public class LevelScreen implements Screen {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
                 drawPlaza(object, x, y);
             }
-            batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
+            //dibuja policias por todos lados 
+//            batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
         }
         shapeRenderer.end();
     }
 
-//    private void renderCriminals(Batch batch){
-//        MapObject spawn = level.getLayer().getObjects().get("spawn");
-//        float x = (float) spawn.getProperties().get("x");
-//        float y = (float) spawn.getProperties().get("y");
-//        for (Wave w : level.getWaves()) {
-//            for (Criminal c : w) {
-//                batch.draw(World.getRecurses().getACriminal(c.getName(), NPC.Orientation.DOWN).update(Gdx.graphics.getDeltaTime()), x, y);
-//            }
-//        }
-//    }
-
     private void renderCriminals(Batch batch) {
-        MapObject spawn = level.getLayer().getObjects().get("spawn");
-        float x = (float) spawn.getProperties().get("x");
-        float y = (float) spawn.getProperties().get("y");
-
-        if (canSpawn) {
-//            aliveCriminals.add(level.waves.get(waveCount).get(criminalCount));
-            x += new Random().nextInt(60);
-
-           int idx = aliveCriminals.get(aliveCriminals.size()).getPathPointer();
-            level.getPath().get(idx);
-            batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size())).update(Gdx.graphics.getDeltaTime()), x, y);
-            canSpawn = false;
-        } else {
-            if (tiempo > 5000) {
-                tiempo = 0;
-                canSpawn = true;
+        int idx = 0;
+        for (Wave w : level.waves) {
+            for (Criminal c : w.getCriminals()) {
+                if(c.isAlive()) {
+                    idx = c.getPathPointer();
+                    float x = (float) level.getPath().get(idx).getProperties().get("x");
+                    float y = (float) level.getPath().get(idx).getProperties().get("y");
+                    batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size())).update(Gdx.graphics.getDeltaTime()), x, y);
+                    c.setPathPointer(idx +1);
+                }
             }
-            tiempo += Gdx.graphics.getDeltaTime();
+
         }
+
 
     }
 
