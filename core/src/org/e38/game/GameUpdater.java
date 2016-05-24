@@ -2,6 +2,7 @@ package org.e38.game;
 
 import org.e38.game.model.Level;
 import org.e38.game.model.Wave;
+import org.e38.game.model.npc.Criminal;
 import org.e38.game.screens.LevelScreen;
 
 /**

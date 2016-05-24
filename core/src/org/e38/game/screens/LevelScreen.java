@@ -81,15 +81,13 @@ public class LevelScreen implements Screen {
 
     private void renderLevel(Batch batch) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.LIME);
+        shapeRenderer.setColor(Color.WHITE);
         for (MapObject object : level.getLayer().getObjects()) {
             float x = (Float) object.getProperties().get("x");
             float y = (Float) object.getProperties().get("y");
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
                 drawPlaza(object, x, y);
             }
-            //dibuja policias por todos lados 
-//            batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
         }
         shapeRenderer.end();
     }
@@ -97,18 +95,18 @@ public class LevelScreen implements Screen {
     private void renderCriminals(Batch batch) {
         int idx = 0;
         for (Wave w : level.waves) {
-            for (Criminal c : w.getCriminals()) {
-                if (c.isAlive()) {
-                    idx = c.getPathPointer();
-                    float x = (float) level.getPath().get(idx).getProperties().get("x");
-                    float y = (float) level.getPath().get(idx).getProperties().get("y");
-                    batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size())).update(Gdx.graphics.getDeltaTime()), x, y);
-                    c.setPathPointer(idx + 1);
+//            for (Criminal c : w.getCriminals()) {
+//                if (c.isAlive()) {
+//                    idx = c.getPathPointer();
+//                    float x = (float) level.getPath().get(idx).getProperties().get("x");
+//                    float y = (float) level.getPath().get(idx).getProperties().get("y");
+//                    batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size())).update(Gdx.graphics.getDeltaTime()), x, y);
+//                    c.setPathPointer(idx + 1);
 
                 }
-            }
+//            }
 
-        }
+//        }
 
 
     }
@@ -117,7 +115,7 @@ public class LevelScreen implements Screen {
         float width = (float) object.getProperties().get("width");
         float heght = (float) object.getProperties().get("height");
         if (object.getProperties().get("isSelected") != null) {
-            if ((boolean) object.getProperties().get("isSelected"))
+//            if ((boolean) object.getProperties().get("isSelected"))
                 shapeRenderer.rect(x, y, width, heght);
         }
     }

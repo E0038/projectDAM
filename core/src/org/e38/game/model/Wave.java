@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * container class
  */
-public class Wave implements GameObject {
+public class Wave {
     private List<Criminal> criminals = new ArrayList<>();
     private long gap = 0;
     private transient int spawnPointer = -1;
@@ -18,19 +18,19 @@ public class Wave implements GameObject {
     private boolean isAllSpawn = false;
     private boolean isClear = false;
 
+    public Wave() {
+    }
+
+    public Wave(Collection<? extends Criminal> c) {
+        criminals.addAll(c);
+    }
+
     public boolean isAllSpawn() {
         return isAllSpawn;
     }
 
     public boolean isClear() {
         return isClear;
-    }
-
-    public Wave() {
-    }
-
-    public Wave(Collection<? extends Criminal> c) {
-        criminals.addAll(c);
     }
 
     public List<Criminal> getCriminals() {
@@ -51,21 +51,22 @@ public class Wave implements GameObject {
         return this;
     }
 
-    @Override
     public void onUpdate(float delta) {
-        //estado criminales
-        if (spawnPointer < 0) {
-            spawner();
+        if (!isClear) {
+            if (spawnPointer < 0) {
+                spawner();
+            }
+            updateCriminals(delta);
         }
-        updateCriminals(delta);
     }
 
     private void updateCriminals(float delta) {
         boolean ck = true;
+        System.out.println(criminals);
         for (Criminal criminal : criminals) {
             if (criminal.getState() != NPC.State.DEAD) {
                 ck = false;
-                criminal.onUpdate(delta);
+                if (criminal.getState() == NPC.State.ALIVE) criminal.onUpdate(delta);
             }
         }
         isClear = ck;
@@ -83,7 +84,7 @@ public class Wave implements GameObject {
     private void onFinish() {
         int idx = ++spawnPointer;
         if (isAllSpawn || idx < criminals.size())
-            criminals.get(++spawnPointer).onSpawn();
+            criminals.get(idx).onSpawn();
         else isAllSpawn = true;
         if (!isAllSpawn) {
             new SheludedAction(gap) {

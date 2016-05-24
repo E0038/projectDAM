@@ -83,8 +83,8 @@ public abstract class Cop implements NPC {
      * @return 0
      */
     @Override
-    public Vector2 getSpeed() {
-        return noSpeed;
+    public long getSpeed() {
+        return -1;
     }
 
     @Override
