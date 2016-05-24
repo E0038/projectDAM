@@ -10,23 +10,22 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import org.e38.game.GameUpdater;
 import org.e38.game.InputHandler;
-import org.e38.game.Recurses;
 import org.e38.game.World;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
 import org.e38.game.model.Wave;
 import org.e38.game.model.npc.Criminal;
-import org.e38.game.model.npc.NPC;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by sergi on 4/20/16.
  */
 public class LevelScreen implements Screen {
+    private final GameUpdater gameUpdater;
     private Level level;
     private Game game;
     private OrthogonalTiledMapRenderer ot;
@@ -51,7 +50,7 @@ public class LevelScreen implements Screen {
 
         topBar = new TopBar(0, 0);
         copsBar = new CopsBar(0, topBar.table.getY() - topBar.table.getHeight());
-
+        gameUpdater = new GameUpdater(this.level);
         //Stage stage = new TiledMapStage(level.getMap());
         Gdx.input.setInputProcessor(new InputHandler(level, this));
 
@@ -99,12 +98,13 @@ public class LevelScreen implements Screen {
         int idx = 0;
         for (Wave w : level.waves) {
             for (Criminal c : w.getCriminals()) {
-                if(c.isAlive()) {
+                if (c.isAlive()) {
                     idx = c.getPathPointer();
                     float x = (float) level.getPath().get(idx).getProperties().get("x");
                     float y = (float) level.getPath().get(idx).getProperties().get("y");
                     batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size())).update(Gdx.graphics.getDeltaTime()), x, y);
-                    c.setPathPointer(idx +1);
+                    c.setPathPointer(idx + 1);
+
                 }
             }
 
@@ -122,20 +122,9 @@ public class LevelScreen implements Screen {
         }
     }
 
-    public int getCriminalCount() {
-        return criminalCount;
-    }
-
-    public int getWaveCount() {
-        return waveCount;
-    }
-
-    public boolean canSpawn() {
-        return canSpawn;
-    }
-
     @Override
     public void render(float delta) {
+        gameUpdater.update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ot.setView(camera);
@@ -175,11 +164,22 @@ public class LevelScreen implements Screen {
 
     }
 
+    public int getCriminalCount() {
+        return criminalCount;
+    }
+
+    public int getWaveCount() {
+        return waveCount;
+    }
+
+    public boolean canSpawn() {
+        return canSpawn;
+    }
+
     //getters para la prueba de click sobre HUD de cops
     public CopsBar getCopsBar() {
         return copsBar;
     }
-
 
 
     public Level getLevel() {

@@ -4,13 +4,12 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.Recurses;
 import org.e38.game.model.Level;
-import org.e38.game.screens.AnimationManager;
 
 /**
  * Created by sergi on 4/20/16.
  */
 public class Criminal implements Hittable {
-    protected State state = State.SPAWING;
+    protected volatile State state = State.SPAWING;
     protected float hpPoints;
     /**
      * value between 0 and 1
@@ -25,15 +24,15 @@ public class Criminal implements Hittable {
     protected float totalHpPoins = 10f;
     protected String name = Recurses.AnimatedCriminals.bane.name();
 
-    public int getPathPointer() {
-        return pathPointer;
-    }
-
     public Criminal() {
     }
 
     public Criminal(Level level) {
         this.level = level;
+    }
+
+    public int getPathPointer() {
+        return pathPointer;
     }
 
     public Level getLevel() {
@@ -117,6 +116,16 @@ public class Criminal implements Hittable {
     }
 
     @Override
+    public void onUpdate(float delta) {
+        //// TODO: 5/23/16
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return getPositionRetativeTo(level);
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -189,21 +198,6 @@ public class Criminal implements Hittable {
         return this;
     }
 
-    public Criminal setPathPointer(int pathPointer) {
-        this.pathPointer = pathPointer;
-        return this;
-    }
-
-    @Override
-    public void onUpdate(float delta) {
-        //// TODO: 5/23/16
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        return getPositionRetativeTo(level);
-    }
-
     protected Vector2 getPositionRetativeTo(Level level) {
         float x, y;
         MapProperties camino = level.getPath().get(pathPointer).getProperties();
@@ -213,4 +207,7 @@ public class Criminal implements Hittable {
     }
 
 
+    public void setPathPointer(int pathPointer) {
+        this.pathPointer = pathPointer;
+    }
 }
