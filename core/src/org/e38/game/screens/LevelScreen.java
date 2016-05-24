@@ -34,10 +34,10 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private float tiempo = 0;
 
     //testeo spawn criminales
     private ArrayList<Criminal> aliveCriminals = new ArrayList<>();
+    private float tiempo = 0;
     private int waveCount = 0;
     private int criminalCount = 0;
     private boolean canSpawn = true;
@@ -137,6 +137,18 @@ public class LevelScreen implements Screen {
         }
     }
 
+    public int getCriminalCount() {
+        return criminalCount;
+    }
+
+    public int getWaveCount() {
+        return waveCount;
+    }
+
+    public boolean canSpawn() {
+        return canSpawn;
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -183,7 +195,7 @@ public class LevelScreen implements Screen {
         return copsBar;
     }
 
-    
+
 
     public Level getLevel() {
         return level;
