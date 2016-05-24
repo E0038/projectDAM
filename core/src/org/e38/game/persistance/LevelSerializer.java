@@ -7,6 +7,7 @@ import org.e38.game.model.Wave;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sergi on 5/1/16.
@@ -29,7 +30,7 @@ public class LevelSerializer implements JsonDeserializer<Level>, JsonSerializer<
         float waveGap = object.get(WAVE_GAP).getAsFloat();
 
         Level level = new Level(coins, path);
-        level.waves = context.deserialize(object.get(waves), new TypeToken<ArrayList<Wave>>() {
+        level.waves = context.deserialize(object.get(waves), new TypeToken<List<Wave>>() {
         }.getType());
         level.setLifes(lif);
         level.setDificultat(Level.Dificultat.valueOf(dif));

@@ -23,7 +23,7 @@ public class Level {
     public Dificultat dificultat;
     public List<Cop> cops = new ArrayList<>();
     public TiledMap map;
-    public ArrayList<Wave> waves;
+    public List<Wave> waves;
     //    public List<Wave> remaingWaves = new ArrayList<Wave>();
     public int wavePointer = 0;
     public String mapPath;

@@ -4,7 +4,12 @@ import com.badlogic.gdx.Screen;
 import org.e38.game.MainGame;
 import org.e38.game.World;
 import org.e38.game.model.Level;
+import org.e38.game.model.Wave;
+import org.e38.game.model.npc.Criminal;
 import org.e38.game.persistance.ProfileManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by sergi on 4/22/16.
@@ -24,6 +29,9 @@ public class SplashScreen implements Screen {
     public void render(float delta) {
         if (World.getRecurses().isLoaded.get()) {
             Level lvl = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
+            ArrayList<Wave> waves = new ArrayList<>();
+            waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
+            lvl.waves=waves;
             System.out.println(ProfileManager.getProfile().gson.toJson(lvl));
             game.setScreen(new LevelScreen(lvl, game));
 //            game.setScreen(new MenuScreen(game));
