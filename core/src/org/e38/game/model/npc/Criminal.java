@@ -24,6 +24,10 @@ public class Criminal implements Hittable {
     protected float totalHpPoins = 10f;
     protected String name = Recurses.AnimatedCriminals.bane.name();
 
+    public int getPathPointer() {
+        return pathPointer;
+    }
+
     public Criminal() {
     }
 

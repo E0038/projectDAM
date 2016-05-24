@@ -5,6 +5,11 @@ import org.e38.game.model.GameObject;
 
 
 public interface NPC extends GameObject {
+
+    /**
+     * current posicion in pixels
+     */
+    Vector2 getPosition();
     /**
      * nombre interno del npc
      */

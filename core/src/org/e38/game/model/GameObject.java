@@ -9,8 +9,5 @@ public interface GameObject {
 
     void onUpdate(float delta);
 
-    /**
-     * current posicion in pixels
-     */
-    Vector2 getPosition();
+
 }

@@ -111,8 +111,12 @@ public class LevelScreen implements Screen {
         float y = (float) spawn.getProperties().get("y");
 
         if (canSpawn) {
-            aliveCriminals.add(level.waves.get(waveCount).get(criminalCount));
-            batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size()).getName(), NPC.Orientation.DOWN).update(Gdx.graphics.getDeltaTime()), x, y);
+//            aliveCriminals.add(level.waves.get(waveCount).get(criminalCount));
+            x += new Random().nextInt(60);
+
+           int idx = aliveCriminals.get(aliveCriminals.size()).getPathPointer();
+            level.getPath().get(idx);
+            batch.draw(World.getRecurses().getACriminal(aliveCriminals.get(aliveCriminals.size())).update(Gdx.graphics.getDeltaTime()), x, y);
             canSpawn = false;
         } else {
             if (tiempo > 5000) {
@@ -178,6 +182,8 @@ public class LevelScreen implements Screen {
     public CopsBar getCopsBar() {
         return copsBar;
     }
+
+    
 
     public Level getLevel() {
         return level;
