@@ -32,7 +32,7 @@ public class InputHandler implements InputProcessor {
 //                y = (float) object.getProperties().get("height") + y;
                 float height = (float) object.getProperties().get("height");
                 float width = (float) object.getProperties().get("width");
-                RectangleMapObject rectangleMapObject = new RectangleMapObject(x, height + y, height, width);
+                RectangleMapObject rectangleMapObject = new RectangleMapObject(x, height - y, height, width);
                 rectangleMapObject.getProperties().putAll(object.getProperties());
                 plazas.add(rectangleMapObject);
             }
@@ -110,7 +110,7 @@ public class InputHandler implements InputProcessor {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        lScr.getCopsBar().updateBar(30);
+//        lScr.getCopsBar().updateBar(30);
         //use touch.x and touch.y as your new touch point
 
         return true;

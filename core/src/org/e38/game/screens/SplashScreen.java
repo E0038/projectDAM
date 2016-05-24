@@ -28,7 +28,7 @@ public class SplashScreen implements Screen {
     @Override
     public void render(float delta) {
         if (World.getRecurses().isLoaded.get()) {
-            Level lvl = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
+            Level lvl = new Level(0, "grafics/map1/Mapa_lvl2.tmx");
             ArrayList<Wave> waves = new ArrayList<>();
             waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
             lvl.waves=waves;
