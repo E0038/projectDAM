@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.Recurses;
 import org.e38.game.model.Level;
+import org.e38.game.screens.AnimationManager;
 
 /**
  * Created by sergi on 4/20/16.

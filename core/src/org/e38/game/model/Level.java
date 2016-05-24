@@ -28,6 +28,7 @@ public class Level {
     public int wavePointer = 0;
     public String mapPath;
     public float waveGap = 3000f;
+    protected int initLifes;
     protected int coins;
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
@@ -45,13 +46,13 @@ public class Level {
         this.mapPath = path;
         this.coins = initialCoins;
 //        this.levelUID = levelUID;
-        onStart();
     }
 
-    protected void onStart() {
+    public void onStart() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         map = new TmxMapLoader().load(mapPath);
         this.path = buildPath(4);
+        lifes = initLifes;
     }
 
     private List<MapObject> buildPath(final int pading) {
@@ -84,6 +85,15 @@ public class Level {
 
     public MapLayer getLayer() {
         return map.getLayers().get("objetos");
+    }
+
+    public int getInitLifes() {
+        return initLifes;
+    }
+
+    public Level setInitLifes(int initLifes) {
+        this.initLifes = initLifes;
+        return this;
     }
 
     public String getMapPath() {
@@ -193,5 +203,25 @@ public class Level {
 
     public interface OnEndListerner {
         void onEnd(boolean isWined);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Level{");
+        sb.append("dificultat=").append(dificultat);
+        sb.append(", cops=").append(cops);
+        sb.append(", map=").append(map);
+        sb.append(", waves=").append(waves);
+        sb.append(", wavePointer=").append(wavePointer);
+        sb.append(", mapPath='").append(mapPath).append('\'');
+        sb.append(", waveGap=").append(waveGap);
+        sb.append(", initLifes=").append(initLifes);
+        sb.append(", coins=").append(coins);
+        sb.append(", lifes=").append(lifes);
+        sb.append(", path=").append(path);
+        sb.append(", onEndListerners=").append(onEndListerners);
+        sb.append(", isWined=").append(isWined);
+        sb.append('}');
+        return sb.toString();
     }
 }

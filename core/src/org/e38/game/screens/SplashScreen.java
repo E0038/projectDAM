@@ -32,8 +32,9 @@ public class SplashScreen implements Screen {
             ArrayList<Wave> waves = new ArrayList<>();
             waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
             lvl.waves=waves;
-//            Level lvl = ProfileManager.getProfile().gson.fromJson("{\"dificultat\":\"NORMAL\",\"coins\":0,\"lifes\":0,\"waves\":[[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}]],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n",Level.class);
+            Level level = ProfileManager.getProfile().gson.fromJson("{\"coins\":0,\"INIT_LIFES\":0,\"waves\":[{\"criminals\":[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}],\"gap\":0.0}],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n",Level.class);
             System.out.println(ProfileManager.getProfile().gson.toJson(lvl));
+            System.out.println(level);
             game.setScreen(new LevelScreen(lvl, game));
 //            game.setScreen(new MenuScreen(game));
         } else {
