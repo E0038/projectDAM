@@ -10,6 +10,7 @@ public interface NPC extends GameObject {
      * current posicion in pixels
      */
     Vector2 getPosition();
+
     /**
      * nombre interno del npc
      */
@@ -43,17 +44,17 @@ public interface NPC extends GameObject {
     boolean isAlive();
 
     /**
-     * speed of npc
+     * speed of npc in milis
      */
-    Vector2 getSpeed();
+    long getSpeed();
 
     Orientation getOrientation();
 
     NPC setOrientation(Orientation orientation);
 
-    NPC setOrientationListener(OrientationListener listener);
-
     OrientationListener getOrientationListener();
+
+    NPC setOrientationListener(OrientationListener listener);
 
     enum State {
         ALIVE, DEAD, DYING, SPAWING, DESPAWNING, DESPAWNED;

@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
+import org.e38.game.model.npc.Criminal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,45 +47,6 @@ public class Level {
         this.mapPath = path;
         this.coins = initialCoins;
 //        this.levelUID = levelUID;
-    }
-
-    public void onStart() {
-        dificultat = Dificultat.valueOf(World.selecteDificultat);
-        map = new TmxMapLoader().load(mapPath);
-        this.path = buildPath(4);
-        lifes = initLifes;
-    }
-
-    private List<MapObject> buildPath(final int pading) {
-        List<MapObject> caminos = new ArrayList<>();
-        for (MapObject object : getLayer().getObjects()) {
-            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("camino")) {
-                caminos.add(object);
-            }
-        }
-        Collections.sort(caminos, new Comparator<MapObject>() {
-            @Override
-            public int compare(MapObject o1, MapObject o2) {
-
-                String name1 = "camino" + addPading(o1.getName().substring(6));
-                String name2 = "camino" + addPading(o2.getName().substring(6));
-                return name1.compareTo(name2);
-            }
-
-            private String addPading(String s) {
-                StringBuilder builder = new StringBuilder();
-                for (int i = s.length(); i < pading; i++) {
-                    builder.append('0');
-                }
-                builder.append(s);
-                return builder.toString();
-            }
-        });
-        return caminos;
-    }
-
-    public MapLayer getLayer() {
-        return map.getLayers().get("objetos");
     }
 
     public int getInitLifes() {
@@ -189,20 +151,52 @@ public class Level {
     public void onRestart() {
         isWined = 0;
         wavePointer = 0;
-        onStart();
+        onCreate();
     }
 
-    public enum Dificultat {
-        FACIL(0.4f), NORMAL(0.6f), DIFICIL(1f);
-        private float modificadorPuntos;
-
-        Dificultat(float modificadorPuntos) {
-            this.modificadorPuntos = modificadorPuntos;
+    public void onCreate() {
+        dificultat = Dificultat.valueOf(World.selecteDificultat);
+        map = new TmxMapLoader().load(mapPath);
+        this.path = buildPath(4);
+        lifes = initLifes;
+        //add reference to criminals
+        for (Wave wave : this.waves) {
+            for (Criminal criminal : wave.getCriminals()) {
+                criminal.setLevel(this);
+            }
         }
     }
 
-    public interface OnEndListerner {
-        void onEnd(boolean isWined);
+    private List<MapObject> buildPath(final int pading) {
+        List<MapObject> caminos = new ArrayList<>();
+        for (MapObject object : getLayer().getObjects()) {
+            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("camino")) {
+                caminos.add(object);
+            }
+        }
+        Collections.sort(caminos, new Comparator<MapObject>() {
+            @Override
+            public int compare(MapObject o1, MapObject o2) {
+
+                String name1 = "camino" + addPading(o1.getName().substring(6));
+                String name2 = "camino" + addPading(o2.getName().substring(6));
+                return name1.compareTo(name2);
+            }
+
+            private String addPading(String s) {
+                StringBuilder builder = new StringBuilder();
+                for (int i = s.length(); i < pading; i++) {
+                    builder.append('0');
+                }
+                builder.append(s);
+                return builder.toString();
+            }
+        });
+        return caminos;
+    }
+
+    public MapLayer getLayer() {
+        return map.getLayers().get("objetos");
     }
 
     @Override
@@ -223,5 +217,18 @@ public class Level {
         sb.append(", isWined=").append(isWined);
         sb.append('}');
         return sb.toString();
+    }
+
+    public enum Dificultat {
+        FACIL(0.4f), NORMAL(0.6f), DIFICIL(1f);
+        private float modificadorPuntos;
+
+        Dificultat(float modificadorPuntos) {
+            this.modificadorPuntos = modificadorPuntos;
+        }
+    }
+
+    public interface OnEndListerner {
+        void onEnd(boolean isWined);
     }
 }

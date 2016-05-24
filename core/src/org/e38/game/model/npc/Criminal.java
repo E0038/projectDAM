@@ -4,36 +4,53 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.Recurses;
 import org.e38.game.model.Level;
-import org.e38.game.screens.AnimationManager;
 
 /**
  * Created by sergi on 4/20/16.
  */
 public class Criminal implements Hittable {
-    protected State state = State.SPAWING;
+    protected volatile State state = State.SPAWING;
     protected float hpPoints;
     /**
      * value between 0 and 1
      */
     protected float dodgeRate;
     protected float protecion;
-    protected Vector2 speed;
+    /**
+     * diff time between pointer increment
+     */
+    protected long speed = 200;
     protected Orientation orientation = Orientation.LEFT;
     protected OrientationListener listener;
+    protected OnEndListener onEndListener;
     protected int pathPointer = 0;
     protected Level level;
     protected float totalHpPoins = 10f;
     protected String name = Recurses.AnimatedCriminals.bane.name();
-
-    public int getPathPointer() {
-        return pathPointer;
-    }
+    protected long lastNext;
 
     public Criminal() {
     }
 
     public Criminal(Level level) {
         this.level = level;
+    }
+
+    public OnEndListener getOnEndListener() {
+        return onEndListener;
+    }
+
+    public Criminal setOnEndListener(OnEndListener onEndListener) {
+        this.onEndListener = onEndListener;
+        return this;
+    }
+
+    public int getPathPointer() {
+        return pathPointer;
+    }
+
+    public void setPathPointer(int pathPointer) {
+        this.pathPointer = pathPointer;
     }
 
     public Level getLevel() {
@@ -67,15 +84,14 @@ public class Criminal implements Hittable {
         pathPointer++;
     }
 
-
     /**
      * get the points (Money) of Criminal
      *
      * @return the points that give on die
      */
     public int getPoints() {
-        //// TODO: 5/23/16 find poins ideal criteria formula
-        return (int) (totalHpPoins * dodgeRate * (speed.x + speed.y));
+        //// TODO: 5/23/16 review formula
+        return (int) (totalHpPoins * dodgeRate * speed);
     }
 
     /**
@@ -117,6 +133,28 @@ public class Criminal implements Hittable {
     }
 
     @Override
+    public void onUpdate(float delta) {
+        if (System.currentTimeMillis() - lastNext >= speed) {
+            next();
+        }
+    }
+
+    protected void next() {
+        if (pathPointer < level.getPath().size()) pathPointer++;
+        else {
+            if (onEndListener != null) onEndListener.onEnd();
+            state = State.DEAD;
+            onDie();
+        }
+        lastNext = System.currentTimeMillis();
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return getPositionRetativeTo(level);
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -151,7 +189,7 @@ public class Criminal implements Hittable {
     }
 
     @Override
-    public Vector2 getSpeed() {
+    public long getSpeed() {
         return speed;
     }
 
@@ -169,17 +207,17 @@ public class Criminal implements Hittable {
     }
 
     @Override
+    public OrientationListener getOrientationListener() {
+        return listener;
+    }
+
+    @Override
     public NPC setOrientationListener(OrientationListener listener) {
         this.listener = listener;
         return this;
     }
 
-    @Override
-    public OrientationListener getOrientationListener() {
-        return listener;
-    }
-
-    public Criminal setSpeed(Vector2 speed) {
+    public Criminal setSpeed(long speed) {
         this.speed = speed;
         return this;
     }
@@ -187,21 +225,6 @@ public class Criminal implements Hittable {
     public Criminal setState(State state) {
         this.state = state;
         return this;
-    }
-
-    public Criminal setPathPointer(int pathPointer) {
-        this.pathPointer = pathPointer;
-        return this;
-    }
-
-    @Override
-    public void onUpdate(float delta) {
-        //// TODO: 5/23/16
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        return getPositionRetativeTo(level);
     }
 
     protected Vector2 getPositionRetativeTo(Level level) {
@@ -212,5 +235,26 @@ public class Criminal implements Hittable {
         return new Vector2(x, y);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Criminal{");
+        sb.append("state=").append(state);
+//        sb.append(", hpPoints=").append(hpPoints);
+//        sb.append(", dodgeRate=").append(dodgeRate);
+//        sb.append(", protecion=").append(protecion);
+//        sb.append(", speed=").append(speed);
+//        sb.append(", orientation=").append(orientation);
+//        sb.append(", listener=").append(listener);
+        sb.append(", pathPointer=").append(pathPointer);
+//        sb.append(", level=").append(level);
+//        sb.append(", totalHpPoins=").append(totalHpPoins);
+        sb.append(", name='").append(name).append('\'');
+//        sb.append(", lastNext=").append(lastNext);
+        sb.append('}');
+        return sb.toString();
+    }
 
+    public interface OnEndListener {
+        void onEnd();
+    }
 }
