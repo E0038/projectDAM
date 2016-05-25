@@ -256,4 +256,16 @@ public class ProfileManager {
         return null;
     }
 
+    public boolean newGame() {
+        localBackup.delete();
+        profilesFile.delete();
+        try {
+            createFiles(profilesFile.file());
+            return true;
+        } catch (IOException e) {
+            Gdx.app.log(getClass().getName(), e.getMessage(), e);
+            return false;
+        }
+
+    }
 }

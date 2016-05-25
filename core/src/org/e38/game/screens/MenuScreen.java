@@ -2,18 +2,25 @@ package org.e38.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.Recurses;
 import org.e38.game.World;
 import org.e38.game.model.Level;
 import org.e38.game.model.npc.NPC;
+import org.e38.game.persistance.ProfileManager;
 
 /**
  * Created by sergi on 4/20/16.
@@ -28,40 +35,124 @@ public class MenuScreen implements Screen {
     private SpriteBatch batcher;
     private Recurses.AnimatedCriminals[] criminals = Recurses.AnimatedCriminals.values();
     private Stage stage;
+    private TextButton newGame;
+    private TextButton continueGame;
+    private TextButton selectLevel;
+    private Label title;
 
     public MenuScreen(final MainGame game) {
         this.game = game;
         Gdx.app.log(getClass().getName(), "MENU SCREEN");
     }
 
-    private void newGame() {
-
-    }
-
-    private void continueGame() {
-
-    }
-
-    private void selectLevel() {
-
-    }
-
     public void onShowRanking() {
-
+// TODO: 5/25/16  
     }
 
     @Override
     public void show() {
+
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
-        TextButton button = new TextButton("new Game",new TextButton.TextButtonStyle());
-        batcher = new SpriteBatch();
+
+        createButtons();
+        configureButtons();
         game.resume();//fix false pause state
 //        debugShow();
+        stage.addActor(selectLevel);
+        stage.addActor(continueGame);
+        stage.addActor(newGame);
+        stage.addActor(title);
+        Gdx.input.setInputProcessor(stage);
+//        stage.getActors().addAll(selectLevel, continueGame, newGame, title);
 
+    }
+
+    private void createButtons() {
+        TextureRegionDrawable d = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(d, d, d, new BitmapFont());
+        style.font.setColor(Color.BLACK);
+        newGame = new TextButton("New Game", style);
+
+        continueGame = new TextButton("Continue Game", style) {
+            @Override
+            public void setDisabled(boolean isDisabled) {
+//                getStyle().font.setColor(isDisabled ? Color.GREEN : Color.BLACK);
+                setColor(isDisabled ? Color.GREEN : Color.BLACK);
+                super.setDisabled(isDisabled);
+            }
+        };
+        selectLevel = new TextButton("Select Level", style);
+
+        title = new Label("Bank Defense", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+
+
+    }
+
+    private void configureButtons() {
+        float centerX = (Gdx.graphics.getWidth() / 2) - World.getRecurses().buttonBg.getWidth() / 2;
+        float bttWidth = World.getRecurses().buttonBg.getWidth();
+        float bttHeight = World.getRecurses().buttonBg.getHeight();
+
+        title.setFontScale(1.5f);
+        title.setX(centerX + title.getWidth() / 2);
+        title.setY((Gdx.graphics.getHeight() / 10) * 8);
+
+        newGame.setSize(bttWidth, bttHeight);
+        newGame.setY((Gdx.graphics.getHeight() / 10) * 6);
+        newGame.setX(centerX);
+
+        continueGame.setSize(bttWidth, bttHeight);
+        continueGame.setY((Gdx.graphics.getHeight() / 10) * 5);
+        continueGame.setX(centerX);
+
+        selectLevel.setSize(bttWidth, bttHeight);
+        selectLevel.setY((Gdx.graphics.getHeight() / 10) * 4);
+        selectLevel.setX(centerX);
+
+
+        newGame.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                MenuScreen.this.newGame();
+            }
+        });
+        selectLevel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selectLevel();
+            }
+        });
+        continueGame.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                continueGame();
+            }
+
+        });
+
+    }
+
+    private void newGame() {
+        if (ProfileManager.getInstance().newGame()) {
+            game.setScreen(new LevelSelectScreen(game));
+        }
+    }
+
+    private void selectLevel() {
+        game.setScreen(new LevelSelectScreen(game));
+        System.out.println("select");
+
+    }
+
+    private void continueGame() {
+        System.out.println("continue");
+// TODO: 5/25/16  
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
 //        debugRender(delta);
     }
@@ -88,6 +179,7 @@ public class MenuScreen implements Screen {
     }
 
     private void debugShow() {
+        batcher = new SpriteBatch();
         for (int i = 0; i < polis.length; i++) {
             String poli = polis[i];
             TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
