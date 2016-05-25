@@ -62,6 +62,7 @@ public class MenuScreen implements Screen {
         stage.addActor(continueGame);
         stage.addActor(newGame);
         stage.addActor(title);
+        Gdx.input.setInputProcessor(stage);
 //        stage.getActors().addAll(selectLevel, continueGame, newGame, title);
 
     }
@@ -96,15 +97,6 @@ public class MenuScreen implements Screen {
         title.setX(centerX + title.getWidth() / 2);
         title.setY((Gdx.graphics.getHeight() / 10) * 8);
 
-        title.addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("titile debug");
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-
-//title.setFontScale(4f);
         newGame.setSize(bttWidth, bttHeight);
         newGame.setY((Gdx.graphics.getHeight() / 10) * 6);
         newGame.setX(centerX);
@@ -128,12 +120,6 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selectLevel();
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                selectLevel();
-                return true;
             }
         });
         continueGame.addListener(new ClickListener() {
