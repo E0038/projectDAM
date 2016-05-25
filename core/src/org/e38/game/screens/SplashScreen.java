@@ -1,6 +1,17 @@
 package org.e38.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import org.e38.game.MainGame;
 import org.e38.game.World;
 import org.e38.game.model.Level;
@@ -15,7 +26,12 @@ import java.util.Arrays;
  * Created by sergi on 4/22/16.
  */
 public class SplashScreen implements Screen {
+    public static final int LOADING_GIF_PARTS = 24;
     private final MainGame game;
+    private AnimationManager loadingGif;
+    private Texture loadingSprite;
+    private SpriteBatch batch;
+    private Stage stage;
 
     public SplashScreen(final MainGame game) {
         this.game = game;
@@ -23,24 +39,57 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
+        loadingSprite = new Texture("grafics/textures/loading_sprite.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        batch = new SpriteBatch();
+        TextureRegion[][] regions = TextureRegion.split(loadingSprite, loadingSprite.getWidth() / LOADING_GIF_PARTS, loadingSprite.getHeight());
+        loadingGif = new AnimationManager(new Animation(0.01f, regions[0]));
+        stage = new Stage();
+        stage.addActor(new TextField("LOADING...",new Skin(Gdx.files.internal("grafics/textures/blank.png"))));
+        stage.addActor(new Actor() {
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                TextureRegion region = loadingGif.update(Gdx.graphics.getDeltaTime());
+                float x = (Gdx.graphics.getWidth() / 2) - region.getRegionWidth() / 2;
+                float y = (Gdx.graphics.getHeight() / 2) - region.getRegionHeight() / 2;
+                batch.draw(region, x, y);
+                super.draw(batch, parentAlpha);
+            }
+        });
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        batch.begin();
         if (World.getRecurses().isLoaded.get()) {
-            Level lvl = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
-            ArrayList<Wave> waves = new ArrayList<>();
-            waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
-            lvl.waves=waves;
-            Level level = ProfileManager.getProfile().gson.fromJson("{\"coins\":0,\"INIT_LIFES\":0,\"waves\":[{\"criminals\":[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}],\"gap\":0.0}],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n",Level.class);
-            System.out.println(ProfileManager.getProfile().gson.toJson(lvl));
-            System.out.println(level);
-            lvl.onCreate();
-            game.setScreen(new LevelScreen(lvl, game));
-//            game.setScreen(new MenuScreen(game));
+            onGameLoaded();
         } else {
+            stage.draw();
+
 //            System.out.println("loading...");
         }
+//        batch.end();
+    }
+
+    private void onGameLoaded() {
+        Level lvl = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
+        ArrayList<Wave> waves = new ArrayList<>();
+        waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
+        lvl.waves = waves;
+        Level level = ProfileManager.getProfile().gson.fromJson("{\"coins\":0,\"INIT_LIFES\":0,\"waves\":[{\"criminals\":[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}],\"gap\":0.0}],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n", Level.class);
+        System.out.println(ProfileManager.getProfile().gson.toJson(lvl));
+        System.out.println(level);
+        lvl.onCreate();
+        game.setScreen(new LevelScreen(lvl, game));
+//        game.setScreen(new MenuScreen(game));
+
     }
 
     @Override
@@ -63,6 +112,8 @@ public class SplashScreen implements Screen {
 
     @Override
     public void dispose() {
+        loadingSprite.dispose();
+        batch.dispose();
     }
 
     private void initError(Throwable throwable) {
