@@ -10,19 +10,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
-import org.e38.game.InputHandler;
-import org.e38.game.Recurses;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import org.e38.game.World;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
+import org.e38.game.model.Plaza;
 import org.e38.game.model.Wave;
 import org.e38.game.model.npc.Criminal;
-import org.e38.game.model.npc.NPC;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by sergi on 4/20/16.
@@ -35,30 +31,34 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    public Stage stage;
 
 
     public LevelScreen(Level level, Game game) {
         this.level = level;
         this.game = game;
-//        float ratio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         camera = new OrthographicCamera();
-//        camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
 
         topBar = new TopBar(0, 0);
         copsBar = new CopsBar(0, topBar.table.getY() - topBar.table.getHeight());
 
-        //Stage stage = new TiledMapStage(level.getMap());
 
     }
 
     @Override
     public void show() {
+
+        //prueba del stage
+        ScreenViewport viewport = new ScreenViewport();
+        stage = new Stage(viewport);
+        Gdx.input.setInputProcessor(stage);
+
         for (MapObject object : level.getLayer().getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
-                float x = (Float) object.getProperties().get("x");
                 float y = (Float) object.getProperties().get("y");
-                object.getProperties().put("y", (float) object.getProperties().get("height")- y);
+//                object.getProperties().put("y", (float) object.getProperties().get("height")- y);
+                stage.addActor(new Plaza(object));
             }
         }
         ot = new OrthogonalTiledMapRenderer(level.map) {
@@ -69,7 +69,9 @@ public class LevelScreen implements Screen {
                 super.endRender();
             }
         };
-        Gdx.input.setInputProcessor(new InputHandler(level, this));
+//        Gdx.input.setInputProcessor(new InputHandler(level, this));
+
+
 
         camera.position.set(400, 300, 0);
         camera.update();
@@ -159,12 +161,9 @@ public class LevelScreen implements Screen {
 
     }
 
-    //getters para la prueba de click sobre HUD de cops
     public CopsBar getCopsBar() {
         return copsBar;
     }
-
-
 
     public Level getLevel() {
         return level;
