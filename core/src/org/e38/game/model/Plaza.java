@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import org.e38.game.screens.LevelScreen;
 
 import java.util.Iterator;
 
@@ -17,19 +18,32 @@ import java.util.Iterator;
  */
 public class Plaza extends Actor {
     MapObject object;
+    LevelScreen levelScreen;
 
-    public Plaza(final MapObject object) {
+    public Plaza(final MapObject object, final LevelScreen levelScreen) {
         this.object = object;
+        this.levelScreen = levelScreen;
 
         setBounds((float)object.getProperties().get("x"),(float)object.getProperties().get("y"),(float)object.getProperties().get("width"),(float)object.getProperties().get("height"));
         setTouchable(Touchable.enabled);
 //        System.out.println(getX() + " : " + getY());
 
-        addListener(new InputListener(){
+        addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-            System.out.println(x + " : " + y);
-            System.out.println(propetresToString(object.getProperties()));
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println(x + " : " + y);
+                System.out.println(propetresToString(object.getProperties()));
+                levelScreen.showHideCopsBar(object);
+
+                levelScreen.unSelectLastPlaza();
+                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
+
+                //marcar seleccionada al hacer click
+                if (object.getProperties().get("isSelected") == null)
+                    object.getProperties().put("isSelected", true);
+                else
+                    object.getProperties().put("isSelected", !(boolean)object.getProperties().get("isSelected"));
 
                 return true;
             }
