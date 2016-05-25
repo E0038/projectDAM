@@ -2,12 +2,15 @@ package org.e38.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.Recurses;
@@ -52,9 +55,22 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
-        TextButton button = new TextButton("new Game",new TextButton.TextButtonStyle());
-        batcher = new SpriteBatch();
+        TextureRegionDrawable d = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(d, d, d, new BitmapFont());
+        style.font.setColor(Color.BLACK);
+        TextButton newGame = new TextButton("new Game", style);
+        TextButton continueGame = new TextButton("continue Game", style) {
+            @Override
+            public void setDisabled(boolean isDisabled) {
+//                getStyle().font.setColor(isDisabled ? Color.GREEN : Color.BLACK);
+                setColor(isDisabled ? Color.GREEN : Color.BLACK);
+                super.setDisabled(isDisabled);
+            }
+        };
+        TextButton selectLevel = new TextButton("Selecionar nivel", style);
+        stage.getActors().addAll(selectLevel, continueGame, newGame);
         game.resume();//fix false pause state
 //        debugShow();
 
@@ -88,6 +104,7 @@ public class MenuScreen implements Screen {
     }
 
     private void debugShow() {
+        batcher = new SpriteBatch();
         for (int i = 0; i < polis.length; i++) {
             String poli = polis[i];
             TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);

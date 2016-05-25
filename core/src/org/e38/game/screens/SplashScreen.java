@@ -98,7 +98,6 @@ public class SplashScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
@@ -118,10 +117,5 @@ public class SplashScreen implements Screen {
     public void dispose() {
         loadingSprite.dispose();
         stage.dispose();
-    }
-
-    private void initError(Throwable throwable) {
-        // TODO: 5/1/16 show error message
-        System.exit(-1);
     }
 }

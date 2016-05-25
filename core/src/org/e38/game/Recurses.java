@@ -2,9 +2,11 @@ package org.e38.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 import org.e38.game.model.npc.Cop;
 import org.e38.game.model.npc.Criminal;
 import org.e38.game.model.npc.NPC;
@@ -16,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by sergi on 4/27/16.
  */
-public class Recurses {
+public class Recurses implements Disposable {
     public static final String SNIPER_BUENO = "sniperBueno",
             POLICIA_ESCOPETA = "policiaEscopeta",
             POLICIA_BAZOOKA = "policiaBazooka",
@@ -31,6 +33,8 @@ public class Recurses {
             GUN, SNIPER_SHOT, RPG,
             SHOTGUN, EXPLOCION;
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
+    public TextureAtlas atlasButtons;
+    public Texture buttonBg;
     private TextureAtlas atlasPolicias;
     private TextureAtlas atlasAnimCriminals;
 
@@ -57,6 +61,10 @@ public class Recurses {
                 super.finalize();
             }
         };
+        atlasButtons = new TextureAtlas();
+
+        buttonBg = new Texture("grafics/textures/buttonBack.png");
+        atlasButtons.addRegion("btt_bg", TextureRegion.split(buttonBg, buttonBg.getWidth(), buttonBg.getHeight())[0][0]);
     }
 
     public TextureRegion getPolicia(Cop cop) {
@@ -136,8 +144,34 @@ public class Recurses {
         RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
     }
 
-
     public enum AnimatedCriminals {
         bane, bicicletaFinal, enemigoEspadon, ladronEscopetaBueno;
     }
+
+    @Override
+    public void dispose() {
+        atlasAnimCriminals.dispose();
+        atlasPolicias.dispose();
+        buttonBg.dispose();
+        atlasButtons.dispose();
+
+        MACHINE_GUN.dispose();
+        SILENCER.dispose();
+        ALARM.dispose();
+        SHOTGUN.dispose();
+        MP5_SMG.dispose();
+        EXPLOCION.dispose();
+        GUN.dispose();
+        SNIPER_SHOT.dispose();
+        RPG.dispose();
+
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        dispose();
+        super.finalize();
+    }
+
+
 }

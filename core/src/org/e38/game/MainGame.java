@@ -19,16 +19,6 @@ public class MainGame extends Game {
             }
         }, "contextLoaderThread").start();
         setScreen(new SplashScreen(this));
-//        try {
-//            SecretKey key = KeyGenerator.getInstance("AES").generateKey();
-//            Writer writer = new FileWriter("key");
-//            writer.write(Base64.getEncoder().encodeToString(key.getEncoded()));
-//            writer.close();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
