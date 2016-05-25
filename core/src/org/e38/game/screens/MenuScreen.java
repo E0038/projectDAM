@@ -20,6 +20,7 @@ import org.e38.game.Recurses;
 import org.e38.game.World;
 import org.e38.game.model.Level;
 import org.e38.game.model.npc.NPC;
+import org.e38.game.persistance.Profile;
 import org.e38.game.persistance.ProfileManager;
 
 /**
@@ -68,8 +69,8 @@ public class MenuScreen implements Screen {
     }
 
     private void createButtons() {
-        TextureRegionDrawable d = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(d, d, d, new BitmapFont());
+        TextureRegionDrawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
         style.font.setColor(Color.BLACK);
         newGame = new TextButton("New Game", style);
 
@@ -113,7 +114,7 @@ public class MenuScreen implements Screen {
         newGame.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MenuScreen.this.newGame();
+                newGame();
             }
         });
         selectLevel.addListener(new ClickListener() {
@@ -127,7 +128,6 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 continueGame();
             }
-
         });
 
     }
@@ -146,7 +146,12 @@ public class MenuScreen implements Screen {
 
     private void continueGame() {
         System.out.println("continue");
-// TODO: 5/25/16  
+        Profile profile = ProfileManager.getInstance().getProfile();
+        if (profile.getCompleteLevels().size() > 0) {
+            // TODO: 5/25/16
+        } else {
+            selectLevel();
+        }
     }
 
     @Override

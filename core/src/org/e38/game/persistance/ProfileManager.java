@@ -31,10 +31,10 @@ public class ProfileManager {
         }
     }
 
+    public Gson gson;
     //    private final Base64.Encoder base64Encoder = Base64.getEncoder();
 //    private final Base64.Decoder base64Decoder = Base64.getDecoder();
-    public FileHandle localBackup;
-    public Gson gson;
+    private FileHandle localBackup;
     private FileHandle configFile = Gdx.files.local("data/app.conf");
     private String localPath;
     private FileHandle profilesFile;
@@ -184,6 +184,10 @@ public class ProfileManager {
         return ourInstance;
     }
 
+    public Profile getProfile() {
+        return profile;
+    }
+
     public void save(Level level) {
         List<Level> list = profile.getCompleteLevels();
         if (list.contains(level)) {
@@ -261,6 +265,7 @@ public class ProfileManager {
         profilesFile.delete();
         try {
             createFiles(profilesFile.file());
+            loadFiles(profilesFile.file());
             return true;
         } catch (IOException e) {
             Gdx.app.log(getClass().getName(), e.getMessage(), e);
