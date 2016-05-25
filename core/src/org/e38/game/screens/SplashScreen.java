@@ -92,8 +92,8 @@ public class SplashScreen implements Screen {
         System.out.println(ProfileManager.getInstance().gson.toJson(lvl));
         System.out.println(level);
         lvl.onCreate();
-        game.setScreen(new LevelScreen(lvl, game));
-
+//        game.setScreen(new LevelScreen(lvl, game));
+        game.setScreen(new MenuScreen(game));
     }
 
     @Override
