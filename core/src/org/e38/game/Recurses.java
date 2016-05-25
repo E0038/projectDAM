@@ -118,7 +118,7 @@ public class Recurses {
      * Is recommended to run this on separate thread
      */
     public void load() {
-        ProfileManager.getProfile();//load static context
+        ProfileManager.getInstance();//load static context
         createSounds();
         // TODO: 4/27/16 init asserts
         isLoaded.set(true);

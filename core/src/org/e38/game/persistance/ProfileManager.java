@@ -180,7 +180,7 @@ public class ProfileManager {
         }
     }
 
-    public static ProfileManager getProfile() {
+    public static ProfileManager getInstance() {
         return ourInstance;
     }
 

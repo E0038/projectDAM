@@ -14,6 +14,8 @@ import java.io.IOException;
 public class World {
     public static final String FACIL = "FACIL", NORMAL = "NORMAL", DIFICIL = "DIFICIL";
     public static final float MAX_SPEED = 3.0f;
+    public static final int WORLD_WIDTH = 800;
+    public static final int WORLD_HEIGHT = 600;
     /**
      * valueOf Enum dificultat the enum will be restored with Level.Dificultat.valueOf();
      * default: NORMAL
@@ -74,7 +76,7 @@ public class World {
 
     public void exit() {
         try {
-            ProfileManager.getProfile().persistSave();
+            ProfileManager.getInstance().persistSave();
         } catch (IOException e) {
             Gdx.app.log(ProfileManager.class.getName(), "save failed", e);
         }

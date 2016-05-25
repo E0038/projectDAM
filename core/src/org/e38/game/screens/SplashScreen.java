@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.World;
 import org.e38.game.model.Level;
@@ -47,7 +48,7 @@ public class SplashScreen implements Screen {
         };
         TextureRegion[][] regions = TextureRegion.split(loadingSprite, loadingSprite.getWidth() / LOADING_GIF_PARTS, loadingSprite.getHeight());
         loadingGif = new AnimationManager(new Animation(0.01f, regions[0]));
-        stage = new Stage();
+        stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
         Label label = new Label("LOADING...", new Label.LabelStyle(new BitmapFont(), Color.BLACK)) {
             @Override
             protected void finalize() throws Throwable {
@@ -87,8 +88,8 @@ public class SplashScreen implements Screen {
         ArrayList<Wave> waves = new ArrayList<>();
         waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
         lvl.waves = waves;
-        Level level = ProfileManager.getProfile().gson.fromJson("{\"coins\":0,\"INIT_LIFES\":0,\"waves\":[{\"criminals\":[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}],\"gap\":0.0}],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n", Level.class);
-        System.out.println(ProfileManager.getProfile().gson.toJson(lvl));
+        Level level = ProfileManager.getInstance().gson.fromJson("{\"coins\":0,\"INIT_LIFES\":0,\"waves\":[{\"criminals\":[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}],\"gap\":0.0}],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n", Level.class);
+        System.out.println(ProfileManager.getInstance().gson.toJson(lvl));
         System.out.println(level);
         lvl.onCreate();
         game.setScreen(new LevelScreen(lvl, game));
