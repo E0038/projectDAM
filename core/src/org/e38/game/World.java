@@ -7,6 +7,7 @@ import org.e38.game.model.Level;
 import org.e38.game.persistance.ProfileManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +24,10 @@ public class World {
      */
     public static String selecteDificultat = NORMAL;
     public static float speed = 1.0f;
+    public static List<Level> levels = new ArrayList<>();
     private static float volume = 0.5f;
     public static float lastVolum = volume;
     private static Recurses recurses;
-    public static List<Level> levels;
     private Level level;
 
     public World(Level level) {
