@@ -7,6 +7,7 @@ import org.e38.game.model.Level;
 import org.e38.game.persistance.ProfileManager;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by sergi on 4/20/16.
@@ -25,11 +26,11 @@ public class World {
     private static float volume = 0.5f;
     public static float lastVolum = volume;
     private static Recurses recurses;
+    public static List<Level> levels;
     private Level level;
 
     public World(Level level) {
         this.level = level;
-
     }
 
     public World() {

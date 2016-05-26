@@ -32,8 +32,6 @@ public class LevelSerializer implements JsonDeserializer<Level>, JsonSerializer<
         }.getType());
         level.setInitLifes(lif).setLifes(lif);
         level.waveGap = waveGap;
-        level.onCreate();
-
         return level;
     }
 

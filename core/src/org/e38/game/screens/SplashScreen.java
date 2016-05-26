@@ -16,12 +16,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.World;
 import org.e38.game.model.Level;
-import org.e38.game.model.Wave;
-import org.e38.game.model.npc.Criminal;
-import org.e38.game.persistance.ProfileManager;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by sergi on 4/22/16.
@@ -84,6 +78,10 @@ public class SplashScreen implements Screen {
     }
 
     private void onGameLoaded() {
+        for (Level level :
+                World.levels) {
+            level.onCreate();//no se puede desde el hilo de carga porque usa el contexto OpenGl
+        }
         game.setScreen(new MenuScreen(game));
     }
 

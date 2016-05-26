@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
+import com.google.gson.reflect.TypeToken;
+import org.e38.game.model.Level;
 import org.e38.game.model.npc.Cop;
 import org.e38.game.model.npc.Criminal;
 import org.e38.game.model.npc.NPC;
 import org.e38.game.persistance.ProfileManager;
 import org.e38.game.screens.AnimationManager;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -57,15 +61,45 @@ public class Recurses implements Disposable {
                 super.finalize();
             }
         };
-        atlasAnimCriminals = new TextureAtlas(GRAFICS_TEXTURES_ACRIMINALS_PACK) {@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
+        atlasAnimCriminals = new TextureAtlas(GRAFICS_TEXTURES_ACRIMINALS_PACK) {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
         atlasButtons = new TextureAtlas();
 
-        buttonBg = new Texture("grafics/textures/buttonBack.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
+        buttonBg = new Texture("grafics/textures/buttonBack.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
         atlasButtons.addRegion("btt_bg", TextureRegion.split(buttonBg, buttonBg.getWidth(), buttonBg.getHeight())[0][0]);
 
-        mute = new Texture("grafics/textures/audio-mute.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
-        unmute = new Texture("grafics/textures/audio-unmute.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
-        exitBtt = new Texture("grafics/textures/exit-button.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
+        mute = new Texture("grafics/textures/audio-mute.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        unmute = new Texture("grafics/textures/audio-unmute.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        exitBtt = new Texture("grafics/textures/exit-button.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
     }
 
     public TextureRegion getPolicia(Cop cop) {
@@ -129,6 +163,7 @@ public class Recurses implements Disposable {
     public void load() {
         ProfileManager.getInstance();//load static context
         createSounds();
+        loadLevels();
         isLoaded.set(true);
     }
 
@@ -142,6 +177,16 @@ public class Recurses implements Disposable {
         GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
         SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
         RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
+    }
+
+    private void loadLevels() {
+        try {
+            String json = ProfileManager.readChars(Gdx.files.internal("raw/rawLevels.json").file());
+            World.levels = ProfileManager.getInstance().gson.fromJson(json, new TypeToken<List<Level>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public enum AnimatedCriminals {

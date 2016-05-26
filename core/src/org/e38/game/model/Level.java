@@ -154,6 +154,9 @@ public class Level {
         onCreate();
     }
 
+    /**
+     * extra init code with OpenGl context enabled
+     */
     public void onCreate() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         map = new TmxMapLoader().load(mapPath);
