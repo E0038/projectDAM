@@ -19,7 +19,7 @@ public class Criminal implements Hittable {
     /**
      * diff time between pointer increment
      */
-    protected long speed = 200;
+    protected long speed = 100;
     protected Orientation orientation = Orientation.LEFT;
     protected OrientationListener listener;
     protected OnEndListener onEndListener;
@@ -80,10 +80,6 @@ public class Criminal implements Hittable {
         return this;
     }
 
-    public void nextPosition() {
-        pathPointer++;
-    }
-
     /**
      * get the points (Money) of Criminal
      *
@@ -135,18 +131,41 @@ public class Criminal implements Hittable {
     @Override
     public void onUpdate(float delta) {
         if (System.currentTimeMillis() - lastNext >= speed) {
-            next();
+            nextPosition();
         }
     }
 
-    protected void next() {
-        if (pathPointer < level.getPath().size()) pathPointer++;
-        else {
+    protected void nextPosition() {
+        if (pathPointer < level.getPath().size()) {
+            int next = pathPointer + 1;
+            setsOritantionRelativeTo(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
+            pathPointer = next;
+        } else {
             if (onEndListener != null) onEndListener.onEnd();
             state = State.DEAD;
             onDie();
         }
         lastNext = System.currentTimeMillis();
+    }
+
+    /**
+     * note only support moves in horizontal or vertical
+     *
+     * @param currentPoint
+     * @param nextPoint
+     */
+    private void setsOritantionRelativeTo(MapProperties currentPoint, MapProperties nextPoint) {
+        float x0 = (float) currentPoint.get("x");
+        float y0 = (float) currentPoint.get("y");
+        float x1 = (float) nextPoint.get("x");
+        float y1 = (float) nextPoint.get("y");
+
+        if (x0 == x1) { //vertical
+            orientation = y1 > y0 ? Orientation.TOP : Orientation.DOWN;
+        } else if (y0 == y1) {//horizontal
+            orientation = x1 > x0 ? Orientation.LEFT : Orientation.RIGHT;
+        }
+
     }
 
     @Override

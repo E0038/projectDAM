@@ -183,7 +183,7 @@ public abstract class Cop implements NPC {
     public abstract boolean isUpgradeAvailable();
 
     /**
-     * upgrade to next level , if upgrade is not supported do nothing
+     * upgrade to nextPosition level , if upgrade is not supported do nothing
      */
     public abstract void onUpgrade();
 

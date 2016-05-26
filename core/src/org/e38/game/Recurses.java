@@ -129,7 +129,6 @@ public class Recurses implements Disposable {
     public void load() {
         ProfileManager.getInstance();//load static context
         createSounds();
-        // TODO: 4/27/16 init asserts
         isLoaded.set(true);
     }
 

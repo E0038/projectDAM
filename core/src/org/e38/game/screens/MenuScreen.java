@@ -191,8 +191,6 @@ public class MenuScreen implements Screen {
 
     private void selectLevel() {
         game.setScreen(new LevelSelectScreen(game));
-        System.out.println("select");
-
     }
 
     private void continueGame() {
