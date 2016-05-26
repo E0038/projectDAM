@@ -160,12 +160,16 @@ public class Criminal implements Hittable {
         float x1 = (float) nextPoint.get("x");
         float y1 = (float) nextPoint.get("y");
 
+        oritentationRelative(x0, y0, x1, y1);
+
+    }
+
+    private void oritentationRelative(float x0, float y0, float x1, float y1) {
         if (x0 == x1) { //vertical
             orientation = y1 > y0 ? Orientation.TOP : Orientation.DOWN;
         } else if (y0 == y1) {//horizontal
             orientation = x1 > x0 ? Orientation.RIGHT : Orientation.LEFT;
         }
-
     }
 
     @Override
