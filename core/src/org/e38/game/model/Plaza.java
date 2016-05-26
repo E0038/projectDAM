@@ -31,19 +31,25 @@ public class Plaza extends Actor {
         addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println(x + " : " + y);
+//                System.out.println(x + " : " + y);
                 System.out.println(propetresToString(object.getProperties()));
-                levelScreen.showHideCopsBar(object);
+                if(object.getProperties().get("ocupada").equals(true)){
+                    levelScreen.showHideCopsBar(object);
+                    levelScreen.showHideImproveBar();
 
-                levelScreen.unSelectLastPlaza();
-                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
+                }else {
+                    levelScreen.showHideCopsBar(object);
 
-                //marcar seleccionada al hacer click
-                if (object.getProperties().get("isSelected") == null)
-                    object.getProperties().put("isSelected", true);
-                else
-                    object.getProperties().put("isSelected", !(boolean)object.getProperties().get("isSelected"));
+                    levelScreen.unSelectLastPlaza();
+                    //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+                    levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
+
+                    //marcar seleccionada al hacer click
+                    if (object.getProperties().get("isSelected") == null)
+                        object.getProperties().put("isSelected", true);
+                    else
+                        object.getProperties().put("isSelected", !(boolean) object.getProperties().get("isSelected"));
+                }
 
                 return true;
             }
@@ -59,5 +65,9 @@ public class Plaza extends Actor {
         }
         builder.append("}");
         return builder.toString();
+    }
+
+    public void setOcupada(){
+        object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
     }
 }

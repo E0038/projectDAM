@@ -42,7 +42,7 @@ public class ImproveBar implements Disposable {
         table.setSize(300, 26);
 
         table.setX(0);
-        table.setY(y);
+        table.setY(y+10);
 
         mejorar = new Label("Mejorar", new Label.LabelStyle(new BitmapFont(), Color.RED));
         vender = new Label("Vender", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
