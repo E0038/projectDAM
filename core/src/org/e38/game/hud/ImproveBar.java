@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.e38.game.model.npc.Cop;
 
-public class ImproveBar implements Disposable {
+public class ImproveBar implements Disposable, Bar {
     public Stage stage;
     OrthographicCamera cam;
     private Viewport viewport;
@@ -23,10 +23,9 @@ public class ImproveBar implements Disposable {
     Skin skin;
     private int money;
     public Table table;
-    Cop cop;
 
-    public ImproveBar(int money, float y, Cop cop){
-        this.cop = cop;
+
+    public ImproveBar(int money, float y){
         this.money = money;
         cam = new OrthographicCamera();
         skin = new Skin();
@@ -42,7 +41,7 @@ public class ImproveBar implements Disposable {
         table.setSize(300, 26);
 
         table.setX(0);
-        table.setY(y+10);
+        table.setY(y);
 
         mejorar = new Label("Mejorar", new Label.LabelStyle(new BitmapFont(), Color.RED));
         vender = new Label("Vender", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
@@ -55,13 +54,24 @@ public class ImproveBar implements Disposable {
         stage.addActor(table);
     }
 
-   public void updateColor(){
+    @Override
+    public void updateBar(int money) {
+
+    }
+
+    @Override
+    public void updateColor(Cop cop){
         mejorar.setColor(cop.isUpgradeAvailable() ? Color.GREEN: Color.RED);
    }
 
     @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
     public void dispose() {
-        //TO DO
+        stage.dispose();
     }
     @Override
     public void finalize() {

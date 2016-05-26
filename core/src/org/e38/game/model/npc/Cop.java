@@ -201,10 +201,10 @@ public abstract class Cop implements NPC {
     /**
      * default impl does nothing , override to play sell animations
      */
-    protected void onSell() {
+    public void onSell() {
     }
 
-    protected static class CopLevel {
+    public static class CopLevel {
         /**
          * el 25% del precio de compra
          */

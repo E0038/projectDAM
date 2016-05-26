@@ -1,14 +1,11 @@
 package org.e38.game.model;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import org.e38.game.screens.LevelScreen;
 
 import java.util.Iterator;
@@ -33,23 +30,23 @@ public class Plaza extends Actor {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 //                System.out.println(x + " : " + y);
                 System.out.println(propetresToString(object.getProperties()));
-                if(object.getProperties().get("ocupada").equals(true)){
-                    levelScreen.showHideCopsBar(object);
-                    levelScreen.showHideImproveBar();
 
-                }else {
-                    levelScreen.showHideCopsBar(object);
 
+                object.getProperties().put("isSelected", true);
+                if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
                     levelScreen.unSelectLastPlaza();
-                    //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                    levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
+                if (object.getProperties().get("ocupada").equals(true)) {
 
-                    //marcar seleccionada al hacer click
-                    if (object.getProperties().get("isSelected") == null)
-                        object.getProperties().put("isSelected", true);
-                    else
-                        object.getProperties().put("isSelected", !(boolean) object.getProperties().get("isSelected"));
+                    levelScreen.showImproveBar();
+
+                } else {
+                    levelScreen.showCopsBar();
+
+
                 }
+                levelScreen.changeButtonsState();
+                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
 
                 return true;
             }

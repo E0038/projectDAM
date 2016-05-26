@@ -11,8 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.e38.game.model.npc.Cop;
 
-public class CopsBar implements Disposable {
+public class CopsBar implements Disposable, Bar {
     public Stage stage;
     OrthographicCamera cam;
     private Viewport viewport;
@@ -20,7 +21,7 @@ public class CopsBar implements Disposable {
     private int money;
     public Table table;
 
-    public CopsBar(int money, float Y){
+    public CopsBar(int money, float Y) {
         this.money = money;
         cam = new OrthographicCamera();
         skin = new Skin();
@@ -37,27 +38,38 @@ public class CopsBar implements Disposable {
         stage.addActor(table);
     }
 
-   public void updateBar(int money){
-       skin = new Skin();
-       if(money < 10)
+    @Override
+    public void updateBar(int money) {
+        skin = new Skin();
+        if (money < 10)
             skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png"));
-       else if (money < 20)
-           skin.add("cop_bar", new Texture("grafics/hud/cops/L20.png"));
-       else if (money < 30)
-           skin.add("cop_bar", new Texture("grafics/hud/cops/L30.png"));
-       else if (money < 40)
-           skin.add("cop_bar", new Texture("grafics/hud/cops/L40.png"));
-       else
-           skin.add("cop_bar", new Texture("grafics/hud/cops/All.png"));
-       table.background(skin.newDrawable("cop_bar"));
-       stage.addActor(table);
-   }
+        else if (money < 20)
+            skin.add("cop_bar", new Texture("grafics/hud/cops/L20.png"));
+        else if (money < 30)
+            skin.add("cop_bar", new Texture("grafics/hud/cops/L30.png"));
+        else if (money < 40)
+            skin.add("cop_bar", new Texture("grafics/hud/cops/L40.png"));
+        else
+            skin.add("cop_bar", new Texture("grafics/hud/cops/All.png"));
+        table.background(skin.newDrawable("cop_bar"));
+        stage.addActor(table);
+    }
 
+    @Override
+    public void updateColor(Cop cop) {
+
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
 
     @Override
     public void dispose() {
-        //TO DO
+        stage.dispose();
     }
+
     @Override
     public void finalize() {
         this.dispose();

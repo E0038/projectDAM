@@ -19,7 +19,7 @@ public class Criminal implements Hittable {
     /**
      * diff time between pointer increment
      */
-    protected long speed = 100;
+    protected long speed = 10;
     protected Orientation orientation = Orientation.LEFT;
     protected OrientationListener listener;
     protected OnEndListener onEndListener;
