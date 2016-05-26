@@ -35,10 +35,10 @@ public class LevelSelectScreen implements Screen {
         TextureRegionDrawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
         table = new Table(new Skin());
-        float actorWidth = Gdx.graphics.getWidth() / TABLES_ROWS;
-        float actorHeight = Gdx.graphics.getHeight() / TABLE_COLS;
+        float actorWidth = stage.getViewport().getWorldWidth() / TABLES_ROWS;
+        float actorHeight = stage.getViewport().getWorldHeight() / TABLE_COLS;
         fillTable(buttonStyle, actorWidth, actorHeight);
-        table.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }

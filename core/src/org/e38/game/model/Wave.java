@@ -6,6 +6,7 @@ import org.e38.game.model.npc.NPC;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * container class
@@ -13,7 +14,7 @@ import java.util.List;
 public class Wave {
     private List<Criminal> criminals = new ArrayList<>();
     private long gap = 0;
-    private transient int spawnPointer = -1;
+    private transient volatile AtomicInteger spawnPointer = new AtomicInteger(-1);
 
     private boolean isAllSpawn = false;
     private boolean isClear = false;
@@ -53,7 +54,7 @@ public class Wave {
 
     public void onUpdate(float delta) {
         if (!isClear) {
-            if (spawnPointer < 0) {
+            if (spawnPointer.get() < 0) {
                 spawner();
             }
             updateCriminals(delta);
@@ -62,7 +63,7 @@ public class Wave {
 
     private void updateCriminals(float delta) {
         boolean ck = true;
-        System.out.println(criminals);
+//        System.out.println(criminals);
         for (Criminal criminal : criminals) {
             if (criminal.getState() != NPC.State.DEAD) {
                 ck = false;
@@ -82,10 +83,10 @@ public class Wave {
     }
 
     private void onFinish() {
-        int idx = ++spawnPointer;
+        int idx = spawnPointer.incrementAndGet();
         if (isAllSpawn || idx < criminals.size())
             criminals.get(idx).onSpawn();
-        else isAllSpawn = true;
+        else isAllSpawn = false;
         if (!isAllSpawn) {
             new SheludedAction(gap) {
                 @Override

@@ -114,28 +114,28 @@ public class MenuScreen implements Screen {
     }
 
     private void configureButtons() {
-        float centerX = (Gdx.graphics.getWidth() / 2) - World.getRecurses().buttonBg.getWidth() / 2;
+        float centerX = (stage.getViewport().getWorldWidth() / 2) - World.getRecurses().buttonBg.getWidth() / 2;
         float bttWidth = World.getRecurses().buttonBg.getWidth();
         float bttHeight = World.getRecurses().buttonBg.getHeight();
 
         title.setFontScale(1.5f);
         title.setX(centerX + title.getWidth() / 2);
-        title.setY((Gdx.graphics.getHeight() / 10) * 8);
+        title.setY((stage.getViewport().getWorldHeight() / 10) * 8);
 
         newGame.setSize(bttWidth, bttHeight);
-        newGame.setY((Gdx.graphics.getHeight() / 10) * 6);
+        newGame.setY((stage.getViewport().getWorldHeight() / 10) * 6);
         newGame.setX(centerX);
 
         continueGame.setSize(bttWidth, bttHeight);
-        continueGame.setY((Gdx.graphics.getHeight() / 10) * 5);
+        continueGame.setY((stage.getViewport().getWorldHeight() / 10) * 5);
         continueGame.setX(centerX);
 
         selectLevel.setSize(bttWidth, bttHeight);
-        selectLevel.setY((Gdx.graphics.getHeight() / 10) * 4);
+        selectLevel.setY((stage.getViewport().getWorldHeight() / 10) * 4);
         selectLevel.setX(centerX);
 
         exit.setSize(World.getRecurses().exitBtt.getWidth(), World.getRecurses().exitBtt.getHeight());
-        exit.setPosition(Gdx.graphics.getWidth() - exit.getWidth(), 0);
+        exit.setPosition(stage.getViewport().getWorldWidth() - exit.getWidth(), 0);
 
         volumeSwitch.setSize(World.getRecurses().unmute.getWidth(), World.getRecurses().unmute.getHeight());
         volumeSwitch.setPosition(0, 0);

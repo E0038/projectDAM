@@ -20,7 +20,7 @@ public class GameUpdater {
     //TODO
     public void update(float delta) {
         if (level.wavePointer < level.waves.size()) {
-            System.out.println(level.wavePointer);
+//            System.out.println(level.wavePointer);
             final Wave wave = level.waves.get(level.wavePointer);
             wave.onUpdate(delta);
             if (wave.isClear()) level.wavePointer++;

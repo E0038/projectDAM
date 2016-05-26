@@ -141,9 +141,8 @@ public class Criminal implements Hittable {
             setsOritantionRelativeTo(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
             pathPointer = next;
         } else {
-            if (onEndListener != null) onEndListener.onEnd();
+            if (onEndListener != null) onEndListener.onEnd(this, false);
             state = State.DEAD;
-            onDie();
         }
         lastNext = System.currentTimeMillis();
     }
@@ -159,16 +158,14 @@ public class Criminal implements Hittable {
         float y0 = (float) currentPoint.get("y");
         float x1 = (float) nextPoint.get("x");
         float y1 = (float) nextPoint.get("y");
-
-        oritentationRelative(x0, y0, x1, y1);
-
+        setOritentationRelative(x0, y0, x1, y1);
     }
 
-    private void oritentationRelative(float x0, float y0, float x1, float y1) {
+    private void setOritentationRelative(float x0, float y0, float x1, float y1) {
         if (x0 == x1) { //vertical
-            orientation = y1 > y0 ? Orientation.TOP : Orientation.DOWN;
+            setOrientation(y1 > y0 ? Orientation.TOP : Orientation.DOWN);
         } else if (y0 == y1) {//horizontal
-            orientation = x1 > x0 ? Orientation.RIGHT : Orientation.LEFT;
+            setOrientation(orientation = x1 > x0 ? Orientation.RIGHT : Orientation.LEFT);
         }
     }
 
@@ -184,7 +181,7 @@ public class Criminal implements Hittable {
 
     @Override
     public void onDie() {
-
+        if (onEndListener != null) onEndListener.onEnd(this, true);
     }
 
     @Override
@@ -278,6 +275,6 @@ public class Criminal implements Hittable {
     }
 
     public interface OnEndListener {
-        void onEnd();
+        void onEnd(Criminal criminal, boolean died);
     }
 }
