@@ -160,8 +160,8 @@ public class MenuScreen implements Screen {
 
 
         boolean isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
-        selectLevel.setDisabled(!isNewGame);
-        continueGame.setDisabled(!isNewGame);
+        selectLevel.setDisabled(isNewGame);
+        continueGame.setDisabled(isNewGame);
 
         volumeSwitch.addListener(new ClickListener() {
             @Override
@@ -179,6 +179,7 @@ public class MenuScreen implements Screen {
                 super.clicked(event, x, y);
             }
         });
+
 
     }
 
