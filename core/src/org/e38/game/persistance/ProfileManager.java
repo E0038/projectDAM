@@ -156,7 +156,7 @@ public class ProfileManager {
         }
     }
 
-    private String readChars(File file) throws IOException {
+    public static String readChars(File file) throws IOException {
         Reader reader = new FileReader(file);
         char[] chars = new char[1024];
         StringBuilder builder = new StringBuilder();
