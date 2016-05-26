@@ -92,6 +92,7 @@ public class LevelSelectScreen implements Screen {
         //END
         table.setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
