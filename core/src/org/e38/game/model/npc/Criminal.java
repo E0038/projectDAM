@@ -136,7 +136,7 @@ public class Criminal implements Hittable {
     }
 
     protected void nextPosition() {
-        if (pathPointer < level.getPath().size()) {
+        if (pathPointer < level.getPath().size()-1) {
             int next = pathPointer + 1;
             setsOritantionRelativeTo(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
             pathPointer = next;
