@@ -21,11 +21,11 @@ public class World {
      * default: NORMAL
      */
     public static String selecteDificultat = NORMAL;
+    public static float speed = 1.0f;
     private static float volume = 0.5f;
     public static float lastVolum = volume;
-    public static float speed = 1.0f;
-    private Level level;
     private static Recurses recurses;
+    private Level level;
 
     public World(Level level) {
         this.level = level;
@@ -67,16 +67,25 @@ public class World {
         World.volume = volumne;
     }
 
-    public static void setRecurses(Recurses recurses) {
-        World.recurses = recurses;
+    public static boolean isMuted() {
+        return volume == 0f;
     }
+
     public static float getVolume() {
         return volume;
     }
 
-    public void exit() {
+    public static Recurses getRecurses() {
+        return recurses;
+    }
+
+    public static void setRecurses(Recurses recurses) {
+        World.recurses = recurses;
+    }
+
+    public static void exit() {
         try {
-            ProfileManager.getInstance().persistSave();
+            ProfileManager.getInstance().persistentSave();
         } catch (IOException e) {
             Gdx.app.log(ProfileManager.class.getName(), "save failed", e);
         }
@@ -92,9 +101,5 @@ public class World {
         } else {
             speed = 1f;
         }
-    }
-
-    public static Recurses getRecurses() {
-        return recurses;
     }
 }

@@ -206,7 +206,7 @@ public class ProfileManager {
      *
      * @throws IOException
      */
-    public void persistSave() throws IOException {
+    public void persistentSave() throws IOException {
         profilesFile.copyTo(localBackup);
         try {
             profilesFile.delete();//truncate

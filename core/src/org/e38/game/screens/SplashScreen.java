@@ -84,15 +84,6 @@ public class SplashScreen implements Screen {
     }
 
     private void onGameLoaded() {
-        Level lvl = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
-        ArrayList<Wave> waves = new ArrayList<>();
-        waves.add(new Wave(Arrays.asList(new Criminal(), new Criminal())));
-        lvl.waves = waves;
-        Level level = ProfileManager.getInstance().gson.fromJson("{\"coins\":0,\"INIT_LIFES\":0,\"waves\":[{\"criminals\":[{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"},{\"state\":\"SPAWING\",\"hpPoints\":0.0,\"dodgeRate\":0.0,\"protecion\":0.0,\"orientation\":\"LEFT\",\"pathPointer\":0,\"totalHpPoins\":10.0,\"name\":\"bane\"}],\"gap\":0.0}],\"mapPath\":\"grafics/map1/Mapa_lvl1.tmx\",\"waveGap\":3000.0}\n", Level.class);
-        System.out.println(ProfileManager.getInstance().gson.toJson(lvl));
-        System.out.println(level);
-        lvl.onCreate();
-//        game.setScreen(new LevelScreen(lvl, game));
         game.setScreen(new MenuScreen(game));
     }
 

@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -27,6 +29,7 @@ import org.e38.game.persistance.ProfileManager;
  * Created by sergi on 4/20/16.
  */
 public class MenuScreen implements Screen {
+    public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     private final MainGame game;
     int count = 0;
     AnimationManager[] animationManagers;
@@ -40,6 +43,10 @@ public class MenuScreen implements Screen {
     private TextButton continueGame;
     private TextButton selectLevel;
     private Label title;
+    private ImageButton exit;
+    private ImageButton volumeSwitch;
+    private TextureRegionDrawable umuteDrawable;
+    private TextureRegionDrawable muteDrawable;
 
     public MenuScreen(final MainGame game) {
         this.game = game;
@@ -59,33 +66,50 @@ public class MenuScreen implements Screen {
         configureButtons();
         game.resume();//fix false pause state
 //        debugShow();
-        stage.addActor(selectLevel);
-        stage.addActor(continueGame);
-        stage.addActor(newGame);
-        stage.addActor(title);
+//        stage.addActor(selectLevel);
+//        stage.addActor(continueGame);
+//        stage.addActor(newGame);
+//        stage.addActor(title);
+//        stage.addActor(exit);
+//        stage.addActor(volumeSwitch);
+        stage.getActors().addAll(selectLevel, continueGame, newGame, title,exit,volumeSwitch);
         Gdx.input.setInputProcessor(stage);
-//        stage.getActors().addAll(selectLevel, continueGame, newGame, title);
 
     }
 
     private void createButtons() {
         TextureRegionDrawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
-        style.font.setColor(Color.BLACK);
+        style.fontColor = Color.BLACK;
         newGame = new TextButton("New Game", style);
 
-        continueGame = new TextButton("Continue Game", style) {
+        continueGame = new TextButton("Continue Game", new TextButton.TextButtonStyle(style)) {
             @Override
             public void setDisabled(boolean isDisabled) {
-//                getStyle().font.setColor(isDisabled ? Color.GREEN : Color.BLACK);
-                setColor(isDisabled ? Color.GREEN : Color.BLACK);
+                getStyle().fontColor = isDisabled ? Color.GRAY : Color.BLACK;
+                setTouchable(isDisabled ? Touchable.disabled : Touchable.enabled);
                 super.setDisabled(isDisabled);
             }
         };
-        selectLevel = new TextButton("Select Level", style);
+
+        selectLevel = new TextButton("Select Level", new TextButton.TextButtonStyle(style)) {
+            @Override
+            public void setDisabled(boolean isDisabled) {
+                getStyle().fontColor = isDisabled ? Color.GRAY : Color.BLACK;
+                setTouchable(isDisabled ? Touchable.disabled : Touchable.enabled);
+                super.setDisabled(isDisabled);
+            }
+        };
 
         title = new Label("Bank Defense", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
+
+        this.exit = new ImageButton(new TextureRegionDrawable(new TextureRegion(World.getRecurses().exitBtt)));
+
+        umuteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().unmute));
+        muteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().mute));
+
+        volumeSwitch = new ImageButton(World.getVolume() == 0f ? umuteDrawable : muteDrawable);
 
     }
 
@@ -110,7 +134,11 @@ public class MenuScreen implements Screen {
         selectLevel.setY((Gdx.graphics.getHeight() / 10) * 4);
         selectLevel.setX(centerX);
 
+        exit.setSize(World.getRecurses().exitBtt.getWidth(), World.getRecurses().exitBtt.getHeight());
+        exit.setPosition(Gdx.graphics.getWidth() - exit.getWidth(), 0);
 
+        volumeSwitch.setSize(World.getRecurses().unmute.getWidth(), World.getRecurses().unmute.getHeight());
+        volumeSwitch.setPosition(0, 0);
         newGame.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -127,6 +155,28 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 continueGame();
+            }
+        });
+
+
+        boolean isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
+        selectLevel.setDisabled(!isNewGame);
+        continueGame.setDisabled(!isNewGame);
+
+        volumeSwitch.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                World.onSwichMuteUnMute();
+                volumeSwitch.getStyle().imageUp = World.isMuted() ? umuteDrawable : muteDrawable;
+                super.clicked(event, x, y);
+            }
+        });
+
+        exit.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                World.exit();
+                super.clicked(event, x, y);
             }
         });
 

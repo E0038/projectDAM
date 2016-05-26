@@ -35,6 +35,9 @@ public class Recurses implements Disposable {
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
     public TextureAtlas atlasButtons;
     public Texture buttonBg;
+    public Texture mute;
+    public Texture unmute;
+    public Texture exitBtt;
     private TextureAtlas atlasPolicias;
     private TextureAtlas atlasAnimCriminals;
 
@@ -54,17 +57,15 @@ public class Recurses implements Disposable {
                 super.finalize();
             }
         };
-        atlasAnimCriminals = new TextureAtlas(GRAFICS_TEXTURES_ACRIMINALS_PACK) {
-            @Override
-            protected void finalize() throws Throwable {
-                dispose();
-                super.finalize();
-            }
-        };
+        atlasAnimCriminals = new TextureAtlas(GRAFICS_TEXTURES_ACRIMINALS_PACK) {@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
         atlasButtons = new TextureAtlas();
 
-        buttonBg = new Texture("grafics/textures/buttonBack.png");
+        buttonBg = new Texture("grafics/textures/buttonBack.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
         atlasButtons.addRegion("btt_bg", TextureRegion.split(buttonBg, buttonBg.getWidth(), buttonBg.getHeight())[0][0]);
+
+        mute = new Texture("grafics/textures/audio-mute.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
+        unmute = new Texture("grafics/textures/audio-unmute.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
+        exitBtt = new Texture("grafics/textures/exit-button.png"){@Override protected void finalize() throws Throwable {dispose();super.finalize();}};
     }
 
     public TextureRegion getPolicia(Cop cop) {
@@ -154,6 +155,10 @@ public class Recurses implements Disposable {
         atlasPolicias.dispose();
         buttonBg.dispose();
         atlasButtons.dispose();
+
+        unmute.dispose();
+        mute.dispose();
+        exitBtt.dispose();
 
         MACHINE_GUN.dispose();
         SILENCER.dispose();

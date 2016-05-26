@@ -1,5 +1,6 @@
 package org.e38.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -19,6 +20,7 @@ public class MainGame extends Game {
             }
         }, "contextLoaderThread").start();
         setScreen(new SplashScreen(this));
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
     @Override
