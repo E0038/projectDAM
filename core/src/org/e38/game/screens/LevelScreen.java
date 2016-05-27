@@ -59,7 +59,7 @@ public class LevelScreen implements Screen {
 
 
     private GameUpdater gameUpdater;
-    private Actor[] botonesCop ;
+    private Actor[] botonesCop;
     private Actor[] botonesUpgrade;
 
 
@@ -70,9 +70,9 @@ public class LevelScreen implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
 
-        topBar = new TopBar(0, 0);
+        topBar = new TopBar(level.getCoins(), level.getLifes());
         lowerBar = voidBar;
-        copsBar = new CopsBar(0, topBar.table.getY() - topBar.table.getHeight());
+        copsBar = new CopsBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
         improveBar = new ImproveBar(0, topBar.table.getY() - topBar.table.getHeight());
         gameUpdater = new GameUpdater(level);
     }
@@ -112,6 +112,8 @@ public class LevelScreen implements Screen {
                 a.setPosicion(new Vector2(xPlaza, yPlaza));
                 level.cops.add(a);
                 lowerBar = voidBar;
+                //restamos el precio de compra del dinero del jugador
+                level.setCoins((int) (level.getCoins()-a.getNivel().getPrecioCompra()));
                 level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
                 areaCopButton.setTouchable(Touchable.disabled);
                 return true;
@@ -220,6 +222,8 @@ public class LevelScreen implements Screen {
                 level.cops.remove(cop);
                 lowerBar = voidBar;
                 changeButtonsState();
+
+                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", false);
                 System.out.println(cop.toString());
                 return true;
             }
@@ -236,7 +240,7 @@ public class LevelScreen implements Screen {
         for (MapObject object : level.getLayer().getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
                 float y = (Float) object.getProperties().get("y");
-                object.getProperties().put("y", (float) object.getProperties().get("height") + y);
+                object.getProperties().put("y", (float) /*object.getProperties().get("height") +*/ y);
                 stage.addActor(new Plaza(object, this));
             }
         }
@@ -303,38 +307,36 @@ public class LevelScreen implements Screen {
         float heght = (float) object.getProperties().get("height");
         if (object.getProperties().get("isSelected") != null) {
             if ((boolean) object.getProperties().get("isSelected"))
-                shapeRenderer.rect(x-3, y, width+4, heght+4);
+                shapeRenderer.rect(x - 3, y, width + 4, heght + 4);
         }
     }
 
     public void unSelectLastPlaza() {
-        if (lastPlazaId != 0) {
+        if (lastPlazaId != -1) {
             level.getLayer().getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
         }
     }
 
-    public void changeButtonsState(){
-        if(lowerBar instanceof CopsBar) {
+    public void changeButtonsState() {
+        if (lowerBar instanceof CopsBar) {
             for (Actor a : botonesCop) {
                 a.setTouchable(Touchable.enabled);
             }
             for (Actor a : botonesUpgrade) {
                 a.setTouchable(Touchable.disabled);
             }
-        }
-        else if(lowerBar instanceof ImproveBar){
-            for (Actor a: botonesCop) {
+        } else if (lowerBar instanceof ImproveBar) {
+            for (Actor a : botonesCop) {
                 a.setTouchable(Touchable.disabled);
             }
-            for (Actor a: botonesUpgrade) {
+            for (Actor a : botonesUpgrade) {
                 a.setTouchable(Touchable.enabled);
             }
-        }
-        else{
-            for (Actor a: botonesCop) {
+        } else {
+            for (Actor a : botonesCop) {
                 a.setTouchable(Touchable.disabled);
             }
-            for (Actor a: botonesUpgrade) {
+            for (Actor a : botonesUpgrade) {
                 a.setTouchable(Touchable.disabled);
             }
         }
@@ -354,7 +356,6 @@ public class LevelScreen implements Screen {
 
         copsBar.table.setY(topBar.table.getY() - topBar.table.getHeight());
     }
-
 
 
     @Override

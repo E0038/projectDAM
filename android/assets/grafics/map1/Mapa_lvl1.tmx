@@ -1065,32 +1065,32 @@
     <property name="transitable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="298" name="plaza1" type="plaza" gid="122395" x="119.379" y="322.47" width="32" height="42">
+  <object id="298" name="plaza1" type="plaza" gid="122395" x="119.379" y="280.47" width="32" height="42">
      <properties>
       <property name="ocupada" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="299" name="plaza2" type="plaza" gid="122395" x="119.5" y="370.53" width="32" height="42">
+    <object id="299" name="plaza2" type="plaza" gid="122395" x="119.5" y="328.53" width="32" height="42">
      <properties>
       <property name="ocupada" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="300" name="plaza3" type="plaza" gid="122395" x="415.417" y="388.417" width="32" height="42">
+    <object id="300" name="plaza3" type="plaza" gid="122395" x="415.417" y="346.417" width="32" height="42">
      <properties>
       <property name="ocupada" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="301" name="plaza4" type="plaza" gid="122395" x="455.25" y="388.583" width="32" height="42">
+    <object id="301" name="plaza4" type="plaza" gid="122395" x="455.25" y="346.583" width="32" height="42">
      <properties>
       <property name="ocupada" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="302" name="plaza5" type="plaza" gid="122395" x="607.591" y="508.591" width="32" height="42">
+    <object id="302" name="plaza5" type="plaza" gid="122395" x="607.591" y="468.591" width="32" height="42">
      <properties>
       <property name="ocupada" type="bool" value="false"/>
      </properties>
     </object>
-    <object id="303" name="plaza6" type="plaza" gid="122395" x="647.5" y="508.5" width="32" height="42">
+    <object id="303" name="plaza6" type="plaza" gid="122395" x="647.5" y="466.5" width="32" height="42">
      <properties>
       <property name="ocupada" type="bool" value="false"/>
      </properties>

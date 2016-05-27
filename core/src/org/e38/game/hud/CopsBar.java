@@ -24,14 +24,15 @@ public class CopsBar implements Disposable, Bar {
     public CopsBar(int money, float Y) {
         this.money = money;
         cam = new OrthographicCamera();
-        skin = new Skin();
+//        skin = new Skin();
         viewport = new FitViewport(300, 200, cam);
 
         stage = new Stage(viewport);
-        skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png"));
 
         table = new Table();
-        table.background(skin.newDrawable("cop_bar"));
+
+        updateBar(money);
+//        table.background(skin.newDrawable("cop_bar"));
         table.setSize(300, 26);
         table.setY(Y);
 

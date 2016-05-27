@@ -1,7 +1,7 @@
 [
   {
-    "coins": 0,
-    "INIT_LIFES": 0,
+    "coins": 1000,
+    "INIT_LIFES": 100,
     "waves": [
       {
         "criminals": [
@@ -107,5 +107,43 @@
     ],
     "mapPath": "grafics/map1/Mapa_lvl2.tmx",
     "waveGap": 3000.0
-  }
+  },  {
+  "coins": 1000,
+  "INIT_LIFES": 100,
+  "waves": [
+    {
+      "criminals": [
+        {
+          "state": "SPAWING",
+          "hpPoints": 0.0,
+          "dodgeRate": 0.0,
+          "protecion": 0.0,
+          "speed": 10,
+          "orientation": "LEFT",
+          "pathPointer": 0,
+          "totalHpPoins": 10.0,
+          "name": "bane",
+          "lastNext": 0
+        },
+        {
+          "state": "SPAWING",
+          "hpPoints": 0.0,
+          "dodgeRate": 0.0,
+          "protecion": 0.0,
+          "speed": 50,
+          "orientation": "LEFT",
+          "pathPointer": 0,
+          "totalHpPoins": 10.0,
+          "name": "bane",
+          "lastNext": 0
+        }
+      ],
+      "gap": 0,
+      "isAllSpawn": false,
+      "isClear": false
+    }
+  ],
+  "mapPath": "grafics/map1/Mapa_lvl3.tmx",
+  "waveGap": 3000.0
+}
 ]

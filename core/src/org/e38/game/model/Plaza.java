@@ -14,7 +14,7 @@ import java.util.Iterator;
  * Created by ALUMNEDAM on 25/05/2016.
  */
 public class Plaza extends Actor {
-    MapObject object;
+    public MapObject object;
     LevelScreen levelScreen;
 
     public Plaza(final MapObject object, final LevelScreen levelScreen) {
@@ -64,7 +64,7 @@ public class Plaza extends Actor {
         return builder.toString();
     }
 
-    public void setOcupada(){
+    public void  changeOcupada(){
         object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
     }
 }
