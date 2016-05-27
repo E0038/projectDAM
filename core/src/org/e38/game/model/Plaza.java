@@ -1,6 +1,8 @@
 package org.e38.game.model;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Matrix4;
@@ -64,9 +66,20 @@ public class Plaza extends Group {
     public void  changeOcupada(){
         object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
     }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-//        super.draw(batch, parentAlpha);
-    }
+//private ShapeRenderer shapeRenderer = new ShapeRenderer();
+//    @Override
+//    public void draw(Batch batch, float parentAlpha) {
+//        batch.end();
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.setColor(Color.RED);
+////        super.draw(batch, parentAlpha);
+//        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+//        shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+//        shapeRenderer.translate(getX(), getY(), 0);
+//
+//        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
+//        shapeRenderer.end();
+//
+//
+//    }
 }
