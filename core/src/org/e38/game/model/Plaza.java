@@ -2,10 +2,8 @@ package org.e38.game.model;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.*;
 import org.e38.game.screens.LevelScreen;
 
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.List;
 /**
  * Created by ALUMNEDAM on 25/05/2016.
  */
-public class Plaza extends Actor {
+public class Plaza extends Group {
     public MapObject object;
     LevelScreen levelScreen;
 
@@ -38,7 +36,7 @@ public class Plaza extends Actor {
                 if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
                     levelScreen.unSelectLastPlaza();
                 if (object.getProperties().get("ocupada").equals(true)) {
-                    levelScreen.showImproveBar();
+                    levelScreen.showUpgradeBar();
                 } else {
                     levelScreen.showCopsBar();
                 }
@@ -66,4 +64,5 @@ public class Plaza extends Actor {
         object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
     }
 
+    public Matrix4 getMatrix4(){return computeTransform();}
 }

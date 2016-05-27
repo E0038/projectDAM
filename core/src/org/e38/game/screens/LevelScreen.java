@@ -17,8 +17,8 @@ import org.e38.game.GameUpdater;
 import org.e38.game.World;
 import org.e38.game.hud.Bar;
 import org.e38.game.hud.CopsBar;
-import org.e38.game.hud.UpgradeBar;
 import org.e38.game.hud.TopBar;
+import org.e38.game.hud.UpgradeBar;
 import org.e38.game.model.Level;
 import org.e38.game.model.Plaza;
 import org.e38.game.model.Wave;
@@ -29,14 +29,13 @@ import org.e38.game.model.npc.cops.DamageOverTime;
 import org.e38.game.model.npc.cops.Lento;
 import org.e38.game.model.npc.cops.Rapido;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by sergi on 4/20/16.
  */
 public class LevelScreen implements Screen {
-
-    public static final int TYPE_UPGRADE = 0;
-    public static final int TYPE_COPS = 1;
-
     private Level level;
     private Game game;
     private OrthogonalTiledMapRenderer ot;
@@ -44,7 +43,7 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
     private Bar lowerBar;
-    private UpgradeBar upgradeBar;
+    private UpgradeBar improveBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Stage stage;
     private int lastPlazaId = 0;
@@ -57,6 +56,31 @@ public class LevelScreen implements Screen {
     private GameUpdater gameUpdater;
     private Actor[] botonesCop;
     private Actor[] botonesUpgrade;
+    //bar vacia para cuando no hay que mosta
+    private List<Plaza> plazas = new ArrayList<>();
+    private Bar voidBar = new Bar() {
+        private Stage stage = new Stage();
+
+        @Override
+        public void updateBar(int money) {
+
+        }
+
+        @Override
+        public void updateBar(int money, Cop cop) {
+
+        }
+
+        @Override
+        public Stage getStage() {
+            return stage;
+        }
+
+        public void updateColor(Cop cop) {
+
+        }
+    };
+    private float worldRatio;
 
 
     public LevelScreen(Level level, Game game) {
@@ -66,31 +90,77 @@ public class LevelScreen implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
 
-        topBar = new TopBar(level.getLifes(), level.getCoins());
+        topBar = new TopBar(level.getCoins(), level.getLifes());
         lowerBar = voidBar;
         copsBar = new CopsBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
-        upgradeBar = new UpgradeBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
-        level.addOnChangeStateListerner(topBar);
+        improveBar = new UpgradeBar(0, topBar.table.getY() - topBar.table.getHeight());
         gameUpdater = new GameUpdater(level);
     }
 
-    //bar vacia para cuando no hay que mosta
-    private Bar voidBar = new Bar() {
-        private Stage stage = new Stage();
+    public int getLastPlazaId() {
+        return lastPlazaId;
+    }
 
-        @Override
-        public void updateBar(int money) {
-        }
+    public LevelScreen setLastPlazaId(int lastPlazaId) {
+        this.lastPlazaId = lastPlazaId;
+        return this;
+    }
 
-        @Override
-        public void updateBar(int money, Cop cop) {
-        }
+    @Override
+    public void show() {
+        stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
 
-        @Override
-        public Stage getStage() {
-            return stage;
+        for (MapObject object : level.getLayer().getObjects()) {
+            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
+                float y = (Float) object.getProperties().get("y");
+                object.getProperties().put("y", (float) /*object.getProperties().get("height") +*/ y);
+//                stage.addActor(new Plaza(object, this));
+                plazas.add(new Plaza(object, this));
+            }
         }
-    };
+        stage.getActors().addAll(plazas.toArray(new Actor[plazas.size()]));
+        ot = new OrthogonalTiledMapRenderer(level.map) {
+            @Override
+            protected void endRender() {
+                renderCops(getBatch());
+                renderCriminals(getBatch());
+//                renderPlazas(getBatch());
+                super.endRender();
+            }
+        };
+//        Gdx.input.setInputProcessor(new InputHandler(level, this));
+
+        camera.position.set(400, 300, 0);
+        camera.update();
+        initActors();
+        game.resume();
+        Gdx.input.setInputProcessor(stage);
+        worldRatio = stage.getViewport().getWorldWidth() / stage.getViewport().getWorldWidth();
+    }
+
+    private void renderCops(Batch batch) {
+        for (Cop c : level.cops) {
+            float x = (float) c.getPosition().x;
+            float y = (float) c.getPosition().y;
+            batch.draw(World.getRecurses().getPolicia(c), x, y);
+        }
+    }
+
+    private void renderCriminals(Batch batch) {
+        int idx = 0;
+        for (Wave w : level.waves) {
+            for (Criminal c : w.getCriminals()) {
+                if (c.isAlive()) {
+                    idx = c.getPathPointer();
+                    float x = (float) level.getPath().get(idx).getProperties().get("x");
+                    float y = (float) level.getPath().get(idx).getProperties().get("y");
+                    batch.draw(World.getRecurses().getACriminal(c).update(Gdx.graphics.getDeltaTime()), x, y);
+//                    c.setPathPointer(idx + 1);
+                }
+            }
+
+        }
+    }
 
     private void initActors() {
         areaCopButton = new Actor();
@@ -109,8 +179,6 @@ public class LevelScreen implements Screen {
                 lowerBar = voidBar;
                 //restamos el precio de compra del dinero del jugador
                 level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
-
-                System.out.println("Coins level: " + String.valueOf(level.getCoins()));
                 level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
                 areaCopButton.setTouchable(Touchable.disabled);
                 return true;
@@ -126,7 +194,6 @@ public class LevelScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 DamageOverTime a = new DamageOverTime();
-                a.spawn();
                 float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
                 float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
                 a.setPosicion(new Vector2(xPlaza, yPlaza));
@@ -146,7 +213,6 @@ public class LevelScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Lento a = new Lento();
-                a.spawn();
                 float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
                 float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
                 a.setPosicion(new Vector2(xPlaza, yPlaza));
@@ -232,88 +298,6 @@ public class LevelScreen implements Screen {
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
     }
 
-    @Override
-    public void show() {
-        stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
-
-        for (MapObject object : level.getLayer().getObjects()) {
-            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
-//                float y = (Float) object.getProperties().get("y");
-//                object.getProperties().put("y", y);
-                stage.addActor(new Plaza(object, this));
-            }
-        }
-        ot = new OrthogonalTiledMapRenderer(level.map) {
-            @Override
-            protected void endRender() {
-                renderCops(getBatch());
-                renderCriminals(getBatch());
-                super.endRender();
-            }
-        };
-
-        camera.position.set(400, 300, 0);
-        camera.update();
-        initActors();
-        game.resume();
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    private void renderPlazas() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (MapObject object : level.getLayer().getObjects()) {
-            float x = (Float) object.getProperties().get("x");
-            float y = (Float) object.getProperties().get("y");
-            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
-                drawPlaza(object, x, y);
-            }
-            //dibuja policias por todos lados
-//            batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
-        }
-        shapeRenderer.end();
-    }
-
-    private void renderCriminals(Batch batch) {
-        int idx = 0;
-        for (Wave w : level.waves) {
-            for (Criminal c : w.getCriminals()) {
-                if (c.isAlive()) {
-                    idx = c.getPathPointer();
-                    float x = (float) level.getPath().get(idx).getProperties().get("x");
-                    float y = (float) level.getPath().get(idx).getProperties().get("y");
-                    batch.draw(World.getRecurses().getACriminal(c).update(Gdx.graphics.getDeltaTime()), x, y);
-//                    c.setPathPointer(idx + 1);
-                }
-            }
-
-        }
-    }
-
-    private void renderCops(Batch batch) {
-        for (Cop c : level.cops) {
-            float x = (float) c.getPosition().x;
-            float y = (float) c.getPosition().y;
-            batch.draw(World.getRecurses().getPolicia(c), x, y);
-        }
-    }
-
-    private void drawPlaza(MapObject object, float x, float y) {
-
-        float width = (float) object.getProperties().get("width");
-        float heght = (float) object.getProperties().get("height");
-        if (object.getProperties().get("isSelected") != null) {
-            if ((boolean) object.getProperties().get("isSelected"))
-                shapeRenderer.rect(x - 3, y, width + 4, heght + 4);
-        }
-    }
-
-    public void unSelectLastPlaza() {
-        if (lastPlazaId != -1) {
-            level.getLayer().getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
-        }
-    }
-
     public void changeButtonsState() {
         if (lowerBar instanceof CopsBar) {
             for (Actor a : botonesCop) {
@@ -339,21 +323,6 @@ public class LevelScreen implements Screen {
         }
     }
 
-    public void updateLowerBar(int type) {
-        if (type == TYPE_COPS) {
-            copsBar.updateBar(level.getCoins());
-        } else {
-            Cop cop = null;
-            float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-            float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-            for (Cop c : level.cops) {
-                if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
-                    cop = c;
-            }
-            upgradeBar.updateBar(level.getCoins(), cop);
-        }
-    }
-
     @Override
     public void render(float delta) {
         gameUpdater.update(delta);
@@ -369,6 +338,31 @@ public class LevelScreen implements Screen {
         copsBar.table.setY(topBar.table.getY() - topBar.table.getHeight());
     }
 
+    private void renderPlazas() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        for (Plaza plaza : plazas) {
+//            Vector2 coordinates = plaza.localToStageCoordinates(new Vector2(0,0));
+            if (plaza.object.getProperties().get("isSelected") != null) {
+                if ((boolean) plaza.object.getProperties().get("isSelected")) {
+                    Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
+                    float screenRatio = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+                    float scale = worldRatio / screenRatio;
+                    shapeRenderer.rect(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, plaza.getWidth() * scale, plaza.getHeight() * scale);
+                }
+            }
+        }
+//        for (MapObject object : level.getLayer().getObjects()) {
+//            float x = (Float) object.getProperties().get("x");
+//            float y = (Float) object.getProperties().get("y");
+//            if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
+//                drawPlaza(object, x, y);
+//            }
+//            //dibuja policias por todos lados
+////            batch.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x, y);
+//        }
+        shapeRenderer.end();
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -397,24 +391,32 @@ public class LevelScreen implements Screen {
 
     }
 
-    public void showCopsBar() {
-        lowerBar = copsBar;
+    private void drawPlaza(MapObject object, float x, float y) {
+
+        float width = (float) object.getProperties().get("width");
+        float heght = (float) object.getProperties().get("height");
+        if (object.getProperties().get("isSelected") != null) {
+            if ((boolean) object.getProperties().get("isSelected"))
+                shapeRenderer.rect(x - 3, y, width + 4, heght + 4);
+        }
     }
 
-    public void showImproveBar() {
-        lowerBar = upgradeBar;
+    public void unSelectLastPlaza() {
+        if (lastPlazaId != -1) {
+            level.getLayer().getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
+        }
+    }
+
+    public void showCopsBar() {
+        lowerBar = copsBar;
+
+    }
+
+    public void showUpgradeBar() {
+        lowerBar = improveBar;
     }
 
     public Level getLevel() {
         return level;
-    }
-
-    public int getLastPlazaId() {
-        return lastPlazaId;
-    }
-
-    public LevelScreen setLastPlazaId(int lastPlazaId) {
-        this.lastPlazaId = lastPlazaId;
-        return this;
     }
 }

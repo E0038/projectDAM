@@ -16,7 +16,7 @@ android {
     }
     defaultConfig {
         applicationId "org.e38.game"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 23
     }
 }

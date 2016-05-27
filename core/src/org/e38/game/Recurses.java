@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gson.reflect.TypeToken;
 import org.e38.game.model.Level;
 import org.e38.game.model.npc.Cop;
@@ -181,11 +182,11 @@ public class Recurses implements Disposable {
 
     private void loadLevels() {
         try {
-            String json = ProfileManager.readChars(Gdx.files.internal("raw/rawLevels.json").file());
+            String json = Gdx.files.internal("raw/rawLevels.json").readString("UTF-8");
             World.levels = ProfileManager.getInstance().gson.fromJson(json, new TypeToken<List<Level>>() {
             }.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (GdxRuntimeException e) {
+            Gdx.app.error(getClass().getName(), e.getMessage(), e);
         }
     }
 
