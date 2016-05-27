@@ -20,7 +20,10 @@ import java.util.List;
  */
 public class Level {
 
+    public static final int TYPE_COIN=0;
+    public static final int TYPE_LIFE=1;
     private static final float MODIFICADOR_VIDAS = 10;
+
     public Dificultat dificultat;
     public List<Cop> cops = new ArrayList<>();
     public TiledMap map;
@@ -34,7 +37,8 @@ public class Level {
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
     //    private MapLayer layer;
-    private List<OnEndListerner> onEndListerners;
+    private List<OnEndListerner> onEndListerners = new ArrayList<>();
+    public List<OnChangeStateListener> onChangeStateList= new ArrayList<>();
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -76,6 +80,14 @@ public class Level {
         this.onEndListerners.remove(onEndListerner);
     }
 
+    public void addOnChangeStateListerner(OnChangeStateListener onChangeStateListener) {
+        this.onChangeStateList.add(onChangeStateListener);
+    }
+
+    public void removeOnChangeStateListerner(OnChangeStateListener onChangeStateListener) {
+        this.onChangeStateList.remove(onChangeStateListener);
+    }
+
     public byte getIsWined() {
         return isWined;
     }
@@ -90,6 +102,9 @@ public class Level {
     }
 
     public Level setCoins(int coins) {
+        for (OnChangeStateListener change: onChangeStateList) {
+            change.onChangeState(this.coins, coins, TYPE_COIN);
+        }
         this.coins = coins;
         return this;
     }
@@ -99,6 +114,9 @@ public class Level {
     }
 
     public Level setLifes(int lifes) {
+        for (OnChangeStateListener change: onChangeStateList) {
+            change.onChangeState(this.lifes, lifes, TYPE_LIFE);
+        }
         this.lifes = lifes;
         return this;
     }
@@ -229,6 +247,10 @@ public class Level {
         Dificultat(float modificadorPuntos) {
             this.modificadorPuntos = modificadorPuntos;
         }
+    }
+
+    public interface OnChangeStateListener {
+        void onChangeState(int oldValue, int newValue, int type);
     }
 
     public interface OnEndListerner {

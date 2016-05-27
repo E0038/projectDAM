@@ -8,13 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.e38.game.model.Level;
+import org.e38.game.model.Plaza;
 import org.e38.game.model.npc.Cop;
 
-public class ImproveBar implements Disposable, Bar {
+public class UpgradeBar implements Disposable, Bar{
     public Stage stage;
     OrthographicCamera cam;
     private Viewport viewport;
@@ -25,7 +26,7 @@ public class ImproveBar implements Disposable, Bar {
     public Table table;
 
 
-    public ImproveBar(int money, float y){
+    public UpgradeBar(int money, float y){
         this.money = money;
         cam = new OrthographicCamera();
         skin = new Skin();
@@ -56,13 +57,12 @@ public class ImproveBar implements Disposable, Bar {
 
     @Override
     public void updateBar(int money) {
-
     }
 
     @Override
-    public void updateColor(Cop cop){
-        mejorar.setColor(cop.isUpgradeAvailable() ? Color.GREEN: Color.RED);
-   }
+    public void updateBar(int money, Cop cop) {
+        mejorar.getStyle().fontColor = money < cop.getNivel().getPrecioCompra()&& cop.isUpgradeAvailable() ? Color.RED: Color.GREEN;
+    }
 
     @Override
     public Stage getStage() {

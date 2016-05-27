@@ -57,9 +57,7 @@ public class CopsBar implements Disposable, Bar {
     }
 
     @Override
-    public void updateColor(Cop cop) {
-
-    }
+    public void updateBar(int money, Cop cop) {};
 
     @Override
     public Stage getStage() {

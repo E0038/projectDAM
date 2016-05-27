@@ -11,8 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.e38.game.model.Level;
 
-public class TopBar implements Disposable {
+public class TopBar implements Disposable, Level.OnChangeStateListener {
     public Stage stage;
     OrthographicCamera cam;
     private Viewport viewport;
@@ -62,10 +63,20 @@ public class TopBar implements Disposable {
 
     @Override
     public void dispose() {
-        //TO DO
+        stage.dispose();
     }
     @Override
     public void finalize() {
         this.dispose();
+    }
+
+    @Override
+    public void onChangeState(int oldValue, int newValue, int type) {
+        if(type == Level.TYPE_LIFE){
+            updateMoney(newValue);
+        System.out.println("money");}
+        else{
+            updateLabels(newValue);
+        System.out.println("labels");}
     }
 }

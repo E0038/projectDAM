@@ -17,7 +17,7 @@ import org.e38.game.GameUpdater;
 import org.e38.game.World;
 import org.e38.game.hud.Bar;
 import org.e38.game.hud.CopsBar;
-import org.e38.game.hud.ImproveBar;
+import org.e38.game.hud.UpgradeBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.model.Level;
 import org.e38.game.model.Plaza;
@@ -40,7 +40,7 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
     private Bar lowerBar;
-    private ImproveBar improveBar;
+    private UpgradeBar improveBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Stage stage;
 
@@ -70,10 +70,11 @@ public class LevelScreen implements Screen {
         this.game = game;
         camera = new OrthographicCamera();
 
-        topBar = new TopBar(level.getCoins(), level.getLifes());
+        topBar = new TopBar(level.getLifes(), level.getCoins());
         lowerBar = voidBar;
         copsBar = new CopsBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
-        improveBar = new ImproveBar(0, topBar.table.getY() - topBar.table.getHeight());
+        improveBar = new UpgradeBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
+        level.addOnChangeStateListerner(topBar);
         gameUpdater = new GameUpdater(level);
     }
 
@@ -82,14 +83,10 @@ public class LevelScreen implements Screen {
         private Stage stage = new Stage();
 
         @Override
-        public void updateBar(int money) {
-
-        }
+        public void updateBar(int money) {}
 
         @Override
-        public void updateColor(Cop cop) {
-
-        }
+        public void updateBar(int money, Cop cop) {}
 
         @Override
         public Stage getStage() {
@@ -114,6 +111,8 @@ public class LevelScreen implements Screen {
                 lowerBar = voidBar;
                 //restamos el precio de compra del dinero del jugador
                 level.setCoins((int) (level.getCoins()-a.getNivel().getPrecioCompra()));
+
+                System.out.println("Coins level: " + String.valueOf(level.getCoins()));
                 level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
                 areaCopButton.setTouchable(Touchable.disabled);
                 return true;
@@ -129,6 +128,7 @@ public class LevelScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 DamageOverTime a = new DamageOverTime();
+                a.spawn();
                 float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
                 float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
                 a.setPosicion(new Vector2(xPlaza, yPlaza));
@@ -148,6 +148,7 @@ public class LevelScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Lento a = new Lento();
+                a.spawn();
                 float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
                 float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
                 a.setPosicion(new Vector2(xPlaza, yPlaza));
@@ -239,8 +240,8 @@ public class LevelScreen implements Screen {
 
         for (MapObject object : level.getLayer().getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
-                float y = (Float) object.getProperties().get("y");
-                object.getProperties().put("y", (float) /*object.getProperties().get("height") +*/ y);
+//                float y = (Float) object.getProperties().get("y");
+//                object.getProperties().put("y", y);
                 stage.addActor(new Plaza(object, this));
             }
         }
@@ -249,11 +250,9 @@ public class LevelScreen implements Screen {
             protected void endRender() {
                 renderCops(getBatch());
                 renderCriminals(getBatch());
-//                renderPlazas(getBatch());
                 super.endRender();
             }
         };
-//        Gdx.input.setInputProcessor(new InputHandler(level, this));
 
         camera.position.set(400, 300, 0);
         camera.update();
@@ -325,7 +324,7 @@ public class LevelScreen implements Screen {
             for (Actor a : botonesUpgrade) {
                 a.setTouchable(Touchable.disabled);
             }
-        } else if (lowerBar instanceof ImproveBar) {
+        } else if (lowerBar instanceof UpgradeBar) {
             for (Actor a : botonesCop) {
                 a.setTouchable(Touchable.disabled);
             }

@@ -10,7 +10,7 @@ import org.e38.game.model.npc.Cop;
 public interface Bar {
 
     public void updateBar(int money);
-    public void updateColor(Cop cop);
+    public void updateBar(int money, Cop cop);
 
     Stage getStage();
 }

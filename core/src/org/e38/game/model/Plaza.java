@@ -6,9 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import org.e38.game.model.npc.Cop;
 import org.e38.game.screens.LevelScreen;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by ALUMNEDAM on 25/05/2016.
@@ -29,24 +32,30 @@ public class Plaza extends Actor {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 //                System.out.println(x + " : " + y);
-                System.out.println(propetresToString(object.getProperties()));
+//                System.out.println(propetresToString(object.getProperties()));
 
+                levelScreen.changeButtonsState();
+                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
 
                 object.getProperties().put("isSelected", true);
                 if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
                     levelScreen.unSelectLastPlaza();
+
                 if (object.getProperties().get("ocupada").equals(true)) {
+                    //llamamos al evento de actualizacion de upgradebar
+//                    Cop cop = null;
+//                    float xPlaza = (float) levelScreen.getLevel().getLayer().getObjects().get(levelScreen.getLastPlazaId()).getProperties().get("x");
+//                    float yPlaza = (float) levelScreen.getLevel().getLayer().getObjects().get(levelScreen.getLastPlazaId()).getProperties().get("y");
+//                    for (Cop c : levelScreen.getLevel().cops) {
+//                        if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
+//                            cop = c;
+//                    }
 
                     levelScreen.showImproveBar();
-
                 } else {
                     levelScreen.showCopsBar();
-
-
                 }
-                levelScreen.changeButtonsState();
-                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
 
                 return true;
             }
