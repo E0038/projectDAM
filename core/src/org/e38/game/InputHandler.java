@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by joel on 18/05/2016.
  */
+@Deprecated
 public class InputHandler implements InputProcessor {
     Level lvl;
     LevelScreen lScr;
@@ -136,6 +137,7 @@ public class InputHandler implements InputProcessor {
         return false;
     }
 
+    @SuppressWarnings("Duplicates")
     private String propetresToString(MapProperties properties) {
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = properties.getKeys();

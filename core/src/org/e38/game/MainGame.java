@@ -20,7 +20,7 @@ public class MainGame extends Game {
             }
         }, "contextLoaderThread").start();
         setScreen(new SplashScreen(this));
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(Application.LOG_ERROR);
     }
 
     @Override

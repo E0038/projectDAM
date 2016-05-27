@@ -50,16 +50,16 @@ public class SplashScreen implements Screen {
                 super.finalize();
             }
         };
-        label.setX((Gdx.graphics.getWidth() / 2) - (loadingSprite.getWidth() / LOADING_GIF_PARTS / 2));
-        label.setY((Gdx.graphics.getHeight() / 2) + loadingSprite.getHeight());
+        label.setX((stage.getViewport().getWorldWidth() / 2) - (loadingSprite.getWidth() / LOADING_GIF_PARTS / 2));
+        label.setY((stage.getViewport().getWorldHeight() / 2) + loadingSprite.getHeight());
         label.setFontScale(2f);
         stage.addActor(label);
         stage.addActor(new Actor() {
             @Override
             public void draw(Batch batch, float parentAlpha) {
                 TextureRegion region = loadingGif.update(Gdx.graphics.getDeltaTime());
-                float x = (Gdx.graphics.getWidth() / 2) - region.getRegionWidth() / 2;
-                float y = (Gdx.graphics.getHeight() / 2) - region.getRegionHeight() / 2;
+                float x = (stage.getViewport().getWorldWidth() / 2) - region.getRegionWidth() / 2;
+                float y = (stage.getViewport().getWorldHeight() / 2) - region.getRegionHeight() / 2;
                 batch.draw(region, x, y);
                 super.draw(batch, parentAlpha);
             }
@@ -78,8 +78,7 @@ public class SplashScreen implements Screen {
     }
 
     private void onGameLoaded() {
-        for (Level level :
-                World.levels) {
+        for (Level level : World.levels) {
             level.onCreate();//no se puede desde el hilo de carga porque usa el contexto OpenGl
         }
         game.setScreen(new MenuScreen(game));

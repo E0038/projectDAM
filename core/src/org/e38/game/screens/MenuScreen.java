@@ -53,25 +53,12 @@ public class MenuScreen implements Screen {
         Gdx.app.log(getClass().getName(), "MENU SCREEN");
     }
 
-    public void onShowRanking() {
-// TODO: 5/25/16  
-    }
-
     @Override
     public void show() {
-
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
-
         createButtons();
         configureButtons();
         game.resume();//fix false pause state
-//        debugShow();
-//        stage.addActor(selectLevel);
-//        stage.addActor(continueGame);
-//        stage.addActor(newGame);
-//        stage.addActor(title);
-//        stage.addActor(exit);
-//        stage.addActor(volumeSwitch);
         stage.getActors().addAll(selectLevel, continueGame, newGame, title,exit,volumeSwitch);
         Gdx.input.setInputProcessor(stage);
 
@@ -208,7 +195,6 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
-//        debugRender(delta);
     }
 
     @Override

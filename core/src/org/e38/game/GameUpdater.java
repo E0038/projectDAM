@@ -10,14 +10,12 @@ import org.e38.game.screens.LevelScreen;
  */
 public class GameUpdater {
     private Level level;
-    private LevelScreen levelScreen;
-    private float timeLast = 0;
+    private long timeLast = 0;
 
     public GameUpdater(Level level) {
         this.level = level;
     }
 
-    //TODO
     public void update(float delta) {
         if (level.wavePointer < level.waves.size()) {
 //            System.out.println(level.wavePointer);
