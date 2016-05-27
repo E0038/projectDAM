@@ -55,15 +55,14 @@ public class UpgradeBar implements Disposable, Bar{
         stage.addActor(table);
     }
 
-    @Override
-    public void updateBar(int money) {
-    }
 
     @Override
     public void updateBar(int money, Cop cop) {
-        mejorar.getStyle().fontColor = money < cop.getNivel().getPrecioCompra()&& cop.isUpgradeAvailable() ? Color.RED: Color.GREEN;
+        mejorar.getStyle().fontColor = money > cop.getNivel().getPrecioCompra()&& cop.isUpgradeAvailable() ? Color.GREEN: Color.RED;
     }
 
+    @Override
+    public void updateBar(int money) {}
     @Override
     public Stage getStage() {
         return stage;

@@ -33,6 +33,10 @@ import org.e38.game.model.npc.cops.Rapido;
  * Created by sergi on 4/20/16.
  */
 public class LevelScreen implements Screen {
+
+    public static final int TYPE_UPGRADE = 0;
+    public static final int TYPE_COPS = 1;
+
     private Level level;
     private Game game;
     private OrthogonalTiledMapRenderer ot;
@@ -40,24 +44,16 @@ public class LevelScreen implements Screen {
     private TopBar topBar;
     private CopsBar copsBar;
     private Bar lowerBar;
-    private UpgradeBar improveBar;
+    private UpgradeBar upgradeBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Stage stage;
-
-    public int getLastPlazaId() {
-        return lastPlazaId;
-    }
-
     private int lastPlazaId = 0;
     private Actor areaCopButton;
     private Actor damageOverCopButton;
     private Actor lentoCopButton;
     private Actor rapidoCopButton;
-
     private Actor sellCopButton;
     private Actor upgradeCopButton;
-
-
     private GameUpdater gameUpdater;
     private Actor[] botonesCop;
     private Actor[] botonesUpgrade;
@@ -73,7 +69,7 @@ public class LevelScreen implements Screen {
         topBar = new TopBar(level.getLifes(), level.getCoins());
         lowerBar = voidBar;
         copsBar = new CopsBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
-        improveBar = new UpgradeBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
+        upgradeBar = new UpgradeBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
         level.addOnChangeStateListerner(topBar);
         gameUpdater = new GameUpdater(level);
     }
@@ -83,10 +79,12 @@ public class LevelScreen implements Screen {
         private Stage stage = new Stage();
 
         @Override
-        public void updateBar(int money) {}
+        public void updateBar(int money) {
+        }
 
         @Override
-        public void updateBar(int money, Cop cop) {}
+        public void updateBar(int money, Cop cop) {
+        }
 
         @Override
         public Stage getStage() {
@@ -110,7 +108,7 @@ public class LevelScreen implements Screen {
                 level.cops.add(a);
                 lowerBar = voidBar;
                 //restamos el precio de compra del dinero del jugador
-                level.setCoins((int) (level.getCoins()-a.getNivel().getPrecioCompra()));
+                level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
 
                 System.out.println("Coins level: " + String.valueOf(level.getCoins()));
                 level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
@@ -341,6 +339,21 @@ public class LevelScreen implements Screen {
         }
     }
 
+    public void updateLowerBar(int type) {
+        if (type == TYPE_COPS) {
+            copsBar.updateBar(level.getCoins());
+        } else {
+            Cop cop = null;
+            float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+            float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+            for (Cop c : level.cops) {
+                if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
+                    cop = c;
+            }
+            upgradeBar.updateBar(level.getCoins(), cop);
+        }
+    }
+
     @Override
     public void render(float delta) {
         gameUpdater.update(delta);
@@ -386,15 +399,18 @@ public class LevelScreen implements Screen {
 
     public void showCopsBar() {
         lowerBar = copsBar;
-
     }
 
     public void showImproveBar() {
-        lowerBar = improveBar;
+        lowerBar = upgradeBar;
     }
 
     public Level getLevel() {
         return level;
+    }
+
+    public int getLastPlazaId() {
+        return lastPlazaId;
     }
 
     public LevelScreen setLastPlazaId(int lastPlazaId) {
