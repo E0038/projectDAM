@@ -31,6 +31,7 @@ public class ProfileManager {
         }
     }
 
+    private final Object persistLocker = new Object();
     public Gson gson;
     //    private final Base64.Encoder base64Encoder = Base64.getEncoder();
 //    private final Base64.Decoder base64Decoder = Base64.getDecoder();
@@ -207,24 +208,26 @@ public class ProfileManager {
      * @throws IOException
      */
     public void persistentSave() throws IOException {
-        profilesFile.copyTo(localBackup);
-        try {
-            profilesFile.delete();//truncate
-            if (!profilesFile.file().createNewFile()) throw new IOException("file not truncated");
-            Writer writer = new FileWriter(profilesFile.file());
+        synchronized (persistLocker) {
+            profilesFile.copyTo(localBackup);
             try {
+                profilesFile.delete();//truncate
+                if (!profilesFile.file().createNewFile()) throw new IOException("file not truncated");
+                Writer writer = new FileWriter(profilesFile.file());
+                try {
 //                writer.write(base64Encoder.encodeToString(encryper.doFinal(gson.toJson(profile).getBytes())));
-                writer.write(Base64Coder.encode(encryper.doFinal(gson.toJson(profile).getBytes())));
-            } catch (IllegalBlockSizeException | BadPaddingException e) {
-                throw new IOException(e);
+                    writer.write(Base64Coder.encode(encryper.doFinal(gson.toJson(profile).getBytes())));
+                } catch (IllegalBlockSizeException | BadPaddingException e) {
+                    throw new IOException(e);
+                } finally {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                localBackup.copyTo(profilesFile);//restore bak if fail
+                throw e;
             } finally {
-                writer.close();
+                writeConfig(extractRunTimeConfig());
             }
-        } catch (IOException e) {
-            localBackup.copyTo(profilesFile);//restore bak if fail
-            throw e;
-        } finally {
-            writeConfig(extractRunTimeConfig());
         }
     }
 
