@@ -27,13 +27,10 @@ public class Plaza extends Group {
 
         setBounds((float) object.getProperties().get("x"), (float) object.getProperties().get("y"), (float) object.getProperties().get("width"), (float) object.getProperties().get("height"));
         setTouchable(Touchable.enabled);
-//        System.out.println(getX() + " : " + getY());
 
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                System.out.println(x + " : " + y);
-//                System.out.println(propetresToString(object.getProperties()));
 
                 object.getProperties().put("isSelected", true);
                 if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
