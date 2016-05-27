@@ -2,6 +2,7 @@ package org.e38.game.hud;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,7 +25,7 @@ public class UpgradeBar implements Disposable, Bar {
         viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
-        skin.add("improve_bar", World.getRecurses().upgrade_bar);
+        skin.add("improve_bar", new TextureRegion(World.getRecurses().upgrade_bar){@Override protected void finalize() throws Throwable {dispose();super.finalize();}});
 
         table = new Table();
 

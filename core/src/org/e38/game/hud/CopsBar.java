@@ -13,16 +13,14 @@ import org.e38.game.model.npc.Cop;
 public class CopsBar implements Disposable, Bar {
     public Stage stage;
     public Table table;
-    OrthographicCamera cam;
     Skin skin;
     private Viewport viewport;
     private int money;
 
     public CopsBar(int money, float Y) {
         this.money = money;
-        cam = new OrthographicCamera();
 //        skin = new Skin();
-        viewport = new FitViewport(300, 200, cam);
+        viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
 
