@@ -145,7 +145,6 @@ public class LevelScreen implements Screen {
 //                    c.setPathPointer(idx + 1);
                 }
             }
-
         }
     }
 
@@ -157,19 +156,21 @@ public class LevelScreen implements Screen {
         areaCopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Area a = new Area();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                //restamos el precio de compra del dinero del jugador
-                level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                if (level.getCoins() >= 40) {
+                    Area a = new Area();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    //restamos el precio de compra del dinero del jugador
+                    level.setCoins((int) (level.getCoins() - 40));
 
-                System.out.println("Coins level: " + String.valueOf(level.getCoins()));
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
+                    System.out.println("Coins level: " + String.valueOf(level.getCoins()));
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
                 return true;
             }
         });
@@ -182,15 +183,18 @@ public class LevelScreen implements Screen {
         damageOverCopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                DamageOverTime a = new DamageOverTime();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
+                if (level.getCoins() >= 20) {
+                    DamageOverTime a = new DamageOverTime();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    level.setCoins(level.getCoins() - 20);
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
                 return true;
             }
         });
@@ -202,15 +206,18 @@ public class LevelScreen implements Screen {
         lentoCopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Lento a = new Lento();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
+                if(level.getCoins() >= 30) {
+                    Lento a = new Lento();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    level.setCoins((int) (level.getCoins() - 30));
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
                 return true;
             }
         });
@@ -222,15 +229,18 @@ public class LevelScreen implements Screen {
         rapidoCopButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Rapido a = new Rapido();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
+                if(level.getCoins() >= 10) {
+                    Rapido a = new Rapido();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    level.setCoins((int) (level.getCoins() - 10));
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
                 return true;
             }
         });
@@ -250,7 +260,10 @@ public class LevelScreen implements Screen {
                     if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
                         cop = c;
                 }
-
+                if(level.getCoins() >= cop.getNivel().getPrecioCompra()) {
+                    level.setCoins((int) (level.getCoins() - cop.getNivel().getPrecioCompra()));
+                    cop.onUpgrade();
+                }
                 System.out.println(cop.toString());
                 return true;
             }
@@ -340,7 +353,7 @@ public class LevelScreen implements Screen {
 //                    float screenRatio = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
 //                    float scale = worldRatio * screenRatio;
 //                    plaza.getScaleX();
-                    shapeRenderer.rect(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH ), plaza.getHeight() * (Gdx.graphics.getHeight()/World.WORLD_HEIGHT ));
+                    shapeRenderer.rect(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH), plaza.getHeight() * (Gdx.graphics.getHeight() / World.WORLD_HEIGHT));
                 }
             }
         }
@@ -418,9 +431,7 @@ public class LevelScreen implements Screen {
         lowerBar = copsBar;
     }
 
-    public void showImproveBar() {
-        lowerBar = upgradeBar;
-    }
+    public void showUpgradeBar() { lowerBar = upgradeBar; }
 
     public Level getLevel() {
         return level;

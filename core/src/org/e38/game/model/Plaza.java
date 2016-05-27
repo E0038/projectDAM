@@ -5,13 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.*;
 import org.e38.game.screens.LevelScreen;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by ALUMNEDAM on 25/05/2016.
@@ -38,14 +35,17 @@ public class Plaza extends Group {
                 object.getProperties().put("isSelected", true);
                 if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
                     levelScreen.unSelectLastPlaza();
+
+                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
                 if (object.getProperties().get("ocupada").equals(true)) {
-                    levelScreen.showImproveBar();
+                    levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
+                    levelScreen.showUpgradeBar();
                 } else {
+                    levelScreen.updateLowerBar(LevelScreen.TYPE_COPS);
                     levelScreen.showCopsBar();
                 }
                 levelScreen.changeButtonsState();
-                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
 
                 return true;
             }
