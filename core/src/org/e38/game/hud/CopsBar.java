@@ -1,6 +1,5 @@
 package org.e38.game.hud;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -38,15 +37,45 @@ public class CopsBar implements Disposable, Bar {
     public void updateBar(int money) {
         skin = new Skin();
         if (money < 10)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png"));
+            skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png") {
+                @Override
+                protected void finalize() throws Throwable {
+                    dispose();
+                    super.finalize();
+                }
+            });
         else if (money < 20)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/L20.png"));
+            skin.add("cop_bar", new Texture("grafics/hud/cops/L20.png") {
+                @Override
+                protected void finalize() throws Throwable {
+                    dispose();
+                    super.finalize();
+                }
+            });
         else if (money < 30)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/L30.png"));
+            skin.add("cop_bar", new Texture("grafics/hud/cops/L30.png") {
+                @Override
+                protected void finalize() throws Throwable {
+                    dispose();
+                    super.finalize();
+                }
+            });
         else if (money < 40)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/L40.png"));
+            skin.add("cop_bar", new Texture("grafics/hud/cops/L40.png") {
+                @Override
+                protected void finalize() throws Throwable {
+                    dispose();
+                    super.finalize();
+                }
+            });
         else
-            skin.add("cop_bar", new Texture("grafics/hud/cops/All.png"));
+            skin.add("cop_bar", new Texture("grafics/hud/cops/All.png") {
+                @Override
+                protected void finalize() throws Throwable {
+                    dispose();
+                    super.finalize();
+                }
+            });
         table.background(skin.newDrawable("cop_bar"));
         stage.addActor(table);
     }
@@ -71,5 +100,6 @@ public class CopsBar implements Disposable, Bar {
     @Override
     public void dispose() {
         stage.dispose();
+        if (skin != null) skin.dispose();
     }
 }
