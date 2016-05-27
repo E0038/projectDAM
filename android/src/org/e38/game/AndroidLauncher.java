@@ -12,7 +12,6 @@ public class AndroidLauncher extends AndroidApplication {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.hideStatusBar=false;
-//        config.resolutionStrategy = new FixedResolutionStrategy(800,600);
         initialize(new MainGame(), config);
     }
 }
