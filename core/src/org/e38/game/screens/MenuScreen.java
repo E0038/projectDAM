@@ -33,8 +33,6 @@ public class MenuScreen implements Screen {
     private final MainGame game;
     int count = 0;
     AnimationManager[] animationManagers;
-    float stateTime = 0;
-    Level level = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
     private String[] polis = new String[]{Recurses.POLICIA_ESCOPETA, Recurses.POLICIA_BAZOOKA, Recurses.SNIPER_BUENO, Recurses.POLICIA_BUENO};
     private SpriteBatch batcher;
     private Recurses.AnimatedCriminals[] criminals = Recurses.AnimatedCriminals.values();
@@ -50,7 +48,6 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(final MainGame game) {
         this.game = game;
-        Gdx.app.log(getClass().getName(), "MENU SCREEN");
     }
 
     @Override
@@ -59,9 +56,8 @@ public class MenuScreen implements Screen {
         createButtons();
         configureButtons();
         game.resume();//fix false pause state
-        stage.getActors().addAll(selectLevel, continueGame, newGame, title,exit,volumeSwitch);
+        stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     private void createButtons() {
@@ -96,7 +92,7 @@ public class MenuScreen implements Screen {
         umuteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().unmute));
         muteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().mute));
 
-        volumeSwitch = new ImageButton(World.getVolume() == 0f ? umuteDrawable : muteDrawable);
+        volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
 
     }
 
@@ -153,8 +149,9 @@ public class MenuScreen implements Screen {
         volumeSwitch.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                World.onSwichMuteUnMute();
                 volumeSwitch.getStyle().imageUp = World.isMuted() ? umuteDrawable : muteDrawable;
+                World.onSwichMuteUnMute();
+                World.play(Recurses.POP);
                 super.clicked(event, x, y);
             }
         });
@@ -174,10 +171,13 @@ public class MenuScreen implements Screen {
         if (ProfileManager.getInstance().newGame()) {
             game.setScreen(new LevelSelectScreen(game));
         }
+        World.play(Recurses.POP);
     }
 
     private void selectLevel() {
         game.setScreen(new LevelSelectScreen(game));
+        World.play(Recurses.POP);
+
     }
 
     private void continueGame() {
@@ -188,6 +188,7 @@ public class MenuScreen implements Screen {
         } else {
             selectLevel();
         }
+        World.play(Recurses.POP);
     }
 
     @Override
@@ -237,6 +238,7 @@ public class MenuScreen implements Screen {
     }
 
     private void debugRender(float delta) {
+        Level level = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
         //        Gdx.app.log(getClass().getName(), "RENDER");
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
