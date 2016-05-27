@@ -12,15 +12,14 @@ import static org.e38.game.model.npc.NPC.State.*;
 public abstract class Cop implements NPC {
 
     protected static CopLevel[] copLevels;
-    private final Vector2 noSpeed = new Vector2(0, 0);
     public volatile long updatesSinceLastFire;
     protected Vector2 posicion;
     protected int range;
     protected State state;
+    protected volatile boolean isAreaDamage = false;
     /**
      * fire rate calculted with delta
      */
-    protected volatile boolean isAreaDamage = false;
     protected long fireRate;
     protected CopLevel nivel;
     protected Orientation orientation = Orientation.RIGHT;
@@ -33,6 +32,31 @@ public abstract class Cop implements NPC {
     public Cop setFireRate(long fireRate) {
         this.fireRate = fireRate;
         return this;
+    }
+
+    public boolean isAreaDamage() {
+        return isAreaDamage;
+    }
+
+    public Cop setAreaDamage(boolean areaDamage) {
+        isAreaDamage = areaDamage;
+        return this;
+    }
+
+    /**
+     * default impl, override for extra updates
+     *
+     * @param delta
+     */
+    @Override
+    public void onUpdate(float delta) {
+// TODO: 4/28/16
+        updatesSinceLastFire++;
+    }
+
+    @Override
+    public Vector2 getPosition() {
+        return posicion;
     }
 
     @Override
@@ -101,39 +125,14 @@ public abstract class Cop implements NPC {
     }
 
     @Override
-    public NPC setOrientationListener(OrientationListener listener) {
-        this.listener = listener;
-        return this;
-    }
-
-    @Override
     public OrientationListener getOrientationListener() {
         return listener;
     }
 
-    public boolean isAreaDamage() {
-        return isAreaDamage;
-    }
-
-    public Cop setAreaDamage(boolean areaDamage) {
-        isAreaDamage = areaDamage;
+    @Override
+    public NPC setOrientationListener(OrientationListener listener) {
+        this.listener = listener;
         return this;
-    }
-
-    /**
-     * default impl, override for extra updates
-     *
-     * @param delta
-     */
-    @Override
-    public void onUpdate(float delta) {
-// TODO: 4/28/16
-        updatesSinceLastFire++;
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        return posicion;
     }
 
     public Cop setPosicion(Vector2 posicion) {

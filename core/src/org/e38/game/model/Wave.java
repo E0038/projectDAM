@@ -2,6 +2,7 @@ package org.e38.game.model;
 
 import org.e38.game.model.npc.Criminal;
 import org.e38.game.model.npc.NPC;
+import org.e38.game.utils.SheludedAction;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,12 +78,12 @@ public class Wave {
         new SheludedAction(gap) {
             @Override
             public void onFinish() {
-                Wave.this.onFinish();
+                Wave.this.launchWave();
             }
         }.start();
     }
 
-    private void onFinish() {
+    private void launchWave() {
         int idx = spawnPointer.incrementAndGet();
         if (isAllSpawn || idx < criminals.size())
             criminals.get(idx).onSpawn();
@@ -91,11 +92,9 @@ public class Wave {
             new SheludedAction(gap) {
                 @Override
                 public void onFinish() {
-                    Wave.this.onFinish();
+                    Wave.this.launchWave();
                 }
             }.start();
         }
     }
-
-
 }

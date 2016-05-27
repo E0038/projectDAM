@@ -1,17 +1,14 @@
 package org.e38.game.model;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.e38.game.screens.LevelScreen;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by ALUMNEDAM on 25/05/2016.
@@ -24,16 +21,15 @@ public class Plaza extends Group {
         this.object = object;
         this.levelScreen = levelScreen;
 
-        setBounds((float)object.getProperties().get("x"),(float)object.getProperties().get("y"),(float)object.getProperties().get("width"),(float)object.getProperties().get("height"));
+        setBounds((float) object.getProperties().get("x"), (float) object.getProperties().get("y"), (float) object.getProperties().get("width"), (float) object.getProperties().get("height"));
         setTouchable(Touchable.enabled);
 //        System.out.println(getX() + " : " + getY());
 
-        addListener(new InputListener() {
+        addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
 //                System.out.println(x + " : " + y);
 //                System.out.println(propetresToString(object.getProperties()));
-
 
                 object.getProperties().put("isSelected", true);
                 if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
@@ -45,12 +41,13 @@ public class Plaza extends Group {
                 }
                 levelScreen.changeButtonsState();
                 //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
+                levelScreen.setLastPlazaId(levelScreen.getLevel().getLayer().getObjects().getIndex(object));
 
-                return true;
             }
         });
     }
+
+    @SuppressWarnings("Duplicates")
     private String propetresToString(MapProperties properties) {
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = properties.getKeys();
@@ -63,8 +60,8 @@ public class Plaza extends Group {
         return builder.toString();
     }
 
-    public void  changeOcupada(){
-        object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
+    public void changeOcupada() {
+        object.getProperties().put("isSelected", !(boolean) object.getProperties().get("ocupada"));
     }
 //private ShapeRenderer shapeRenderer = new ShapeRenderer();
 //    @Override

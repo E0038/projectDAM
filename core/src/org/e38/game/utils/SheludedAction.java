@@ -1,4 +1,6 @@
-package org.e38.game.model;
+package org.e38.game.utils;
+
+import com.badlogic.gdx.Gdx;
 
 /**
  * Created by sergi on 5/24/16.
@@ -20,7 +22,7 @@ public abstract class SheludedAction {
                     try {
                         Thread.sleep(MILLIS);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Gdx.app.error(getClass().getName(), e.getMessage(), e);
                     }
                 }
                 onFinish();

@@ -12,9 +12,7 @@ public class AnimationManager {
     private int frames;
 
     public AnimationManager(Animation animation) {
-        this.animation = animation;
-        frames = this.animation.getKeyFrames().length;
-        frameDuration = this.animation.getFrameDuration();
+        setAnimation(animation);
     }
 
     public Animation getAnimation() {

@@ -16,7 +16,6 @@ import org.e38.game.model.npc.NPC;
 import org.e38.game.persistance.ProfileManager;
 import org.e38.game.screens.AnimationManager;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -36,13 +35,15 @@ public class Recurses implements Disposable {
     public static Sound MACHINE_GUN,
             SILENCER, ALARM, MP5_SMG,
             GUN, SNIPER_SHOT, RPG,
-            SHOTGUN, EXPLOCION;
+            SHOTGUN, EXPLOCION, POP, BUTTON_PRESS;
     public final AtomicBoolean isLoaded = new AtomicBoolean(false);
+    public Texture top_bar;
     public TextureAtlas atlasButtons;
     public Texture buttonBg;
     public Texture mute;
     public Texture unmute;
     public Texture exitBtt;
+    public Texture upgrade_bar;
     private TextureAtlas atlasPolicias;
     private TextureAtlas atlasAnimCriminals;
 
@@ -95,6 +96,21 @@ public class Recurses implements Disposable {
             }
         };
         exitBtt = new Texture("grafics/textures/exit-button.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        top_bar = new Texture("grafics/hud/top_bar.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+
+        upgrade_bar = new Texture("grafics/hud/improve_cop.png") {
             @Override
             protected void finalize() throws Throwable {
                 dispose();
@@ -178,6 +194,9 @@ public class Recurses implements Disposable {
         GUN = Gdx.audio.newSound(Gdx.files.internal("audio/gunshot.mp3"));
         SNIPER_SHOT = Gdx.audio.newSound(Gdx.files.internal("audio/sniper_shot.mp3"));
         RPG = Gdx.audio.newSound(Gdx.files.internal("audio/RPG.mp3"));
+        POP = Gdx.audio.newSound(Gdx.files.internal("audio/pop.wav"));
+        BUTTON_PRESS = Gdx.audio.newSound(Gdx.files.internal("audio/button-pressed.ogg"));
+
     }
 
     private void loadLevels() {

@@ -11,7 +11,13 @@ public class AndroidLauncher extends AndroidApplication {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        config.hideStatusBar=false;
+        config.hideStatusBar=true;
+        config.touchSleepTime=16;
+        config.useGyroscope=false;
+        config.useAccelerometer=false;
+        config.useCompass=false;
+        config.useImmersiveMode=true;
+//        config.useGL30=true;
         initialize(new MainGame(), config);
     }
 }

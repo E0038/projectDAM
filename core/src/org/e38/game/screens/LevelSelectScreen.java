@@ -41,6 +41,7 @@ public class LevelSelectScreen implements Screen {
         table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
+        game.resume();
     }
 
     private void fillTable(TextButton.TextButtonStyle buttonStyle, float actorWidth, float actorHeight) {
@@ -50,7 +51,6 @@ public class LevelSelectScreen implements Screen {
             final int finalI = i;
             actor.addListener(new ClickListener() {
                 int idx = finalI;
-
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.setScreen(new LevelScreen(World.levels.get(idx), game));
@@ -60,8 +60,10 @@ public class LevelSelectScreen implements Screen {
             actor.setSize(actorWidth, actorHeight);
             table.add(actor).width(actorWidth).height(actorHeight).pad(10);
 
-            if (++colCount > TABLE_COLS)
+            if (++colCount > 2) {
                 table.row();
+                colCount = 0;
+            }
         }
     }
 
@@ -70,22 +72,18 @@ public class LevelSelectScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
-//        table.drawDebug(shapeRenderer);
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
@@ -95,6 +93,6 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }

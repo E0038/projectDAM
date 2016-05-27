@@ -1,8 +1,6 @@
 package org.e38.game.hud;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,29 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.e38.game.model.Level;
-import org.e38.game.model.Plaza;
+import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
-public class UpgradeBar implements Disposable, Bar{
+public class UpgradeBar implements Disposable, Bar {
     public Stage stage;
-    OrthographicCamera cam;
+    public Table table;
     private Viewport viewport;
     private Label mejorar;
     private Label vender;
-    Skin skin;
-    private int money;
-    public Table table;
 
-
-    public UpgradeBar(int money, float y){
-        this.money = money;
-        cam = new OrthographicCamera();
-        skin = new Skin();
-        viewport = new FitViewport(300, 200, cam);
+    public UpgradeBar(float y) {
+        Skin skin = new Skin();
+        viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
-        skin.add("improve_bar", new Texture("grafics/hud/improve_cop.png"));
+        skin.add("improve_bar", World.getRecurses().upgrade_bar);
 
         table = new Table();
 
@@ -55,25 +46,28 @@ public class UpgradeBar implements Disposable, Bar{
         stage.addActor(table);
     }
 
-
     @Override
-    public void updateBar(int money, Cop cop) {
-        mejorar.getStyle().fontColor = money > cop.getNivel().getPrecioCompra()&& cop.isUpgradeAvailable() ? Color.GREEN: Color.RED;
+    public void updateBar(int money) {
     }
 
     @Override
-    public void updateBar(int money) {}
+    public void updateBar(int money, Cop cop) {
+        mejorar.getStyle().fontColor = money > cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable() ? Color.GREEN : Color.RED;
+    }
+
     @Override
     public Stage getStage() {
         return stage;
     }
 
     @Override
+    public void finalize() throws Throwable {
+        this.dispose();
+        super.finalize();
+    }
+
+    @Override
     public void dispose() {
         stage.dispose();
-    }
-    @Override
-    public void finalize() {
-        this.dispose();
     }
 }

@@ -1,11 +1,8 @@
 package org.e38.game.hud;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -15,11 +12,11 @@ import org.e38.game.model.npc.Cop;
 
 public class CopsBar implements Disposable, Bar {
     public Stage stage;
-    OrthographicCamera cam;
-    private Viewport viewport;
-    Skin skin;
-    private int money;
     public Table table;
+    OrthographicCamera cam;
+    Skin skin;
+    private Viewport viewport;
+    private int money;
 
     public CopsBar(int money, float Y) {
         this.money = money;
@@ -57,7 +54,10 @@ public class CopsBar implements Disposable, Bar {
     }
 
     @Override
-    public void updateBar(int money, Cop cop) {};
+    public void updateBar(int money, Cop cop) {
+    }
+
+    ;
 
     @Override
     public Stage getStage() {
@@ -65,12 +65,13 @@ public class CopsBar implements Disposable, Bar {
     }
 
     @Override
-    public void dispose() {
-        stage.dispose();
+    public void finalize() throws Throwable {
+        this.dispose();
+        super.finalize();
     }
 
     @Override
-    public void finalize() {
-        this.dispose();
+    public void dispose() {
+        stage.dispose();
     }
 }
