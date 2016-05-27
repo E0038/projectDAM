@@ -36,7 +36,7 @@ public class Plaza extends Group {
                 if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
                     levelScreen.unSelectLastPlaza();
                 if (object.getProperties().get("ocupada").equals(true)) {
-                    levelScreen.showUpgradeBar();
+                    levelScreen.showImproveBar();
                 } else {
                     levelScreen.showCopsBar();
                 }
@@ -64,5 +64,4 @@ public class Plaza extends Group {
         object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
     }
 
-    public Matrix4 getMatrix4(){return computeTransform();}
 }
