@@ -46,6 +46,11 @@ public class Recurses implements Disposable {
     public Texture upgrade_bar;
     private TextureAtlas atlasPolicias;
     private TextureAtlas atlasAnimCriminals;
+    public Texture bar_no_money;
+    public Texture bar_L20;
+    public Texture bar_L30;
+    public Texture bar_L40;
+    public Texture bar_ALL;
 
     /**
      * NOTE : create the instance in Gdx thread and call load in a separate Tread
@@ -111,6 +116,41 @@ public class Recurses implements Disposable {
         };
 
         upgrade_bar = new Texture("grafics/hud/improve_cop.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        bar_no_money = new Texture("grafics/hud/cops/noMoney.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        bar_L20 = new Texture("grafics/hud/cops/L20.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        bar_L30 = new Texture("grafics/hud/cops/L30.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        bar_L40 = new Texture("grafics/hud/cops/L40.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        bar_ALL = new Texture("grafics/hud/cops/All.png") {
             @Override
             protected void finalize() throws Throwable {
                 dispose();

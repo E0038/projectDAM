@@ -1,18 +1,19 @@
 package org.e38.game.hud;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.e38.game.World;
 import org.e38.game.model.npc.Cop;
 
 public class CopsBar implements Disposable, Bar {
     public Stage stage;
     public Table table;
-    Skin skin;
+    //    Skin skin;
     private Viewport viewport;
     private int money;
 
@@ -35,49 +36,17 @@ public class CopsBar implements Disposable, Bar {
 
     @Override
     public void updateBar(int money) {
-        skin = new Skin();
         if (money < 10)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/noMoney.png") {
-                @Override
-                protected void finalize() throws Throwable {
-                    dispose();
-                    super.finalize();
-                }
-            });
+            table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_no_money)));
         else if (money < 20)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/L20.png") {
-                @Override
-                protected void finalize() throws Throwable {
-                    dispose();
-                    super.finalize();
-                }
-            });
+            table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_L20)));
         else if (money < 30)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/L30.png") {
-                @Override
-                protected void finalize() throws Throwable {
-                    dispose();
-                    super.finalize();
-                }
-            });
+            table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_L30)));
         else if (money < 40)
-            skin.add("cop_bar", new Texture("grafics/hud/cops/L40.png") {
-                @Override
-                protected void finalize() throws Throwable {
-                    dispose();
-                    super.finalize();
-                }
-            });
+            table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_L40)));
         else
-            skin.add("cop_bar", new Texture("grafics/hud/cops/All.png") {
-                @Override
-                protected void finalize() throws Throwable {
-                    dispose();
-                    super.finalize();
-                }
-            });
-        table.background(skin.newDrawable("cop_bar"));
-        stage.addActor(table);
+            table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_ALL)));
+//        stage.addActor(table);
     }
 
     @Override
@@ -100,6 +69,5 @@ public class CopsBar implements Disposable, Bar {
     @Override
     public void dispose() {
         stage.dispose();
-        if (skin != null) skin.dispose();
     }
 }

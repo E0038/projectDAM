@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -21,15 +22,13 @@ public class UpgradeBar implements Disposable, Bar {
     private Label vender;
 
     public UpgradeBar(float y) {
-        Skin skin = new Skin();
         viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
-        skin.add("improve_bar", new TextureRegion(World.getRecurses().upgrade_bar){@Override protected void finalize() throws Throwable {dispose();super.finalize();}});
 
         table = new Table();
 
-        table.background(skin.newDrawable("improve_bar"));
+        table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().upgrade_bar){@Override protected void finalize() throws Throwable {dispose();super.finalize();}}));
 
         table.setSize(300, 26);
 
