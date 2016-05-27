@@ -260,7 +260,7 @@ public class LevelScreen implements Screen {
                     if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
                         cop = c;
                 }
-                if(level.getCoins() >= cop.getNivel().getPrecioCompra()) {
+                if(level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
                     level.setCoins((int) (level.getCoins() - cop.getNivel().getPrecioCompra()));
                     cop.onUpgrade();
                 }
