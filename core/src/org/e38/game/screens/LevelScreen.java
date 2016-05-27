@@ -317,7 +317,7 @@ public class LevelScreen implements Screen {
     @Override
     public void render(float delta) {
         gameUpdater.update(delta);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         ot.setView(camera);
 
@@ -337,9 +337,10 @@ public class LevelScreen implements Screen {
             if (plaza.object.getProperties().get("isSelected") != null) {
                 if ((boolean) plaza.object.getProperties().get("isSelected")) {
                     Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
-                    float screenRatio = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
-                    float scale = worldRatio / screenRatio;
-                    shapeRenderer.rect(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, plaza.getWidth() * scale, plaza.getHeight() * scale);
+//                    float screenRatio = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+//                    float scale = worldRatio * screenRatio;
+//                    plaza.getScaleX();
+                    shapeRenderer.rect(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH ), plaza.getHeight() * (Gdx.graphics.getHeight()/World.WORLD_HEIGHT ));
                 }
             }
         }

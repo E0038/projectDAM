@@ -1,5 +1,6 @@
 package org.e38.game.model;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Matrix4;
@@ -64,4 +65,8 @@ public class Plaza extends Group {
         object.getProperties().put("isSelected", !(boolean)object.getProperties().get("ocupada"));
     }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+//        super.draw(batch, parentAlpha);
+    }
 }
