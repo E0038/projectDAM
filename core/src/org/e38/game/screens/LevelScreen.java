@@ -155,20 +155,21 @@ public class LevelScreen implements Screen {
         areaCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Area a = new Area();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                //restamos el precio de compra del dinero del jugador
-                level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                if (level.getCoins() >= 40) {
+                    Area a = new Area();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    //restamos el precio de compra del dinero del jugador
+                    level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
 
-                System.out.println("Coins level: " + level.getCoins());
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
-
+                    System.out.println("Coins level: " + level.getCoins());
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
             }
         });
 
@@ -180,15 +181,18 @@ public class LevelScreen implements Screen {
         damageOverCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                DamageOverTime a = new DamageOverTime();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
+                if (level.getCoins() >= 20) {
+                    DamageOverTime a = new DamageOverTime();
+
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
             }
         });
 
@@ -199,16 +203,17 @@ public class LevelScreen implements Screen {
         lentoCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Lento a = new Lento();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
-
+                if(level.getCoins() >= 30) {
+                    Lento a = new Lento();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
             }
         });
 
@@ -219,16 +224,17 @@ public class LevelScreen implements Screen {
         rapidoCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Rapido a = new Rapido();
-                a.spawn();
-                float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
-                float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
-                a.setPosicion(new Vector2(xPlaza, yPlaza));
-                level.cops.add(a);
-                lowerBar = voidBar;
-                level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-                areaCopButton.setTouchable(Touchable.disabled);
-
+                if(level.getCoins() >= 10) {
+                    Rapido a = new Rapido();
+                    a.spawn();
+                    float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
+                    float yPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("y");
+                    a.setPosicion(new Vector2(xPlaza, yPlaza));
+                    level.cops.add(a);
+                    lowerBar = voidBar;
+                    level.getLayer().getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
+                    areaCopButton.setTouchable(Touchable.disabled);
+                }
             }
         });
 
@@ -247,8 +253,10 @@ public class LevelScreen implements Screen {
                     if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
                         cop = c;
                 }
-
-                System.out.println(cop);
+                if(level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
+                    level.setCoins((int) (level.getCoins() - cop.getNivel().getPrecioCompra()));
+                    cop.onUpgrade();
+                }
             }
         });
 
@@ -393,9 +401,7 @@ public class LevelScreen implements Screen {
         lowerBar = copsBar;
     }
 
-    public void showImproveBar() {
-        lowerBar = upgradeBar;
-    }
+    public void showUpgradeBar() { lowerBar = upgradeBar; }
 
     public Level getLevel() {
         return level;
