@@ -79,6 +79,7 @@ public class World {
 
     public static void exit() {
         try {
+            ProfileManager.getInstance().stopAutoSave();
             ProfileManager.getInstance().persistentSave();
         } catch (IOException e) {
             Gdx.app.log(ProfileManager.class.getName(), "save failed", e);

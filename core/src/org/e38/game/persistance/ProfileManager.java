@@ -43,6 +43,7 @@ public class ProfileManager {
     private Cipher decrypter;
     private Cipher encryper;
     private ProfileSycronizer sycronizer = new ProfileSycronizer();
+    private Thread autosaveThread;
 
     private ProfileManager() throws IOException {
         conf();
@@ -68,10 +69,10 @@ public class ProfileManager {
     }
 
     private void autoSaveInit() {
-        Thread thread = new Thread(sycronizer);
-        thread.setDaemon(true);
-        thread.setName("ProfileSycronizerThread");
-        thread.start();
+        autosaveThread = new Thread(sycronizer);
+        autosaveThread.setDaemon(true);
+        autosaveThread.setName("ProfileSycronizerThread");
+        autosaveThread.start();
     }
 
     private void configureChiper() throws IOException {
@@ -182,6 +183,21 @@ public class ProfileManager {
 
     public static ProfileManager getInstance() {
         return ourInstance;
+    }
+
+    public void stopAutoSave() {
+        sycronizer.stop.set(true);
+    }
+
+    public void restartAutoSave() {
+        if (!sycronizer.stop.get()) {//if autosave is stoped
+            try {
+                autosaveThread.join();//wait until finsh
+                autoSaveInit();
+            } catch (InterruptedException e) {
+                Gdx.app.error(getClass().getName(), e.getMessage(), e);
+            }
+        }
     }
 
     public Profile getProfile() {
