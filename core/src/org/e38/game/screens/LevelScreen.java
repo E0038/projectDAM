@@ -336,15 +336,13 @@ public class LevelScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         for (Plaza plaza : plazas) {
-            if (plaza.object.getProperties().get("isSelected") != null) {
-                if ((boolean) plaza.object.getProperties().get("isSelected")) {
+            if (plaza.isSelected){
                     Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
                     shapeRenderer.rect(coordinates.x,
                             Gdx.graphics.getHeight() - coordinates.y,
                             plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH),
                             plaza.getHeight() * (Gdx.graphics.getHeight() / World.WORLD_HEIGHT));
                 }
-            }
         }
         shapeRenderer.end();
     }

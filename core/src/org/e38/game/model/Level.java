@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class Level {
 
-    public static final int TYPE_COIN=0;
-    public static final int TYPE_LIFE=1;
+    public static final int TYPE_COIN = 0;
+    public static final int TYPE_LIFE = 1;
     private static final float MODIFICADOR_VIDAS = 10;
 
     public Dificultat dificultat;
@@ -32,13 +32,13 @@ public class Level {
     public int wavePointer = 0;
     public String mapPath;
     public float waveGap = 3000f;
+    public List<OnChangeStateListener> onChangeStateList = new ArrayList<>();
     protected int initLifes;
     protected int coins;
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
     //    private MapLayer layer;
     private List<OnEndListerner> onEndListerners = new ArrayList<>();
-    public List<OnChangeStateListener> onChangeStateList= new ArrayList<>();
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -51,6 +51,11 @@ public class Level {
         this.mapPath = path;
         this.coins = initialCoins;
 //        this.levelUID = levelUID;
+    }
+
+    public Level setWaveGap(float waveGap) {
+        this.waveGap = waveGap;
+        return this;
     }
 
     public int getInitLifes() {
@@ -68,7 +73,6 @@ public class Level {
 
     public Level setMapPath(String mapPath) {
         this.mapPath = mapPath;
-        map = new TmxMapLoader().load(mapPath);
         return this;
     }
 
@@ -102,7 +106,7 @@ public class Level {
     }
 
     public Level setCoins(int coins) {
-        for (OnChangeStateListener change: onChangeStateList) {
+        for (OnChangeStateListener change : onChangeStateList) {
             change.onChangeState(this.coins, coins, TYPE_COIN);
         }
         this.coins = coins;
@@ -114,7 +118,7 @@ public class Level {
     }
 
     public Level setLifes(int lifes) {
-        for (OnChangeStateListener change: onChangeStateList) {
+        for (OnChangeStateListener change : onChangeStateList) {
             change.onChangeState(this.lifes, lifes, TYPE_LIFE);
         }
         this.lifes = lifes;
@@ -218,6 +222,13 @@ public class Level {
 
     public MapLayer getLayer() {
         return map.getLayers().get("objetos");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Level) {
+            return ((Level) obj).mapPath.equals(this.mapPath);
+        } else return false;
     }
 
     @Override

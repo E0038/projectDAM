@@ -28,14 +28,6 @@ public class World {
     private static float volume = 0.5f;
     public static float lastVolum = volume;
     private static Recurses recurses;
-    private Level level;
-
-    public World(Level level) {
-        this.level = level;
-    }
-
-    public World() {
-    }
 
     public static void onSwichMuteUnMute() {
         if (volume == 0f) onUnMute();
@@ -97,7 +89,7 @@ public class World {
     /**
      * toggle speed increment by 1 unit, if reach limit reset to initial.
      */
-    public void changeSpeed() {
+    public static void changeSpeed() {
         if (speed < MAX_SPEED) {
             speed++;
         } else {

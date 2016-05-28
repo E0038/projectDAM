@@ -32,6 +32,11 @@ public class Criminal implements Hittable {
     public Criminal() {
     }
 
+    public Criminal setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public Criminal(Level level) {
         this.level = level;
     }

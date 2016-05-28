@@ -1,15 +1,12 @@
 package org.e38.game.model;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.*;
+import org.e38.game.model.npc.Cop;
 import org.e38.game.screens.LevelScreen;
 
 import java.util.Iterator;
@@ -17,12 +14,14 @@ import java.util.Iterator;
 /**
  * Created by ALUMNEDAM on 25/05/2016.
  */
-public class Plaza extends Group {
+public class Plaza extends Actor {
     public MapObject object;
+    public boolean isSelected = false, isOcupada = false;
+    private Cop cop;
     LevelScreen levelScreen;
 
     public Plaza(final MapObject object, final LevelScreen levelScreen) {
-        this.object = object;
+//        this.object = object;
         this.levelScreen = levelScreen;
 
         setBounds((float) object.getProperties().get("x"), (float) object.getProperties().get("y"), (float) object.getProperties().get("width"), (float) object.getProperties().get("height"));

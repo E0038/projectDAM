@@ -8,17 +8,20 @@ import org.e38.game.screens.SplashScreen;
 
 public class MainGame extends Game {
     public boolean doRender = true;
+    public Thread loader;
 
     @Override
     public void create() {
         final Recurses recurses = new Recurses();
         World.setRecurses(recurses);
-        new Thread(new Runnable() {
+        loader=new Thread(new Runnable() {
             @Override
             public void run() {
                 recurses.load();
             }
-        }, "contextLoaderThread").start();
+        }, "contextLoaderThread");
+        loader.setDaemon(true);
+        loader.start();
         setScreen(new SplashScreen(this));
         Gdx.app.setLogLevel(Application.LOG_ERROR);
     }

@@ -38,7 +38,7 @@ public class LevelSelectScreen implements Screen {
         float actorWidth = stage.getViewport().getWorldWidth() / TABLES_ROWS;
         float actorHeight = stage.getViewport().getWorldHeight() / TABLE_COLS;
         fillTable(buttonStyle, actorWidth, actorHeight);
-        table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2);
+        table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 1.2f);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
         game.resume();
@@ -51,6 +51,7 @@ public class LevelSelectScreen implements Screen {
             final int finalI = i;
             actor.addListener(new ClickListener() {
                 int idx = finalI;
+
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.setScreen(new LevelScreen(World.levels.get(idx), game));

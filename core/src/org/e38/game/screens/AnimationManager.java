@@ -19,11 +19,10 @@ public class AnimationManager {
         return animation;
     }
 
-    public AnimationManager setAnimation(Animation animation) {
+    public void setAnimation(Animation animation) {
         this.animation = animation;
         frames = this.animation.getKeyFrames().length;
         frameDuration = this.animation.getFrameDuration();
-        return this;
     }
 
     public TextureRegion update(float delta) {

@@ -27,10 +27,10 @@ public class LevelSerializer implements JsonDeserializer<Level>, JsonSerializer<
         int lif = object.get(INIT_LIFES).getAsInt();
         float waveGap = object.get(WAVE_GAP).getAsFloat();
 
-        Level level = new Level(coins, path);
+        Level level = new Level();
         level.waves = context.deserialize(object.get(waves), new TypeToken<List<Wave>>() {
         }.getType());
-        level.setInitLifes(lif).setLifes(lif);
+        level.setInitLifes(lif).setLifes(lif).setCoins(coins).setMapPath(path).setWaveGap(waveGap);
         level.waveGap = waveGap;
         return level;
     }
