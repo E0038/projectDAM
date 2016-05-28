@@ -64,7 +64,7 @@ public class ProfileManager {
         if (!file.exists() || file.length() == 0) {
             createFiles(file);
         } else {
-            loadFiles(file);
+            loadProfile(file);
         }
     }
 
@@ -127,14 +127,14 @@ public class ProfileManager {
         //etc
     }
 
-    private void createFiles(File file) throws IOException {
+    private void createFiles(File profile) throws IOException {
         if (localBackup.length() == 0) localBackup.delete();//backup no valida
         if (!localBackup.exists()) {
-            file.createNewFile();
-            Writer writer = new FileWriter(file);
-            profile = new Profile();
+            profile.createNewFile();
+            Writer writer = new FileWriter(profile);
+            this.profile = new Profile();
             try {
-                byte[] crypt = encryper.doFinal(gson.toJson(profile).getBytes());
+                byte[] crypt = encryper.doFinal(gson.toJson(this.profile).getBytes());
                 writer.write(Base64Coder.encode(crypt));
                 writer.close();
             } catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -145,13 +145,13 @@ public class ProfileManager {
         }
     }
 
-    private void loadFiles(File file) throws IOException {
+    private void loadProfile(File profile) throws IOException {
         Gdx.app.log(getClass().getName(), "reading saved profile...");
-        String readed = readChars(file);
+        String readed = readChars(profile);
         try {
             byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
             String p = new String(bytes);
-            profile = gson.fromJson(p, Profile.class);
+            this.profile = gson.fromJson(p, Profile.class);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new IOException(e);
         }
@@ -183,6 +183,21 @@ public class ProfileManager {
 
     public static ProfileManager getInstance() {
         return ourInstance;
+    }
+
+    private Profile readProfile() throws IOException {
+        synchronized (persistLocker) {
+            Profile profile;
+            String readed = readChars(profilesFile.file());
+            try {
+                byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
+                String p = new String(bytes);
+                profile = gson.fromJson(p, Profile.class);
+            } catch (IllegalBlockSizeException | BadPaddingException e) {
+                throw new IOException(e);
+            }
+            return profile;
+        }
     }
 
     public void stopAutoSave() {
@@ -285,7 +300,7 @@ public class ProfileManager {
         profilesFile.delete();
         try {
             createFiles(profilesFile.file());
-            loadFiles(profilesFile.file());
+            loadProfile(profilesFile.file());
             return true;
         } catch (IOException e) {
             Gdx.app.log(getClass().getName(), e.getMessage(), e);
@@ -295,7 +310,7 @@ public class ProfileManager {
     }
 
     private class ProfileSycronizer implements Runnable {
-        public static final int WAIT_TIME = 60000;
+        public static final int WAIT_TIME = 60000 * 10;
         /**
          * set to True to force update without checking changes, will be reset to false when save is done
          */
@@ -318,18 +333,24 @@ public class ProfileManager {
                     } catch (IOException e) {
                         Gdx.app.error(getClass().getName(), e.getMessage(), e);
                     }
-                    try {
-                        Thread.sleep(WAIT_TIME);
-                    } catch (InterruptedException e) {
-                        Gdx.app.error(getClass().getName(), e.getMessage(), e);
-                    }
+                }
+                try {
+                    Thread.sleep(WAIT_TIME);
+                } catch (InterruptedException e) {
+                    Gdx.app.error(getClass().getName(), e.getMessage(), e);
                 }
             }
         }
 
         private boolean checkChanges() {
             synchronized (ProfileManager.this.persistLocker) {
-                List<Level> fileLevels = new ArrayList<>(gson.fromJson(profilesFile.reader(), Profile.class).getCompleteLevels());
+                List<Level> fileLevels;
+                try {
+                    fileLevels = new ArrayList<>(readProfile().getCompleteLevels());
+                } catch (IOException | NullPointerException e) {
+                    Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                    return false;
+                }
                 if (profile.getCompleteLevels().size() == fileLevels.size()) {
                     boolean ck = false;
                     for (Level level : profile.getCompleteLevels()) {
