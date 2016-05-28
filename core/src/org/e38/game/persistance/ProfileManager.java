@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-//import java.util.Base64;
 
 
 public class ProfileManager {
@@ -35,15 +34,11 @@ public class ProfileManager {
 
     private final Object persistLocker = new Object();
     public Gson gson;
-    //    private final Base64.Encoder base64Encoder = Base64.getEncoder();
-//    private final Base64.Decoder base64Decoder = Base64.getDecoder();
     private FileHandle localBackup;
     private FileHandle configFile = Gdx.files.local("data/app.conf");
-    private String localPath;
     private FileHandle profilesFile;
     private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
-    private FileHandle key = Gdx.files.internal("raw/key.aes");
     private SecretKey secretKey;
     private Cipher decrypter;
     private Cipher encryper;
@@ -52,6 +47,7 @@ public class ProfileManager {
     private ProfileManager() throws IOException {
         conf();
         dataInit();
+        autoSaveInit();
     }
 
     private void conf() throws IOException {
@@ -69,14 +65,16 @@ public class ProfileManager {
         } else {
             loadFiles(file);
         }
-        new Thread(sycronizer, "ProfileSycronizerThread").start();
+    }
+
+    private void autoSaveInit() {
+        Thread thread = new Thread(sycronizer);
+        thread.setDaemon(true);
+        thread.setName("ProfileSycronizerThread");
+        thread.start();
     }
 
     private void configureChiper() throws IOException {
-//        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
-//            byte[] decodedKey = Base64.decodeBase64(readChars(key.file()));
-//            secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-//        }
         byte[] decodedKey = Base64Coder.decode(b64Key);
         secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
         try {
@@ -117,7 +115,7 @@ public class ProfileManager {
                 configFile.file().createNewFile();
                 writeConfig(configuration);
             } catch (IOException e) {
-                e.printStackTrace();
+                Gdx.app.error(getClass().getName(), e.getMessage(), e);
             }
         }
         return configuration;//with defaults
@@ -136,23 +134,20 @@ public class ProfileManager {
             profile = new Profile();
             try {
                 byte[] crypt = encryper.doFinal(gson.toJson(profile).getBytes());
-//                writer.write(base64Encoder.encodeToString(crypt));
                 writer.write(Base64Coder.encode(crypt));
                 writer.close();
             } catch (IllegalBlockSizeException | BadPaddingException e) {
                 throw new IOException(e);
             }
-
         } else {
             localBackup.copyTo(profilesFile);
         }
     }
 
     private void loadFiles(File file) throws IOException {
-        Gdx.app.log(ProfileManager.class.getName(), "reading saved profile...");
+        Gdx.app.log(getClass().getName(), "reading saved profile...");
         String readed = readChars(file);
         try {
-//            byte[] bytes = decrypter.doFinal(base64Decoder.decode(readed));
             byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
             String p = new String(bytes);
             profile = gson.fromJson(p, Profile.class);
@@ -266,7 +261,7 @@ public class ProfileManager {
      * @return a map with user pogres
      */
     public Map<Integer, Integer> getGameProgres() {
-        return null;
+        return null;// TODO: 5/29/16
     }
 
     public boolean newGame() {
@@ -285,7 +280,13 @@ public class ProfileManager {
 
     private class ProfileSycronizer implements Runnable {
         public static final int WAIT_TIME = 60000;
+        /**
+         * set to True to force update without checking changes, will be reset to false when save is done
+         */
         private volatile AtomicBoolean doUpdate = new AtomicBoolean(false);
+        /**
+         * set to True to stop AutoSave loop on next check,when to run again create new Thread with this object
+         */
         private volatile AtomicBoolean stop = new AtomicBoolean(false);
 
         ProfileSycronizer() {
@@ -294,9 +295,10 @@ public class ProfileManager {
         @Override
         public void run() {
             while (!stop.get()) {
-                if (doUpdate.get()) {
+                if (doUpdate.get() || checkChanges()) {
                     try {
                         ProfileManager.this.persistentSave();
+                        doUpdate.set(false);
                     } catch (IOException e) {
                         Gdx.app.error(getClass().getName(), e.getMessage(), e);
                     }
@@ -306,6 +308,23 @@ public class ProfileManager {
                         Gdx.app.error(getClass().getName(), e.getMessage(), e);
                     }
                 }
+            }
+        }
+
+        private boolean checkChanges() {
+            synchronized (ProfileManager.this.persistLocker) {
+                List<Level> fileLevels = new ArrayList<>(gson.fromJson(profilesFile.reader(), Profile.class).getCompleteLevels());
+                if (profile.getCompleteLevels().size() == fileLevels.size()) {
+                    boolean ck = false;
+                    for (Level level : profile.getCompleteLevels()) {
+                        Level fileLevel = fileLevels.get(fileLevels.indexOf(level));
+                        if (level.getScore() > fileLevel.getScore()) {
+                            ck = true;
+                            break;
+                        }
+                    }
+                    return ck;
+                } else return true;
             }
         }
     }
