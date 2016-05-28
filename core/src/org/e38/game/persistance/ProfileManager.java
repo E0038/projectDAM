@@ -13,8 +13,10 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 //import java.util.Base64;
 
 
@@ -45,6 +47,7 @@ public class ProfileManager {
     private SecretKey secretKey;
     private Cipher decrypter;
     private Cipher encryper;
+    private ProfileSycronizer sycronizer = new ProfileSycronizer();
 
     private ProfileManager() throws IOException {
         conf();
@@ -66,6 +69,7 @@ public class ProfileManager {
         } else {
             loadFiles(file);
         }
+        new Thread(sycronizer, "ProfileSycronizerThread").start();
     }
 
     private void configureChiper() throws IOException {
@@ -190,15 +194,17 @@ public class ProfileManager {
     }
 
     public void save(Level level) {
-        List<Level> list = profile.getCompleteLevels();
+        List<Level> list = new ArrayList<>(profile.getCompleteLevels());
         if (list.contains(level)) {
             int idx = list.indexOf(level);
             if (level.getScore() > list.get(idx).getScore()) {
                 list.remove(level);
                 profile.getCompleteLevels().add(level);
+                sycronizer.doUpdate.set(true);
             }
         } else {
             profile.getCompleteLevels().add(level);
+            sycronizer.doUpdate.set(true);
         }
     }
 
@@ -246,7 +252,7 @@ public class ProfileManager {
      * @return -1 if not found , the saved Scorre if found
      */
     public Integer getScrore(Level level) {
-        List<Level> levels = profile.getCompleteLevels();
+        List<Level> levels = new ArrayList<>(profile.getCompleteLevels());
         int idx = levels.indexOf(level);
         if (idx < 0) {
             return -1;
@@ -275,5 +281,32 @@ public class ProfileManager {
             return false;
         }
 
+    }
+
+    private class ProfileSycronizer implements Runnable {
+        public static final int WAIT_TIME = 60000;
+        private volatile AtomicBoolean doUpdate = new AtomicBoolean(false);
+        private volatile AtomicBoolean stop = new AtomicBoolean(false);
+
+        ProfileSycronizer() {
+        }
+
+        @Override
+        public void run() {
+            while (!stop.get()) {
+                if (doUpdate.get()) {
+                    try {
+                        ProfileManager.this.persistentSave();
+                    } catch (IOException e) {
+                        Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                    }
+                    try {
+                        Thread.sleep(WAIT_TIME);
+                    } catch (InterruptedException e) {
+                        Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                    }
+                }
+            }
+        }
     }
 }
