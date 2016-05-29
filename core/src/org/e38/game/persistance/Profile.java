@@ -27,15 +27,4 @@ public class Profile {
         sb.append('}');
         return sb.toString();
     }
-    /*
-     * jyrhon test scritp
-     *
-     from java.net import URL, URLClassLoader
-     from java.lang import ClassLoader
-     from java.io import File
-     m = URLClassLoader.getDeclaredMethod("addURL", [URL])
-     m.accessible = 1
-     m.invoke(ClassLoader.getSystemClassLoader(), [File("/home/sergi/Projects/java/gdx/projectDAM/out/artifacts/projectDAM_jar/projectDAM.jar").toURL()])
-     from org.e38.game.persistance import Profile
-     */
 }

@@ -1,8 +1,8 @@
-package org.e38.game.model.npc.cops;
+package org.e38.game.model.npcs.cops;
 
-import org.e38.game.World;
-import org.e38.game.Recurses;
-import org.e38.game.model.npc.Cop;
+import org.e38.game.utils.Recurses;
+import org.e38.game.utils.World;
+import org.e38.game.model.npcs.Cop;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -11,15 +11,28 @@ import java.util.Queue;
 /**
  * Created by sergi on 4/28/16.
  */
-public class Lento extends Cop {
+public class Area extends Cop {
+
     static {
         copLevels = new CopLevel[]{
-                new CopLevel(10, 0, 25), new CopLevel(20, 0, 50), new CopLevel(40, 0, 100)
+                new CopLevel(5, 0, 20), new CopLevel(7, 0, 40), new CopLevel(10, 0, 60)
         };
     }
 
     private Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
 
+    @Override
+    public String getName() {
+        return Recurses.POLICIA_BAZOOKA;
+    }
+
+    @Override
+    public void onSpawn() {
+        isAreaDamage = true;
+        fireRate = 60 * 5; // 5s a 60fps
+        Collections.addAll(levels, copLevels);
+        onUpgrade();//level 1
+    }
 
     @Override
     public void onUpdate(float delta) {
@@ -29,7 +42,7 @@ public class Lento extends Cop {
 
     @Override
     public void onFire() {
-        World.play(Recurses.SNIPER_SHOT);
+        World.play(Recurses.RPG);
     }
 
     @Override
@@ -41,18 +54,5 @@ public class Lento extends Cop {
     public void onUpgrade() {
         if (isUpgradeAvailable())
             nivel = levels.poll();
-    }
-
-    @Override
-    public void onSpawn() {
-        isAreaDamage = true;
-        fireRate = 60 * 2; // 2s a 60fps
-        Collections.addAll(levels, copLevels);
-        onUpgrade();//level 1
-    }
-
-    @Override
-    public String getName() {
-        return Recurses.SNIPER_BUENO;
     }
 }

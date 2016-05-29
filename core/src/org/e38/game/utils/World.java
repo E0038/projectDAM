@@ -1,4 +1,4 @@
-package org.e38.game;
+package org.e38.game.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;

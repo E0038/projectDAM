@@ -1,4 +1,4 @@
-package org.e38.game;
+package org.e38.game.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -10,11 +10,10 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gson.reflect.TypeToken;
 import org.e38.game.model.Level;
-import org.e38.game.model.npc.Cop;
-import org.e38.game.model.npc.Criminal;
-import org.e38.game.model.npc.NPC;
+import org.e38.game.model.npcs.Cop;
+import org.e38.game.model.npcs.Criminal;
+import org.e38.game.model.npcs.NPC;
 import org.e38.game.persistance.ProfileManager;
-import org.e38.game.screens.AnimationManager;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;

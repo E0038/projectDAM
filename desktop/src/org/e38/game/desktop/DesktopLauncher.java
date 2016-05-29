@@ -3,7 +3,7 @@ package org.e38.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.e38.game.MainGame;
-import org.e38.game.World;
+import org.e38.game.utils.World;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {

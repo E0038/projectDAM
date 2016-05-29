@@ -5,9 +5,9 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import org.e38.game.World;
-import org.e38.game.model.npc.Cop;
-import org.e38.game.model.npc.Criminal;
+import org.e38.game.utils.World;
+import org.e38.game.model.npcs.Cop;
+import org.e38.game.model.npcs.Criminal;
 
 import java.util.ArrayList;
 import java.util.Collections;

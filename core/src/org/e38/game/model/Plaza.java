@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.e38.game.model.npc.Cop;
+import org.e38.game.model.npcs.Cop;
 import org.e38.game.screens.LevelScreen;
 
 import java.util.Iterator;

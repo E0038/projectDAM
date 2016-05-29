@@ -1,6 +1,6 @@
-package org.e38.game.model.npc.cops;
+package org.e38.game.model.npcs.cops;
 
-import org.e38.game.model.npc.Cop;
+import org.e38.game.model.npcs.Cop;
 
 /**
  * Created by sergi on 4/28/16.

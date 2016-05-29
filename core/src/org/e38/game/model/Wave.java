@@ -1,7 +1,7 @@
 package org.e38.game.model;
 
-import org.e38.game.model.npc.Criminal;
-import org.e38.game.model.npc.NPC;
+import org.e38.game.model.npcs.Criminal;
+import org.e38.game.model.npcs.NPC;
 import org.e38.game.utils.SheludedAction;
 
 import java.util.ArrayList;

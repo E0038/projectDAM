@@ -5,7 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.e38.game.World;
+import org.e38.game.utils.World;
 import org.e38.game.model.Level;
 
 import javax.crypto.*;

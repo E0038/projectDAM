@@ -1,4 +1,4 @@
-package org.e38.game.model.npc;
+package org.e38.game.model.npcs;
 
 /**
  * Created by sergi on 4/20/16.

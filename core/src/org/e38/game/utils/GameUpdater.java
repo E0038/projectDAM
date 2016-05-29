@@ -1,8 +1,8 @@
-package org.e38.game;
+package org.e38.game.utils;
 
 import org.e38.game.model.Level;
 import org.e38.game.model.Wave;
-import org.e38.game.model.npc.Cop;
+import org.e38.game.model.npcs.Cop;
 
 /**
  * Created by ALUMNEDAM on 24/05/2016.

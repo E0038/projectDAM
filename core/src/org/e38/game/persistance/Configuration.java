@@ -1,6 +1,6 @@
 package org.e38.game.persistance;
 
-import static org.e38.game.World.NORMAL;
+import static org.e38.game.utils.World.*;
 
 /**
  * Created by sergi on 5/5/16.

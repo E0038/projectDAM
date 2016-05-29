@@ -17,8 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import org.e38.game.GameUpdater;
-import org.e38.game.World;
 import org.e38.game.hud.Bar;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.TopBar;
@@ -26,12 +24,14 @@ import org.e38.game.hud.UpgradeBar;
 import org.e38.game.model.Level;
 import org.e38.game.model.Plaza;
 import org.e38.game.model.Wave;
-import org.e38.game.model.npc.Cop;
-import org.e38.game.model.npc.Criminal;
-import org.e38.game.model.npc.cops.Area;
-import org.e38.game.model.npc.cops.DamageOverTime;
-import org.e38.game.model.npc.cops.Lento;
-import org.e38.game.model.npc.cops.Rapido;
+import org.e38.game.model.npcs.Cop;
+import org.e38.game.model.npcs.Criminal;
+import org.e38.game.model.npcs.cops.Area;
+import org.e38.game.model.npcs.cops.DamageOverTime;
+import org.e38.game.model.npcs.cops.Lento;
+import org.e38.game.model.npcs.cops.Rapido;
+import org.e38.game.utils.GameUpdater;
+import org.e38.game.utils.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +203,7 @@ public class LevelScreen implements Screen {
         lentoCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(level.getCoins() >= 30) {
+                if (level.getCoins() >= 30) {
                     Lento a = new Lento();
                     a.spawn();
                     float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
@@ -224,7 +224,7 @@ public class LevelScreen implements Screen {
         rapidoCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(level.getCoins() >= 10) {
+                if (level.getCoins() >= 10) {
                     Rapido a = new Rapido();
                     a.spawn();
                     float xPlaza = (float) level.getLayer().getObjects().get(lastPlazaId).getProperties().get("x");
@@ -253,7 +253,7 @@ public class LevelScreen implements Screen {
                     if (c.getPosition().x == xPlaza && c.getPosition().y == yPlaza)
                         cop = c;
                 }
-                if(level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
+                if (level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
                     level.setCoins((int) (level.getCoins() - cop.getNivel().getPrecioCompra()));
                     cop.onUpgrade();
                 }
@@ -336,13 +336,13 @@ public class LevelScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         for (Plaza plaza : plazas) {
-            if (plaza.isSelected){
-                    Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
-                    shapeRenderer.rect(coordinates.x,
-                            Gdx.graphics.getHeight() - coordinates.y,
-                            plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH),
-                            plaza.getHeight() * (Gdx.graphics.getHeight() / World.WORLD_HEIGHT));
-                }
+            if (plaza.isSelected) {
+                Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
+                shapeRenderer.rect(coordinates.x,
+                        Gdx.graphics.getHeight() - coordinates.y,
+                        plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH),
+                        plaza.getHeight() * (Gdx.graphics.getHeight() / World.WORLD_HEIGHT));
+            }
         }
         shapeRenderer.end();
     }
@@ -356,22 +356,25 @@ public class LevelScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        shapeRenderer.dispose();
+        ot.dispose();
+        level.map.dispose();
+        topBar.dispose();
+        upgradeBar.dispose();
+        copsBar.dispose();
     }
 
     public void unSelectLastPlaza() {
@@ -399,7 +402,9 @@ public class LevelScreen implements Screen {
         lowerBar = copsBar;
     }
 
-    public void showUpgradeBar() { lowerBar = upgradeBar; }
+    public void showUpgradeBar() {
+        lowerBar = upgradeBar;
+    }
 
     public Level getLevel() {
         return level;

@@ -1,7 +1,7 @@
-package org.e38.game.model.npc.criminals;
+package org.e38.game.model.npcs.criminals;
 
-import org.e38.game.Recurses;
-import org.e38.game.model.npc.Criminal;
+import org.e38.game.utils.Recurses;
+import org.e38.game.model.npcs.Criminal;
 
 /**
  * Created by sergi on 5/20/16.

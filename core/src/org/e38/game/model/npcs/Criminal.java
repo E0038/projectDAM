@@ -1,8 +1,8 @@
-package org.e38.game.model.npc;
+package org.e38.game.model.npcs;
 
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
-import org.e38.game.Recurses;
+import org.e38.game.utils.Recurses;
 import org.e38.game.model.Level;
 
 /**

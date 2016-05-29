@@ -1,7 +1,7 @@
 package org.e38.game.model;
 
-import org.e38.game.model.npc.Cop;
-import org.e38.game.model.npc.Criminal;
+import org.e38.game.model.npcs.Cop;
+import org.e38.game.model.npcs.Criminal;
 
 /**
  * Created by sergi on 4/20/16.

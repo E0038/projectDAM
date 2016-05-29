@@ -18,10 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
-import org.e38.game.Recurses;
-import org.e38.game.World;
+import org.e38.game.utils.AnimationManager;
+import org.e38.game.utils.Recurses;
+import org.e38.game.utils.World;
 import org.e38.game.model.Level;
-import org.e38.game.model.npc.NPC;
+import org.e38.game.model.npcs.NPC;
 import org.e38.game.persistance.Profile;
 import org.e38.game.persistance.ProfileManager;
 

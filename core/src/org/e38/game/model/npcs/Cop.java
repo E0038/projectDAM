@@ -1,10 +1,10 @@
-package org.e38.game.model.npc;
+package org.e38.game.model.npcs;
 
 import com.badlogic.gdx.math.Vector2;
-import org.e38.game.Recurses;
+import org.e38.game.utils.Recurses;
 import org.e38.game.model.Bullet;
 
-import static org.e38.game.model.npc.NPC.State.*;
+import static org.e38.game.model.npcs.NPC.State.*;
 
 /**
  * Created by sergi on 4/20/16.

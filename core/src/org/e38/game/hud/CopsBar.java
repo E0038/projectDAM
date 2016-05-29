@@ -7,19 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.e38.game.World;
-import org.e38.game.model.npc.Cop;
+import org.e38.game.utils.World;
+import org.e38.game.model.npcs.Cop;
 
 public class CopsBar implements Disposable, Bar {
     public Stage stage;
     public Table table;
-    //    Skin skin;
     private Viewport viewport;
     private int money;
 
     public CopsBar(int money, float Y) {
         this.money = money;
-//        skin = new Skin();
         viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
@@ -27,7 +25,6 @@ public class CopsBar implements Disposable, Bar {
         table = new Table();
 
         updateBar(money);
-//        table.background(skin.newDrawable("cop_bar"));
         table.setSize(300, 26);
         table.setY(Y);
 
@@ -46,14 +43,11 @@ public class CopsBar implements Disposable, Bar {
             table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_L40)));
         else
             table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().bar_ALL)));
-//        stage.addActor(table);
     }
 
     @Override
     public void updateBar(int money, Cop cop) {
     }
-
-    ;
 
     @Override
     public Stage getStage() {

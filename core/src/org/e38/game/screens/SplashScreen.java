@@ -14,7 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
-import org.e38.game.World;
+import org.e38.game.utils.AnimationManager;
+import org.e38.game.utils.World;
 import org.e38.game.model.Level;
 
 /**

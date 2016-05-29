@@ -1,4 +1,4 @@
-package org.e38.game.screens;
+package org.e38.game.utils;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

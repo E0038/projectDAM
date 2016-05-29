@@ -1,8 +1,8 @@
-package org.e38.game.model.npc.cops;
+package org.e38.game.model.npcs.cops;
 
-import org.e38.game.Recurses;
-import org.e38.game.World;
-import org.e38.game.model.npc.Cop;
+import org.e38.game.utils.Recurses;
+import org.e38.game.utils.World;
+import org.e38.game.model.npcs.Cop;
 
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -11,23 +11,24 @@ import java.util.Queue;
 /**
  * Created by sergi on 4/28/16.
  */
-public class DamageOverTime extends Cop {
+public class Rapido extends Cop {
     static {
         copLevels = new CopLevel[]{
-                new CopLevel(5, 0, 30), new CopLevel(10, 0, 50), new CopLevel(20, 0, 60)
+                new CopLevel(1, 0, 10), new CopLevel(3, 0, 30), new CopLevel(6, 0, 60)
         };
-    }
-    @Override
-    public String getName() {
-        return Recurses.POLICIA_ESCOPETA;
     }
 
     private Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
 
     @Override
+    public String getName() {
+        return Recurses.POLICIA_BUENO;
+    }
+
+    @Override
     public void onSpawn() {
         isAreaDamage = true;
-        fireRate = 100; // 0.5s
+        fireRate = 30; // 0.5s
         Collections.addAll(levels, copLevels);
         onUpgrade();//level 1
     }
@@ -40,7 +41,7 @@ public class DamageOverTime extends Cop {
 
     @Override
     public void onFire() {
-        World.play(Recurses.SHOTGUN);
+        World.play(Recurses.GUN);
     }
 
     @Override
