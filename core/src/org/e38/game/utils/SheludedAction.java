@@ -5,29 +5,25 @@ import com.badlogic.gdx.Gdx;
 /**
  * Created by sergi on 5/24/16.
  */
-public abstract class SheludedAction {
+public abstract class SheludedAction extends Thread {
     public static final int MILLIS = 1000 / 60;
-    private long duration;
+    protected long duration;
 
     public SheludedAction(long duration) {
         this.duration = duration;
     }
 
-    public void start() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long init = System.currentTimeMillis();
-                while ((System.currentTimeMillis() - init) < duration) {
-                    try {
-                        Thread.sleep(MILLIS);
-                    } catch (InterruptedException e) {
-                        Gdx.app.error(getClass().getName(), e.getMessage(), e);
-                    }
-                }
-                onFinish();
+    @Override
+    public void run() {
+        long init = System.currentTimeMillis();
+        while ((System.currentTimeMillis() - init) < duration) {
+            try {
+                Thread.sleep(MILLIS);
+            } catch (InterruptedException e) {
+                Gdx.app.error(getClass().getName(), e.getMessage(), e);
             }
-        }).start();
+        }
+        onFinish();
     }
 
     public abstract void onFinish();
