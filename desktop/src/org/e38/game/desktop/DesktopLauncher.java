@@ -22,7 +22,8 @@ from org.e38.game import *
 from com.badlogic.gdx.backends.lwjgl import *
 from com.badlogic.gdx import *
 conf = LwjglApplicationConfiguration()
-LwjglApplication(MainGame(),conf)
+game = MainGame()
+LwjglApplication(game,conf)
 
      */
 }
