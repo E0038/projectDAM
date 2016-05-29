@@ -98,8 +98,8 @@ public class ProfileManager {
     private void loadStructure() {
         FileHandle dir = Gdx.files.local("data");
         if (!dir.exists()) dir.file().mkdir();
-        profilesFile = Gdx.files.local("data/profile.json");
-        localBackup = Gdx.files.local("data/profile.json.bak");
+        profilesFile = Gdx.files.local("data/profile");
+        localBackup = Gdx.files.local("data/profile.bak");
     }
 
     public Configuration readConfig() {

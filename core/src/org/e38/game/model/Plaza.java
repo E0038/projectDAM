@@ -16,12 +16,11 @@ import java.util.Iterator;
  */
 public class Plaza extends Actor {
     public MapObject object;
-    public boolean isSelected = false, isOcupada = false;
-    private Cop cop;
+    public boolean isSelected = false;
     LevelScreen levelScreen;
+    private Cop cop;
 
-    public Plaza(final MapObject object, final LevelScreen levelScreen) {
-//        this.object = object;
+    public Plaza(final MapObject object, LevelScreen levelScreen) {
         this.levelScreen = levelScreen;
 
         setBounds((float) object.getProperties().get("x"), (float) object.getProperties().get("y"), (float) object.getProperties().get("width"), (float) object.getProperties().get("height"));
@@ -30,26 +29,28 @@ public class Plaza extends Actor {
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                object.getProperties().put("isSelected", true);
-                if (levelScreen.getLevel().getLayer().getObjects().getIndex(object) != levelScreen.getLastPlazaId())
-                    levelScreen.unSelectLastPlaza();
-
-                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId(levelScreen.getLevel().getLayer().getObjects().getIndex(object));
-                if (object.getProperties().get("ocupada").equals(true)) {
-                    levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
-                    levelScreen.showUpgradeBar();
-                } else {
-                    levelScreen.updateLowerBar(LevelScreen.TYPE_COPS);
-                    levelScreen.showCopsBar();
-                }
-                levelScreen.changeButtonsState();
-                //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId(levelScreen.getLevel().getLayer().getObjects().getIndex(object));
-
+                onClick(object);
             }
         });
+    }
+
+    private void onClick(MapObject object) {
+        object.getProperties().put("isSelected", true);
+        if (levelScreen.objects.getObjects().getIndex(object) != levelScreen.getLastPlazaId())
+            levelScreen.unSelectLastPlaza();
+
+        //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+        levelScreen.setLastPlazaId(levelScreen.objects.getObjects().getIndex(object));
+        if (object.getProperties().get("ocupada").equals(true)) {
+            levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
+            levelScreen.showUpgradeBar();
+        } else {
+            levelScreen.updateLowerBar(LevelScreen.TYPE_COPS);
+            levelScreen.showCopsBar();
+        }
+        levelScreen.changeButtonsState();
+        //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
+        levelScreen.setLastPlazaId(levelScreen.objects.getObjects().getIndex(object));
     }
 
     @SuppressWarnings("Duplicates")
@@ -68,7 +69,19 @@ public class Plaza extends Actor {
     public void changeOcupada() {
         object.getProperties().put("isSelected", !(boolean) object.getProperties().get("ocupada"));
     }
-//private ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+    public boolean isOcupada() {
+        return cop != null;
+    }
+
+    public Cop getCop() {
+        return cop;
+    }
+
+    public void setCop(Cop cop) {
+        this.cop = cop;
+    }
+//    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 //    @Override
 //    public void draw(Batch batch, float parentAlpha) {
 //        batch.end();
@@ -81,7 +94,5 @@ public class Plaza extends Actor {
 //
 //        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
 //        shapeRenderer.end();
-//
-//
 //    }
 }

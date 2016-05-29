@@ -220,51 +220,50 @@ public class MenuScreen implements Screen {
     public void dispose() {
     }
 
-    private void debugShow() {
-        batcher = new SpriteBatch();
-        for (String poli : polis) {
-            TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
-            System.out.println(poli + "{\nwidth = " + region.getRegionWidth() + "\nheight = " + region.getRegionHeight() + "\n}");
-        }
-        animationManagers = new AnimationManager[criminals.length];
-        for (int i = 0; i < animationManagers.length; i++) {
-            System.out.println(criminals[i].name());
-            NPC.Orientation orientation = NPC.Orientation.RIGHT;// NPC.Orientation.values()[(int) (Math.random() * 4)];
-            System.out.println(orientation.name());
-            animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), orientation);
-        }
-        //Gdx.input.setInputProcessor(new InputHandler(level, ));
-
-    }
-
-    private void debugRender(float delta) {
-        Level level = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
-        //        Gdx.app.log(getClass().getName(), "RENDER");
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batcher.begin();
-        int x = 0;
-        int x2 = 0;
-        for (int i = 0; i < 10; i++) {
-
-            TextureRegion region = World.getRecurses().getPolicia(polis[i % polis.length], NPC.Orientation.LEFT);
-            batcher.draw(region, x, 0);
-            x += region.getRegionWidth();
-            TextureRegion criminal = animationManagers[i % criminals.length].update(delta);
-            batcher.draw(criminal, x2, 100);
-            x2 += criminal.getRegionWidth();
-        }
-
-        for (MapObject object : level.getLayer().getObjects()) {
-//            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("camino")){
-            float x3 = (Float) object.getProperties().get("x");
-            float y = (Float) object.getProperties().get("y");
-//                System.out.println(x + " : " +y);
-            batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x3, y);
-
-//            }
-        }
-        batcher.end();
-        count++;
-    }
+//    private void debugShow() {
+//        batcher = new SpriteBatch();
+//        for (String poli : polis) {
+//            TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
+//            System.out.println(poli + "{\nwidth = " + region.getRegionWidth() + "\nheight = " + region.getRegionHeight() + "\n}");
+//        }
+//        animationManagers = new AnimationManager[criminals.length];
+//        for (int i = 0; i < animationManagers.length; i++) {
+//            System.out.println(criminals[i].name());
+//            NPC.Orientation orientation = NPC.Orientation.RIGHT;// NPC.Orientation.values()[(int) (Math.random() * 4)];
+//            System.out.println(orientation.name());
+//            animationManagers[i] = World.getRecurses().getACriminal(criminals[i].name(), orientation);
+//        }
+//
+//    }
+//
+//    private void debugRender(float delta) {
+//        Level level = new Level(0, "grafics/map1/Mapa_lvl1.tmx");
+//        //        Gdx.app.log(getClass().getName(), "RENDER");
+//        Gdx.gl.glClearColor(1, 1, 1, 1);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        batcher.begin();
+//        int x = 0;
+//        int x2 = 0;
+//        for (int i = 0; i < 10; i++) {
+//
+//            TextureRegion region = World.getRecurses().getPolicia(polis[i % polis.length], NPC.Orientation.LEFT);
+//            batcher.draw(region, x, 0);
+//            x += region.getRegionWidth();
+//            TextureRegion criminal = animationManagers[i % criminals.length].update(delta);
+//            batcher.draw(criminal, x2, 100);
+//            x2 += criminal.getRegionWidth();
+//        }
+//
+//        for (MapObject object : level.getLayer().getObjects()) {
+////            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("camino")){
+//            float x3 = (Float) object.getProperties().get("x");
+//            float y = (Float) object.getProperties().get("y");
+////                System.out.println(x + " : " +y);
+//            batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x3, y);
+//
+////            }
+//        }
+//        batcher.end();
+//        count++;
+//    }
 }

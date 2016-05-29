@@ -7,10 +7,10 @@ import org.e38.game.model.npcs.Cop;
 /**
  * Created by ALUMNEDAM on 24/05/2016.
  */
-public class GameUpdater {
+public class LevelUpdater {
     private Level level;
 
-    public GameUpdater(Level level) {
+    public LevelUpdater(Level level) {
         this.level = level;
     }
 

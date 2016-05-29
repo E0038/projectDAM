@@ -26,7 +26,7 @@ public class Level {
 
     public Dificultat dificultat;
     public List<Cop> cops = new ArrayList<>();
-    public TiledMap map;
+//    public TiledMap map;
     public List<Wave> waves;
     //    public List<Wave> remaingWaves = new ArrayList<Wave>();
     public int wavePointer = 0;
@@ -143,9 +143,9 @@ public class Level {
         return this;
     }
 
-    public TiledMap getMap() {
-        return map;
-    }
+//    public TiledMap getMap() {
+//        return map;
+//    }
 
     public int getScore() {
         return (int) ((coins * dificultat.modificadorPuntos) + (lifes * MODIFICADOR_VIDAS)) * isWined;
@@ -181,8 +181,8 @@ public class Level {
      */
     public void onCreate() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
-        map = new TmxMapLoader().load(mapPath);
-        this.path = buildPath(4);
+        TiledMap map = new TmxMapLoader().load(mapPath);
+        this.path = buildPath(map,4);
         lifes = initLifes;
         //add reference to criminals
         for (Wave wave : this.waves) {
@@ -192,9 +192,9 @@ public class Level {
         }
     }
 
-    private List<MapObject> buildPath(final int pading) {
+    private List<MapObject> buildPath(TiledMap map, final int pading) {
         List<MapObject> caminos = new ArrayList<>();
-        for (MapObject object : getLayer().getObjects()) {
+        for (MapObject object : map.getLayers().get("objetos").getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("camino")) {
                 caminos.add(object);
             }
@@ -220,9 +220,9 @@ public class Level {
         return caminos;
     }
 
-    public MapLayer getLayer() {
-        return map.getLayers().get("objetos");
-    }
+//    public MapLayer getLayer() {
+//        return map.getLayers().get("objetos");
+//    }
 
     @Override
     public boolean equals(Object obj) {
@@ -234,7 +234,7 @@ public class Level {
         final StringBuilder sb = new StringBuilder("Level{");
         sb.append("dificultat=").append(dificultat);
         sb.append(", cops=").append(cops);
-        sb.append(", map=").append(map);
+//        sb.append(", map=").append(map);
         sb.append(", waves=").append(waves);
         sb.append(", wavePointer=").append(wavePointer);
         sb.append(", mapPath='").append(mapPath).append('\'');
