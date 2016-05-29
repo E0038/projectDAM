@@ -310,7 +310,7 @@ public class ProfileManager {
     }
 
     private class ProfileSycronizer implements Runnable {
-        public static final int WAIT_TIME = 60000 * 10;
+        public static final int WAIT_TIME = 600000;
         /**
          * set to True to force update without checking changes, will be reset to false when save is done
          */
