@@ -16,12 +16,11 @@ import org.e38.game.model.Level;
 public class TopBar implements Disposable, Level.OnChangeStateListener {
     public Stage stage;
     public Table table;
-    private Viewport viewport;
     private Label moneyl;
     private Label labelsl;
 
     public TopBar(int money, int labels) {
-        viewport = new FitViewport(300, 200);
+        Viewport viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
 
@@ -44,7 +43,7 @@ public class TopBar implements Disposable, Level.OnChangeStateListener {
     }
 
     @Override
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         this.dispose();
         super.finalize();
     }

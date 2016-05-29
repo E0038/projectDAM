@@ -13,12 +13,9 @@ import org.e38.game.model.npcs.Cop;
 public class CopsBar implements Disposable, Bar {
     public Stage stage;
     public Table table;
-    private Viewport viewport;
-    private int money;
 
     public CopsBar(int money, float Y) {
-        this.money = money;
-        viewport = new FitViewport(300, 200);
+        Viewport viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
 
@@ -55,7 +52,7 @@ public class CopsBar implements Disposable, Bar {
     }
 
     @Override
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         this.dispose();
         super.finalize();
     }

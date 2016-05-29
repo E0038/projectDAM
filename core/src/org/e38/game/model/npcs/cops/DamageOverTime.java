@@ -22,7 +22,7 @@ public class DamageOverTime extends Cop {
         return Recurses.POLICIA_ESCOPETA;
     }
 
-    private Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
+    private Queue<CopLevel> levels = new ArrayDeque<>();
 
     @Override
     public void onSpawn() {

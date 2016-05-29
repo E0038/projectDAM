@@ -13,7 +13,8 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
-public class World {
+@SuppressWarnings("UtilityClassCanBeEnum")
+public final class World {
     public static final String FACIL = "FACIL", NORMAL = "NORMAL", DIFICIL = "DIFICIL";
     public static final float MAX_SPEED = 3.0f;
     public static final int WORLD_WIDTH = 800;
@@ -28,6 +29,9 @@ public class World {
     private static float volume = 0.5f;
     public static float lastVolum = volume;
     private static Recurses recurses;
+
+    private World() {
+    }
 
     public static void onSwichMuteUnMute() {
         if (volume == 0f) onUnMute();

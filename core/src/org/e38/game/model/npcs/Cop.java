@@ -46,7 +46,6 @@ public abstract class Cop implements NPC {
     /**
      * default impl, override for extra updates
      *
-     * @param delta
      */
     @Override
     public void onUpdate(float delta) {

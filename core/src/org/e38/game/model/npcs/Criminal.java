@@ -155,8 +155,6 @@ public class Criminal implements Hittable {
     /**
      * note only support moves in horizontal or vertical
      *
-     * @param currentPoint
-     * @param nextPoint
      */
     private void setsOritantionRelativeTo(MapProperties currentPoint, MapProperties nextPoint) {
         float x0 = (float) currentPoint.get("x");

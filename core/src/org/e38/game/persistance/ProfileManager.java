@@ -12,6 +12,7 @@ import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
+@SuppressWarnings("FieldAccessedSynchronizedAndUnsynchronized")
 public class ProfileManager {
     public static final String ALGORIM = "AES";
     private static final String b64Key = "Whiy3TtJhr484rDop7vsfg==";
@@ -39,7 +41,6 @@ public class ProfileManager {
     private FileHandle profilesFile;
     private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
-    private SecretKey secretKey;
     private Cipher decrypter;
     private Cipher encryper;
     private ProfileSycronizer sycronizer = new ProfileSycronizer();
@@ -77,7 +78,7 @@ public class ProfileManager {
 
     private void configureChiper() throws IOException {
         byte[] decodedKey = Base64Coder.decode(b64Key);
-        secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        Key secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
         try {
             decrypter = Cipher.getInstance(ALGORIM);
             encryper = Cipher.getInstance(ALGORIM);
@@ -274,7 +275,6 @@ public class ProfileManager {
     /**
      * gets de scrore of a saved level on the current profile
      *
-     * @param level
      * @return -1 if not found , the saved Scorre if found
      */
     public Integer getScrore(Level level) {

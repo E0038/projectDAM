@@ -18,7 +18,7 @@ public class Lento extends Cop {
         };
     }
 
-    private Queue<CopLevel> levels = new ArrayDeque<CopLevel>();
+    private Queue<CopLevel> levels = new ArrayDeque<>();
 
 
     @Override

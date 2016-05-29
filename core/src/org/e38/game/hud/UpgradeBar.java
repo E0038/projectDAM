@@ -16,12 +16,13 @@ import org.e38.game.model.npcs.Cop;
 public class UpgradeBar implements Disposable, Bar {
     public Stage stage;
     public Table table;
-    private Viewport viewport;
+    @SuppressWarnings("FieldCanBeLocal")
     private Label mejorar;
+    @SuppressWarnings("FieldCanBeLocal")
     private Label vender;
 
     public UpgradeBar(float y) {
-        viewport = new FitViewport(300, 200);
+        Viewport viewport = new FitViewport(300, 200);
 
         stage = new Stage(viewport);
 
@@ -60,7 +61,7 @@ public class UpgradeBar implements Disposable, Bar {
     }
 
     @Override
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         this.dispose();
         super.finalize();
     }

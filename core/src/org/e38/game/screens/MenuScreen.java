@@ -222,8 +222,7 @@ public class MenuScreen implements Screen {
 
     private void debugShow() {
         batcher = new SpriteBatch();
-        for (int i = 0; i < polis.length; i++) {
-            String poli = polis[i];
+        for (String poli : polis) {
             TextureRegion region = World.getRecurses().getPolicia(poli, NPC.Orientation.LEFT);
             System.out.println(poli + "{\nwidth = " + region.getRegionWidth() + "\nheight = " + region.getRegionHeight() + "\n}");
         }
@@ -258,8 +257,8 @@ public class MenuScreen implements Screen {
 
         for (MapObject object : level.getLayer().getObjects()) {
 //            if (object.getProperties().get("type") != null  && object.getProperties().get("type").equals("camino")){
-            float x3 = ((Float) object.getProperties().get("x"));
-            float y = ((Float) object.getProperties().get("y"));
+            float x3 = (Float) object.getProperties().get("x");
+            float y = (Float) object.getProperties().get("y");
 //                System.out.println(x + " : " +y);
             batcher.draw(World.getRecurses().getPolicia(Recurses.POLICIA_BUENO, NPC.Orientation.LEFT), x3, y);
 

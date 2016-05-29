@@ -36,7 +36,7 @@ public class Plaza extends Actor {
                     levelScreen.unSelectLastPlaza();
 
                 //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-                levelScreen.setLastPlazaId((Integer) levelScreen.getLevel().getLayer().getObjects().getIndex(object));
+                levelScreen.setLastPlazaId(levelScreen.getLevel().getLayer().getObjects().getIndex(object));
                 if (object.getProperties().get("ocupada").equals(true)) {
                     levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
                     levelScreen.showUpgradeBar();
@@ -59,7 +59,7 @@ public class Plaza extends Actor {
         builder.append("{\n");
         while (iterator.hasNext()) {
             String key = iterator.next();
-            builder.append("\t" + key + " : " + properties.get(key) + ",\n");
+            builder.append("\t").append(key).append(" : ").append(properties.get(key)).append(",\n");
         }
         builder.append("}");
         return builder.toString();

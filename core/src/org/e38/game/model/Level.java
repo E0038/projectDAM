@@ -226,9 +226,7 @@ public class Level {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Level) {
-            return ((Level) obj).mapPath.equals(this.mapPath);
-        } else return false;
+        return obj instanceof Level && ((Level) obj).mapPath.equals(this.mapPath);
     }
 
     @Override

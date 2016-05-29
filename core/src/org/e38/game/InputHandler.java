@@ -3,7 +3,6 @@ package org.e38.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import org.e38.game.model.Level;
@@ -33,7 +32,7 @@ public class InputHandler implements InputProcessor {
 //                y = (float) object.getProperties().get("height") + y;
                 float height = (float) object.getProperties().get("height");
                 float width = (float) object.getProperties().get("width");
-                RectangleMapObject rectangleMapObject = new RectangleMapObject(x, height - y, height, width);
+                RectangleMapObject rectangleMapObject = new RectangleMapObject(x, height - y, width, height);
                 rectangleMapObject.getProperties().putAll(object.getProperties());
                 plazas.add(rectangleMapObject);
             }
@@ -87,7 +86,6 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        MapProperties properties;
         try {
             screenY = Gdx.graphics.getHeight() - screenY;//normalizar y
 //
@@ -144,7 +142,7 @@ public class InputHandler implements InputProcessor {
         builder.append("{\n");
         while (iterator.hasNext()) {
             String key = iterator.next();
-            builder.append("\t" + key + " : " + properties.get(key) + ",\n");
+            builder.append("\t").append(key).append(" : ").append(properties.get(key)).append(",\n");
         }
         builder.append("}");
         return builder.toString();

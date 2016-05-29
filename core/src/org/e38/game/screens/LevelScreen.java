@@ -133,7 +133,7 @@ public class LevelScreen implements Screen {
     }
 
     private void renderCriminals(Batch batch) {
-        int idx = 0;
+        int idx;
         for (Wave w : level.waves) {
             for (Criminal c : w.getCriminals()) {
                 if (c.isAlive()) {

@@ -249,7 +249,7 @@ public class Recurses implements Disposable {
     }
 
     public enum AnimatedCriminals {
-        bane, bicicletaFinal, enemigoEspadon, ladronEscopetaBueno;
+        bane, bicicletaFinal, enemigoEspadon, ladronEscopetaBueno
     }
 
     @Override

@@ -2,9 +2,7 @@ package org.e38.game.persistance;
 
 import org.e38.game.model.Level;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
