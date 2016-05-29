@@ -43,7 +43,7 @@ import java.util.List;
  * Created by sergi on 4/20/16.
  */
 // TODO: 5/29/16 migrate all uses of  lastPlazaId, and use of 'MapLayer objects' to Object Orientation design patterns
-// TODO: 5/29/16 add floating buttons (Back and Mute/Unmute) Support. ##Low priority## 
+// TODO: 5/29/16 add floating buttons (Back and Mute/Unmute) Support. ##Low priority##
 public class LevelScreen implements Screen {
 
     public static final int TYPE_UPGRADE = 0;

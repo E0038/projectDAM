@@ -21,6 +21,7 @@ import org.e38.game.model.Level;
 /**
  * Created by sergi on 4/22/16.
  */
+// TODO: 5/29/16 add error dialog
 public class SplashScreen implements Screen {
     public static final int LOADING_GIF_PARTS = 24;
     private final MainGame game;

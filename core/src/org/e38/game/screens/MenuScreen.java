@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -18,17 +17,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
+import org.e38.game.persistance.Profile;
+import org.e38.game.persistance.ProfileManager;
 import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
-import org.e38.game.model.Level;
-import org.e38.game.model.npcs.NPC;
-import org.e38.game.persistance.Profile;
-import org.e38.game.persistance.ProfileManager;
 
 /**
  * Created by sergi on 4/20/16.
  */
+// TODO: 5/29/16 add ranking
 public class MenuScreen implements Screen {
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     private final MainGame game;
