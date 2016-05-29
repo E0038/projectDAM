@@ -6,11 +6,11 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Created by sergi on 5/29/16.
  */
-public abstract class RecurentSheludedAction  extends Thread {
+public abstract class RecurentAction extends Thread {
     private volatile AtomicLong durationInterval = new AtomicLong();
     private volatile AtomicBoolean stop = new AtomicBoolean(false);
 
-    public RecurentSheludedAction(long durationInterval) {
+    public RecurentAction(long durationInterval) {
 
         this.durationInterval.set(durationInterval);
     }
