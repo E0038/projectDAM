@@ -14,4 +14,15 @@ public class DesktopLauncher {
         cfg.resizable = false;
         new LwjglApplication(new MainGame(), cfg);
     }
+
+    /*
+    scripting testing code
+
+from org.e38.game import *
+from com.badlogic.gdx.backends.lwjgl import *
+from com.badlogic.gdx import *
+conf = LwjglApplicationConfiguration()
+LwjglApplication(MainGame(),conf)
+
+     */
 }
