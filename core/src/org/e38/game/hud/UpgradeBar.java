@@ -10,16 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.e38.game.utils.World;
+import org.e38.game.model.Plaza;
 import org.e38.game.model.npcs.Cop;
+import org.e38.game.utils.World;
 
-public class UpgradeBar implements Disposable, Bar {
+public class UpgradeBar implements Disposable, LowerBar {
     public Stage stage;
     public Table table;
     @SuppressWarnings("FieldCanBeLocal")
     private Label mejorar;
     @SuppressWarnings("FieldCanBeLocal")
     private Label vender;
+    private Plaza plaza;
 
     public UpgradeBar(float y) {
         Viewport viewport = new FitViewport(300, 200);
@@ -28,7 +30,13 @@ public class UpgradeBar implements Disposable, Bar {
 
         table = new Table();
 
-        table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().upgrade_bar){@Override protected void finalize() throws Throwable {dispose();super.finalize();}}));
+        table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().upgrade_bar) {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        }));
 
         table.setSize(300, 26);
 
@@ -47,6 +55,11 @@ public class UpgradeBar implements Disposable, Bar {
     }
 
     @Override
+    public void dispose() {
+        stage.dispose();
+    }
+
+    @Override
     public void updateBar(int money) {
     }
 
@@ -56,18 +69,23 @@ public class UpgradeBar implements Disposable, Bar {
     }
 
     @Override
-    public Stage getStage() {
-        return stage;
+    public Plaza getPlaza() {
+        return plaza;
     }
 
     @Override
+    public void setPlaza(Plaza plaza) {
+        this.plaza = plaza;
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }    @Override
     protected void finalize() throws Throwable {
         this.dispose();
         super.finalize();
     }
 
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
+
 }

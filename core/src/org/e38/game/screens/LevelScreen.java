@@ -20,8 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import org.e38.game.hud.Bar;
 import org.e38.game.hud.CopsBar;
+import org.e38.game.hud.LowerBar;
 import org.e38.game.hud.TopBar;
 import org.e38.game.hud.UpgradeBar;
 import org.e38.game.model.Level;
@@ -42,6 +42,7 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
+// TODO: 5/29/16 migrate all uses of  lastPlazaId, and use of 'MapLayer objects' to Object Orientation design patterns
 public class LevelScreen implements Screen {
 
     public static final int TYPE_UPGRADE = 0;
@@ -53,7 +54,7 @@ public class LevelScreen implements Screen {
     private OrthographicCamera camera;
     private TopBar topBar;
     private CopsBar copsBar;
-    private Bar lowerBar;
+    private LowerBar lowerBar;
     private UpgradeBar upgradeBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Stage stage;
@@ -68,7 +69,7 @@ public class LevelScreen implements Screen {
     private Actor[] botonesCop;
     private Actor[] botonesUpgrade;
     //bar vacia para cuando no hay que mosta
-    private Bar voidBar = new Bar() {
+    private LowerBar voidBar = new LowerBar() {
         private Stage stage = new Stage();
 
         @Override
@@ -77,6 +78,16 @@ public class LevelScreen implements Screen {
 
         @Override
         public void updateBar(int money, Cop cop) {
+        }
+
+        @Override
+        public Plaza getPlaza() {
+            return null;
+        }
+
+        @Override
+        public void setPlaza(Plaza plaza) {
+
         }
 
         @Override
@@ -109,7 +120,7 @@ public class LevelScreen implements Screen {
         return stage;
     }
 
-    public Bar getLowerBar() {
+    public LowerBar getLowerBar() {
         return lowerBar;
     }
 
@@ -147,6 +158,8 @@ public class LevelScreen implements Screen {
                             plaza1.isSelected = false;
                         }
                         plaza.isSelected = true;
+                        lowerBar = plaza.isOcupada() ? upgradeBar : copsBar;
+                        lowerBar.setPlaza(plaza);
                     }
                 });
             }
@@ -423,6 +436,13 @@ public class LevelScreen implements Screen {
             copsBar.dispose();
         } catch (IllegalArgumentException ignored) {
         }
+    }
+
+    private Plaza getSelected() {
+        for (Plaza p : plazas) {
+            if (p.isSelected) return p;
+        }
+        return null;
     }
 
     public void unSelectLastPlaza() {

@@ -8,8 +8,10 @@ import org.e38.game.screens.SplashScreen;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class MainGame extends Game {
-    public boolean doRender = true;
+    public static final AtomicBoolean doRender = new AtomicBoolean(true);
     public Thread loader;
 
     @Override
@@ -35,19 +37,19 @@ public class MainGame extends Game {
 
     @Override
     public void pause() {
-        doRender = false;
+        doRender.set(false);
         super.pause();
     }
 
     @Override
     public void resume() {
-        doRender = true;
+        doRender.set(true);
         super.resume();
     }
 
     @Override
     public void render() {
-        if (doRender) super.render();
+        if (doRender.get()) super.render();
     }
 
     @Override

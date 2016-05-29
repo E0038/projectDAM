@@ -9,6 +9,7 @@ import java.util.Set;
  * Created by sergi on 4/21/16.
  */
 public class Profile {
+    //TODO : migrate to Idx of levels array
     private Set<Level> completeLevels = new HashSet<>();
 
     public Profile() {

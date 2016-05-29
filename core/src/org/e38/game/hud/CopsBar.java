@@ -7,12 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.e38.game.utils.World;
+import org.e38.game.model.Plaza;
 import org.e38.game.model.npcs.Cop;
+import org.e38.game.utils.World;
 
-public class CopsBar implements Disposable, Bar {
+public class CopsBar implements Disposable, LowerBar {
     public Stage stage;
     public Table table;
+    private Plaza plaza;
 
     public CopsBar(int money, float Y) {
         Viewport viewport = new FitViewport(300, 200);
@@ -44,6 +46,16 @@ public class CopsBar implements Disposable, Bar {
 
     @Override
     public void updateBar(int money, Cop cop) {
+    }
+
+    @Override
+    public Plaza getPlaza() {
+        return plaza;
+    }
+
+    @Override
+    public void setPlaza(Plaza plaza) {
+        this.plaza = plaza;
     }
 
     @Override
