@@ -54,11 +54,10 @@ public class MainGame extends Game {
 
     @Override
     public void setScreen(Screen screen) {
-        if (this.screen != null) this.screen.hide();
+        if (this.screen != null) this.screen.dispose();
         this.screen = screen;
         if (this.screen != null) {
             this.screen.show();
-            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             resume();
         }
     }
