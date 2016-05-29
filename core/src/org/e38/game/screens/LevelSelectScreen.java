@@ -1,6 +1,5 @@
 package org.e38.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,26 +12,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import org.e38.game.MainGame;
 import org.e38.game.utils.World;
 
 /**
  * Created by sergi on 4/28/16.
  */
-// TODO: 5/29/16 add back Button
 public class LevelSelectScreen implements Screen {
     public static final int TABLE_COLS = 5;
     private static final int TABLES_ROWS = 6;
-    private final Game game;
+    private final MainGame game;
     private Stage stage;
     private Table table;
 
-    public LevelSelectScreen(Game game) {
+    public LevelSelectScreen(MainGame game) {
         this.game = game;
     }
 
     @Override
     public void show() {
         stage = new Stage();
+        createStage();
+        Gdx.input.setInputProcessor(stage);
+        game.resume();
+    }
+
+    private void createStage() {
         TextureRegionDrawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
         table = new Table(new Skin());
@@ -41,18 +46,25 @@ public class LevelSelectScreen implements Screen {
         fillTable(buttonStyle, actorWidth, actorHeight);
         table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 1.2f);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
-        game.resume();
+        TextButton returnButon = new TextButton("Back", buttonStyle);
+        returnButon.setSize(100, 50);
+        returnButon.setPosition(0, 0);
+        returnButon.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+            }
+        });
+        stage.addActor(returnButon);
     }
 
     private void fillTable(TextButton.TextButtonStyle buttonStyle, float actorWidth, float actorHeight) {
         int colCount = 0;
         for (int i = 0, size = World.levels.size(); i < size; i++) {
-            TextButton actor = new TextButton("Level - " + (i + 1), buttonStyle);
+            TextButton actor = new TextButton("Level - " + (i + 1), new TextButton.TextButtonStyle(buttonStyle));
             final int finalI = i;
             actor.addListener(new ClickListener() {
                 int idx = finalI;
-
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.setScreen(new LevelScreen(World.levels.get(idx), game));

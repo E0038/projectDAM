@@ -35,23 +35,12 @@ public class SplashScreen implements Screen {
 
     @Override
     public void show() {
-        loadingSprite = new Texture("grafics/textures/loading_sprite.png") {
-            @Override
-            protected void finalize() throws Throwable {
-                dispose();
-                super.finalize();
-            }
-        };
+        loadingSprite = new Texture("grafics/textures/loading_sprite.png");
+
         TextureRegion[][] regions = TextureRegion.split(loadingSprite, loadingSprite.getWidth() / LOADING_GIF_PARTS, loadingSprite.getHeight());
         loadingGif = new AnimationManager(new Animation(0.01f, regions[0]));
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
-        Label label = new Label("LOADING...", new Label.LabelStyle(new BitmapFont(), Color.BLACK)) {
-            @Override
-            protected void finalize() throws Throwable {
-                dispose();
-                super.finalize();
-            }
-        };
+        Label label = new Label("LOADING...", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         label.setX((stage.getViewport().getWorldWidth() / 2) - (loadingSprite.getWidth() / LOADING_GIF_PARTS / 2));
         label.setY((stage.getViewport().getWorldHeight() / 2) + loadingSprite.getHeight());
         label.setFontScale(2f);
@@ -107,5 +96,11 @@ public class SplashScreen implements Screen {
     public void dispose() {
         loadingSprite.dispose();
         stage.dispose();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        dispose();
+        super.finalize();
     }
 }
