@@ -116,7 +116,7 @@ public class ProfileManager {
                 configFile.file().createNewFile();
                 writeConfig(configuration);
             } catch (IOException e) {
-                Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                Gdx.app.debug(getClass().getName(), e.getMessage(), e);
             }
         }
         return configuration;//with defaults
@@ -210,7 +210,7 @@ public class ProfileManager {
                 autosaveThread.join();//wait until finsh
                 autoSaveInit();
             } catch (InterruptedException e) {
-                Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                Gdx.app.debug(getClass().getName(), e.getMessage(), e);
             }
         }
     }
@@ -331,13 +331,13 @@ public class ProfileManager {
                         ProfileManager.this.persistentSave();
                         doUpdate.set(false);
                     } catch (IOException e) {
-                        Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                        Gdx.app.debug(getClass().getName(), e.getMessage(), e);
                     }
                 }
                 try {
                     Thread.sleep(WAIT_TIME);
                 } catch (InterruptedException e) {
-                    Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                    Gdx.app.debug(getClass().getName(), e.getMessage(), e);
                 }
             }
         }
@@ -348,7 +348,7 @@ public class ProfileManager {
                 try {
                     fileLevels = new ArrayList<>(readProfile().getCompleteLevels());
                 } catch (IOException | NullPointerException e) {
-                    Gdx.app.error(getClass().getName(), e.getMessage(), e);
+                    Gdx.app.debug(getClass().getName(), e.getMessage(), e);
                     return false;
                 }
                 if (profile.getCompleteLevels().size() == fileLevels.size()) {
