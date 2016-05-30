@@ -28,6 +28,7 @@ public class Area extends Cop {
 
     @Override
     public void onSpawn() {
+        setRange(30f);
         isAreaDamage = true;
         fireRate = 60 * 5; // 5s a 60fps
         Collections.addAll(levels, copLevels);

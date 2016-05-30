@@ -31,6 +31,7 @@ public class SpeedReducer extends Cop {
 
     @Override
     public void onSpawn() {
+        setRange(40);
         super.onSpawn();
     }
 

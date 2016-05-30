@@ -1,5 +1,6 @@
 package org.e38.game.model.npcs;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Bullet;
 import org.e38.game.utils.Recurses;
@@ -15,7 +16,7 @@ public abstract class Cop implements NPC {
     protected static CopLevel[] copLevels;
     public volatile long updatesSinceLastFire;
     protected Vector2 posicion;
-    protected int range;
+    protected float range;
     protected State state;
     protected volatile boolean isAreaDamage = false;
     /**
@@ -25,6 +26,20 @@ public abstract class Cop implements NPC {
     protected CopLevel nivel;
     protected Orientation orientation = Orientation.RIGHT;
     protected OrientationListener listener;
+    private Circle circle;
+
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public void setCircle(Circle circle) {
+        this.circle = circle;
+    }
+
+    public void setRange(float range) {
+        this.range = range;
+        circle = new Circle(posicion, this.range);
+    }
 
     public long getFireRate() {
         return fireRate;
@@ -73,6 +88,7 @@ public abstract class Cop implements NPC {
 
     @Override
     public void spawn() {
+        circle = new Circle(posicion, range);
         state = SPAWING;
         onSpawn();
         state = ALIVE;
@@ -145,15 +161,6 @@ public abstract class Cop implements NPC {
 
     public Cop setNivel(CopLevel nivel) {
         this.nivel = nivel;
-        return this;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public Cop setRange(int range) {
-        this.range = range;
         return this;
     }
 

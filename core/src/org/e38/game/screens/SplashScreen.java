@@ -100,7 +100,7 @@ public class SplashScreen implements Screen {
 
     @Override
     protected void finalize() throws Throwable {
-        dispose();
+//        dispose();
         super.finalize();
     }
 }

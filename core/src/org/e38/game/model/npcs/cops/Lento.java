@@ -45,6 +45,7 @@ public class Lento extends Cop {
 
     @Override
     public void onSpawn() {
+        setRange(70);
         isAreaDamage = true;
         fireRate = 60 * 2; // 2s a 60fps
         Collections.addAll(levels, copLevels);

@@ -1,17 +1,20 @@
 package org.e38.game.utils;
 
 import org.e38.game.model.Level;
+import org.e38.game.model.Plaza;
 import org.e38.game.model.Wave;
-import org.e38.game.model.npcs.Cop;
+import org.e38.game.screens.LevelScreen;
 
 /**
- * Created by ALUMNEDAM on 24/05/2016.
+ * Created by sergi on 24/05/2016.
  */
 public class LevelUpdater {
+    private final LevelScreen screen;
     private Level level;
 
-    public LevelUpdater(Level level) {
-        this.level = level;
+    public LevelUpdater(LevelScreen screen) {
+        this.screen = screen;
+        this.level = screen.getLevel();
     }
 
     public void update(float delta) {
@@ -21,8 +24,8 @@ public class LevelUpdater {
             wave.onUpdate(delta);
             if (wave.isClear()) level.wavePointer++;
         }
-        for (Cop cop : level.cops) {
-            cop.onUpdate(delta);
+        for (Plaza plaza : screen.getPlazas()) {
+            if (plaza.isOcupada()) plaza.getCop().onUpdate(delta);
         }
     }
 }

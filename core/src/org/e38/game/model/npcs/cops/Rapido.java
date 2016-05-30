@@ -27,6 +27,7 @@ public class Rapido extends Cop {
 
     @Override
     public void onSpawn() {
+        setRange(50);
         isAreaDamage = true;
         fireRate = 30; // 0.5s
         Collections.addAll(levels, copLevels);
