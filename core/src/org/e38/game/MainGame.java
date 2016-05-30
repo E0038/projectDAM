@@ -31,11 +31,6 @@ public class MainGame extends Game {
     }
 
     @Override
-    public void dispose() {
-        screen.dispose();
-    }
-
-    @Override
     public void pause() {
         doRender.set(false);
         super.pause();

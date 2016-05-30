@@ -110,7 +110,7 @@ public class LevelScreen implements Screen {
         copsBar = new CopsBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
         upgradeBar = new UpgradeBar(topBar.table.getY() - topBar.table.getHeight());
         level.addOnChangeStateListerner(topBar);
-        levelUpdater = new LevelUpdater(level);
+        levelUpdater = new LevelUpdater(this);
     }
 
     public List<Plaza> getPlazas() {

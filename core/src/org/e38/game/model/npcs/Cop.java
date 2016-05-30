@@ -10,12 +10,11 @@ import static org.e38.game.model.npcs.NPC.State.*;
 /**
  * Created by sergi on 4/20/16.
  */
-// TODO: 5/29/16 add fire Range Support
 public abstract class Cop implements NPC {
 
     protected static CopLevel[] copLevels;
     public volatile long updatesSinceLastFire;
-    protected Vector2 posicion;
+    protected Vector2 posicion=new Vector2(0,0);
     protected float range;
     protected State state;
     protected volatile boolean isAreaDamage = false;

@@ -14,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
+import org.e38.game.model.Level;
 import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.World;
-import org.e38.game.model.Level;
 
 /**
  * Created by sergi on 4/22/16.
@@ -31,12 +31,19 @@ public class SplashScreen implements Screen {
 
     public SplashScreen(final MainGame game) {
         this.game = game;
+        game.loader.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                // TODO: 5/30/16
+                //catch loading error,
+                //NOTE for impl: this is executed in NO GDX/GL Thread!! NOT USE GRAFICS RELATED CODE HERE!!
+            }
+        });
     }
 
     @Override
     public void show() {
         loadingSprite = new Texture("grafics/textures/loading_sprite.png");
-
         TextureRegion[][] regions = TextureRegion.split(loadingSprite, loadingSprite.getWidth() / LOADING_GIF_PARTS, loadingSprite.getHeight());
         loadingGif = new AnimationManager(new Animation(0.01f, regions[0]));
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
