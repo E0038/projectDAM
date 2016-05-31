@@ -47,6 +47,7 @@ public class MenuScreen implements Screen {
     private TextureRegionDrawable umuteDrawable;
     private TextureRegionDrawable muteDrawable;
     private TextButton ranking;
+    private TextButton settings;
     private Dialog rankingDialog;
 
     public MenuScreen(final MainGame game) {
@@ -99,6 +100,7 @@ public class MenuScreen implements Screen {
         volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
 
         ranking = new TextButton("Ranking", new TextButton.TextButtonStyle(style));
+        settings = new TextButton("Ajustes", new TextButton.TextButtonStyle(style));
     }
 
     private void configureButtons() {
@@ -125,6 +127,10 @@ public class MenuScreen implements Screen {
         ranking.setSize(bttWidth, bttHeight);
         ranking.setY((stage.getViewport().getWorldHeight() / 10) * 3);
         ranking.setX(centerX);
+
+        settings.setSize(bttWidth, bttHeight);
+        settings.setY((stage.getViewport().getWorldHeight() / 10) * 2);
+        settings.setX(centerX);
 
         exit.setSize(World.getRecurses().exitBtt.getWidth(), World.getRecurses().exitBtt.getHeight());
         exit.setPosition(stage.getViewport().getWorldWidth() - exit.getWidth(), 0);
@@ -154,6 +160,12 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 fillRanking();
                 rankingDialog.show(stage);
+            }
+        });
+        settings.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new SettingsScreen());
             }
         });
 

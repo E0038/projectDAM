@@ -3,6 +3,7 @@ package org.e38.game.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.utils.World;
@@ -14,6 +15,7 @@ public class SettingsScreen implements Screen {
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     private final MainGame game;
     private Stage stage;
+    private Slider slider;
 
     public SettingsScreen(MainGame game) {
         this.game = game;
@@ -23,11 +25,13 @@ public class SettingsScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
+        slider = new Slider(0f, 1f, 0.1f, true, new Slider.SliderStyle());
+        stage.addActor(slider);
     }
 
     @Override
     public void render(float delta) {
-
+        stage.draw();
     }
 
     @Override
