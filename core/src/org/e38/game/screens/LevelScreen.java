@@ -123,7 +123,7 @@ public class LevelScreen implements Screen {
         level.addOnChangeStateListerner(topBar);
         levelUpdater = new LevelUpdater(this);
         errorDialog = new Dialog("Juego finalizado", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
-        errorDialog.padTop(40).padLeft(60);
+        errorDialog.padTop(40).padLeft(5);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton dbutton = new TextButton("Volver al menú",new TextButton.TextButtonStyle(drawable, drawable,drawable, new BitmapFont()));
@@ -144,7 +144,7 @@ public class LevelScreen implements Screen {
                 if (isWined){
                     ProfileManager.getInstance().save(level);
                 }
-                errorDialog.getTitleLabel().setText(isWined ? "wined":"loss");
+                errorDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
                 errorDialog.show(stage);
 
             }
