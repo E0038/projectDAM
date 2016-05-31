@@ -129,7 +129,7 @@ public class LevelScreen implements Screen {
         TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
-        errorDialog.text(new Label("Estadísticas:\n Dinero en el banco restante: "+level.getLifes()+"\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        errorDialog.text(new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         errorDialog.button(dbutton, true);
 
         dbutton.addListener(new ClickListener() {
@@ -274,6 +274,7 @@ public class LevelScreen implements Screen {
         volumeSwitch.setSize(World.getRecurses().mute.getWidth(), World.getRecurses().mute.getHeight());
         volumeSwitch.setPosition(back.getWidth(), stage.getViewport().getWorldHeight() - World.getRecurses().mute.getHeight());
 
+        //noinspection Duplicates
         volumeSwitch.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -335,7 +336,7 @@ public class LevelScreen implements Screen {
                         a.spawn();
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
-                        //level.cops.add(a);
+                        //plaza.setCop(a);
                         lowerBar = voidBar;
                         level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
                         plaza.setCop(a);
@@ -358,7 +359,7 @@ public class LevelScreen implements Screen {
                         DamageOverTime a = new DamageOverTime();
                         a.spawn();
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
-                        level.cops.add(a);
+                        plaza.setCop(a);
                         lowerBar = voidBar;
                         level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
                         plaza.setCop(a);
@@ -380,7 +381,7 @@ public class LevelScreen implements Screen {
                         Lento a = new Lento();
                         a.spawn();
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
-                        level.cops.add(a);
+                        plaza.setCop(a);
                         lowerBar = voidBar;
                         level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
                         plaza.setCop(a);
@@ -402,7 +403,7 @@ public class LevelScreen implements Screen {
                         Rapido a = new Rapido();
                         a.spawn();
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
-                        level.cops.add(a);
+                        plaza.setCop(a);
                         lowerBar = voidBar;
                         level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
                         plaza.setCop(a);
@@ -441,7 +442,6 @@ public class LevelScreen implements Screen {
                     level.setCoins((int) (level.getCoins() + cop.getNivel().getPrecioVenta()));
                     cop.onSell();
                     getSelected().setCop(null);
-                    level.cops.remove(cop);
                     lowerBar = voidBar;
                     changeButtonsState();
                     System.out.println(cop);
@@ -530,6 +530,10 @@ public class LevelScreen implements Screen {
             if (cop != null)
                 upgradeBar.updateBar(level.getCoins(), cop);
         }
+    }
+
+    public void showCopsBar() {
+        lowerBar = copsBar;
     }    @Override
     protected void finalize() throws Throwable {
         stage.dispose();
@@ -542,10 +546,6 @@ public class LevelScreen implements Screen {
         super.finalize();
     }
 
-    public void showCopsBar() {
-        lowerBar = copsBar;
-    }
-
     public void showUpgradeBar() {
         lowerBar = upgradeBar;
     }
@@ -554,13 +554,13 @@ public class LevelScreen implements Screen {
         return level;
     }
 
+
+
 //    public void unSelectLastPlaza() {
 //        if (lastPlazaId != -1) {
 //            objects.getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
 //        }
 //    }
-
-
 
 
 //    public int getLastPlazaId() {
