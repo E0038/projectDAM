@@ -165,6 +165,7 @@ public class LevelScreen implements Screen {
                         plaza.isSelected = true;
                         lowerBar = plaza.isOcupada() ? upgradeBar : copsBar;
                         lowerBar.setPlaza(plaza);
+                        changeButtonsState();
                         plaza.onClick();
                     }
                 });
@@ -222,6 +223,7 @@ public class LevelScreen implements Screen {
         areaCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println("area");
                 if (level.getCoins() >= 40) {
                     Plaza plaza = getSelected();
                     if (plaza != null){
@@ -230,81 +232,80 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         level.cops.add(a);
                         lowerBar = voidBar;
-                        //restamos el precio de compra del dinero del jugador
                         level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
-
-                        System.out.println("Coins level: " + level.getCoins());
-                        areaCopButton.setTouchable(Touchable.disabled);
+                        plaza.setCop(a);
                     }
                 }
             }
         });
 
 
-//        damageOverCopButton = new Actor();
-//        damageOverCopButton.setTouchable(Touchable.disabled);
-//        damageOverCopButton.setBounds(249, 600 - 85 - 60, 100, 60);
-//        stage.addActor(damageOverCopButton);
-//        damageOverCopButton.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                if (level.getCoins() >= 20) {
-//                    DamageOverTime a = new DamageOverTime();
-//
-//                    a.spawn();
-//                    float xPlaza = (float) objects.getObjects().get(lastPlazaId).getProperties().get("x");
-//                    float yPlaza = (float) objects.getObjects().get(lastPlazaId).getProperties().get("y");
-//                    a.setPosicion(new Vector2(xPlaza, yPlaza));
-//                    level.cops.add(a);
-//                    lowerBar = voidBar;
-//                    objects.getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-//                    areaCopButton.setTouchable(Touchable.disabled);
-//                }
-//            }
-//        });
-//
-//        lentoCopButton = new Actor();
-//        lentoCopButton.setTouchable(Touchable.disabled);
-//        lentoCopButton.setBounds(386, 600 - 85 - 60, 100, 60);
-//        stage.addActor(lentoCopButton);
-//        lentoCopButton.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                if (level.getCoins() >= 30) {
-//                    Lento a = new Lento();
-//                    a.spawn();
-//                    float xPlaza = (float) objects.getObjects().get(lastPlazaId).getProperties().get("x");
-//                    float yPlaza = (float) objects.getObjects().get(lastPlazaId).getProperties().get("y");
-//                    a.setPosicion(new Vector2(xPlaza, yPlaza));
-//                    level.cops.add(a);
-//                    lowerBar = voidBar;
-//                    objects.getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-//                    areaCopButton.setTouchable(Touchable.disabled);
-//                }
-//            }
-//        });
-//
-//        rapidoCopButton = new Actor();
-//        rapidoCopButton.setTouchable(Touchable.disabled);
-//        rapidoCopButton.setBounds(114, 600 - 85 - 60, 100, 60);
-//        stage.addActor(rapidoCopButton);
-//        rapidoCopButton.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                if (level.getCoins() >= 10) {
-//                    Rapido a = new Rapido();
-//                    a.spawn();
-//                    float xPlaza = (float) objects.getObjects().get(lastPlazaId).getProperties().get("x");
-//                    float yPlaza = (float) objects.getObjects().get(lastPlazaId).getProperties().get("y");
-//                    a.setPosicion(new Vector2(xPlaza, yPlaza));
-//                    level.cops.add(a);
-//                    lowerBar = voidBar;
-//                    objects.getObjects().get(lastPlazaId).getProperties().put("ocupada", true);
-//                    areaCopButton.setTouchable(Touchable.disabled);
-//                }
-//            }
-//        });
-//
+        damageOverCopButton = new Actor();
+        damageOverCopButton.setTouchable(Touchable.disabled);
+        damageOverCopButton.setBounds(249, 600 - 85 - 60, 100, 60);
+        stage.addActor(damageOverCopButton);
+        damageOverCopButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (level.getCoins() >= 20) {
+                    Plaza plaza = getSelected();
+                    if (plaza != null) {
+                        DamageOverTime a = new DamageOverTime();
+                        a.spawn();
+                        a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
+                        level.cops.add(a);
+                        lowerBar = voidBar;
+                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        plaza.setCop(a);
+                    }
+                }
+            }
+        });
+
+        lentoCopButton = new Actor();
+        lentoCopButton.setTouchable(Touchable.disabled);
+        lentoCopButton.setBounds(386, 600 - 85 - 60, 100, 60);
+        stage.addActor(lentoCopButton);
+        lentoCopButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (level.getCoins() >= 30) {
+                    Plaza plaza = getSelected();
+                    if (plaza != null) {
+                        Lento a = new Lento();
+                        a.spawn();
+                        a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
+                        level.cops.add(a);
+                        lowerBar = voidBar;
+                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        plaza.setCop(a);
+                    }
+                }
+            }
+        });
+
+        rapidoCopButton = new Actor();
+        rapidoCopButton.setTouchable(Touchable.disabled);
+        rapidoCopButton.setBounds(114, 600 - 85 - 60, 100, 60);
+        stage.addActor(rapidoCopButton);
+        rapidoCopButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (level.getCoins() >= 10) {
+                    Plaza plaza = getSelected();
+                    if (plaza != null) {
+                        Rapido a = new Rapido();
+                        a.spawn();
+                        a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
+                        level.cops.add(a);
+                        lowerBar = voidBar;
+                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        plaza.setCop(a);
+                    }
+                }
+            }
+        });
+
         upgradeCopButton = new Actor();
         upgradeCopButton.setTouchable(Touchable.disabled);
         upgradeCopButton.setBounds(155, 600 - 85 - 85, 200, 100);
@@ -312,7 +313,6 @@ public class LevelScreen implements Screen {
         upgradeCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("upgrade");
                 Cop cop = getSelected().getCop();
                 if(cop != null) {
                     if (level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
@@ -330,7 +330,6 @@ public class LevelScreen implements Screen {
         sellCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("sell");
                 Cop cop = getSelected().getCop();
                 if (cop != null) {
                     //sumamos el precio de venta del poli al dinero del jugador
@@ -345,8 +344,8 @@ public class LevelScreen implements Screen {
             }
         });
 
-//        botonesCop = new Actor[]{areaCopButton, damageOverCopButton, rapidoCopButton, lentoCopButton};
-        botonesCop = new Actor[]{areaCopButton};//TODO recuperar todos los botones
+        botonesCop = new Actor[]{areaCopButton, damageOverCopButton, rapidoCopButton, lentoCopButton};
+//        botonesCop = new Actor[]{areaCopButton};
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
     }
 
