@@ -61,7 +61,7 @@ public class MenuScreen implements Screen {
         createButtons();
         configureButtons();
         game.resume();//fix false pause state
-        stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch, ranking);
+        stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch, ranking, settings);
         rankingDialog = new Dialog("Ranking", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
         Gdx.input.setInputProcessor(stage);
     }
@@ -166,7 +166,7 @@ public class MenuScreen implements Screen {
         settings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SettingsScreen());
+                game.setScreen(new SettingsScreen(game));
             }
         });
 
