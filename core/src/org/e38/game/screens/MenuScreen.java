@@ -10,9 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,9 +22,7 @@ import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -51,6 +47,7 @@ public class MenuScreen implements Screen {
     private TextureRegionDrawable umuteDrawable;
     private TextureRegionDrawable muteDrawable;
     private TextButton ranking;
+    private Dialog rankingDialog;
 
     public MenuScreen(final MainGame game) {
         this.game = game;
@@ -63,6 +60,7 @@ public class MenuScreen implements Screen {
         configureButtons();
         game.resume();//fix false pause state
         stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch, ranking);
+        rankingDialog = new Dialog("Ranking", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -124,6 +122,10 @@ public class MenuScreen implements Screen {
         selectLevel.setY((stage.getViewport().getWorldHeight() / 10) * 4);
         selectLevel.setX(centerX);
 
+        ranking.setSize(bttWidth, bttHeight);
+        ranking.setY((stage.getViewport().getWorldHeight() / 10) * 3);
+        ranking.setX(centerX);
+
         exit.setSize(World.getRecurses().exitBtt.getWidth(), World.getRecurses().exitBtt.getHeight());
         exit.setPosition(stage.getViewport().getWorldWidth() - exit.getWidth(), 0);
 
@@ -145,6 +147,13 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 continueGame();
+            }
+        });
+        ranking.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                fillRanking();
+                rankingDialog.show(stage);
             }
         });
 
@@ -172,8 +181,19 @@ public class MenuScreen implements Screen {
                 super.clicked(event, x, y);
             }
         });
+    }
 
-
+    private void fillRanking(){
+        Table table = new Table();
+        table.add(new Label("Nivel:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));;
+        table.add(new Label ("Puntuación:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        Map<Integer, Integer> puntuaciones = ProfileManager.getInstance().getGameProgres();
+        for (int level :puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)
+            table.row();
+            table.add(new Label(String.valueOf(level), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+            table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        }
+        rankingDialog.add(table);
     }
 
     private void newGame() {
