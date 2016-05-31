@@ -15,7 +15,7 @@ import java.util.Iterator;
  * Created by ALUMNEDAM on 25/05/2016.
  */
 public class Plaza extends Actor {
-    public MapObject object;
+//    public MapObject object;
     public boolean isSelected = false;
     LevelScreen levelScreen;
     private Cop cop;
@@ -26,31 +26,45 @@ public class Plaza extends Actor {
         setBounds((float) object.getProperties().get("x"), (float) object.getProperties().get("y"), (float) object.getProperties().get("width"), (float) object.getProperties().get("height"));
         setTouchable(Touchable.enabled);
 
-        addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                onClick(object);
-            }
-        });
+//        addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                onClick();
+//            }
+//        });
     }
 
-    private void onClick(MapObject object) {
-        object.getProperties().put("isSelected", true);
-        if (levelScreen.objects.getObjects().getIndex(object) != levelScreen.getLastPlazaId())
-            levelScreen.unSelectLastPlaza();
+    public void onClick() {
+//        System.out.println(getX() + " : " + getY());
+//        System.out.println("isSelected = " + isSelected);
+        for (Plaza plaza1 : levelScreen.getPlazas()) {//unselect all
+            plaza1.isSelected = false;
+        }
+        this.isSelected = true;
+//        if(isOcupada()){
+//            levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
+//            levelScreen.showUpgradeBar();
+//        } else {
+//            levelScreen.updateLowerBar(LevelScreen.TYPE_COPS);
+//            levelScreen.showCopsBar();
+//        }
+//        levelScreen.changeButtonsState();
+//        object.getProperties().put("isSelected", true);
+//        if (levelScreen.objects.getObjects().getIndex(object) != levelScreen.getLastPlazaId())
+//            levelScreen.unSelectLastPlaza();
 
         //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-        levelScreen.setLastPlazaId(levelScreen.objects.getObjects().getIndex(object));
-        if (object.getProperties().get("ocupada").equals(true)) {
-            levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
-            levelScreen.showUpgradeBar();
-        } else {
-            levelScreen.updateLowerBar(LevelScreen.TYPE_COPS);
-            levelScreen.showCopsBar();
-        }
-        levelScreen.changeButtonsState();
+//        levelScreen.setLastPlazaId(levelScreen.objects.getObjects().getIndex(object));
+//        if (object.getProperties().get("ocupada").equals(true)) {
+//            levelScreen.updateLowerBar(LevelScreen.TYPE_UPGRADE);
+//            levelScreen.showUpgradeBar();
+//        } else {
+//            levelScreen.updateLowerBar(LevelScreen.TYPE_COPS);
+//            levelScreen.showCopsBar();
+//        }
+//        levelScreen.changeButtonsState();
         //Recupera el indice de la lista (de objetos) de la plaza y la setea en LevelScreen
-        levelScreen.setLastPlazaId(levelScreen.objects.getObjects().getIndex(object));
+//        levelScreen.setLastPlazaId(levelScreen.objects.getObjects().getIndex(object));
     }
 
     @SuppressWarnings("Duplicates")
@@ -66,9 +80,9 @@ public class Plaza extends Actor {
         return builder.toString();
     }
 
-    public void changeOcupada() {
-        object.getProperties().put("isSelected", !(boolean) object.getProperties().get("ocupada"));
-    }
+//    public void changeOcupada() {
+//        object.getProperties().put("isSelected", !(boolean) object.getProperties().get("ocupada"));
+//    }
 
     public boolean isOcupada() {
         return cop != null;
