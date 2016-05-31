@@ -120,12 +120,13 @@ public class Level {
         int old = this.lifes;
         this.lifes = lifes;
         if (this.lifes < 0) this.lifes = 0;
-        if (lifes <= 0) {
-            fail();
-        }
         for (OnChangeStateListener change : onChangeStateList) {
             change.onChangeState(old, this.lifes, TYPE_LIFE);
         }
+        if (lifes <= 0) {
+            fail();
+        }
+
         return this;
     }
 

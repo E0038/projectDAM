@@ -129,8 +129,9 @@ public class LevelScreen implements Screen {
         TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
-        errorDialog.text(new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         errorDialog.button(dbutton, true);
+        final Label dialogLabel=new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        errorDialog.text(dialogLabel);
 
         dbutton.addListener(new ClickListener() {
             @Override
@@ -142,11 +143,11 @@ public class LevelScreen implements Screen {
             @Override
             public void onEnd(boolean isWined) {
                 if (isWined) {
-                    ProfileManager.getInstance().save(level);
+                    ProfileManager.getInstance().save(LevelScreen.this.level);
                 }
+                dialogLabel.setText("Estadísticas:\n Dinero en el banco restante: " + LevelScreen.this.level.getLifes() + "\n Placas restantes: " + LevelScreen.this.level.getCoins());
                 errorDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
                 errorDialog.show(stage);
-
             }
         };
         level.addOnEndListerner(onEndListerner);
@@ -510,16 +511,6 @@ public class LevelScreen implements Screen {
 
     @Override
     public void dispose() {
-//        try {
-//            stage.dispose();
-//            shapeRenderer.dispose();
-//            ot.dispose();
-////        level.map.dispose();
-//            topBar.dispose();
-//            upgradeBar.dispose();
-//            copsBar.dispose();
-//        } catch (IllegalArgumentException ignored) {
-//        }
     }
 
     public void updateLowerBar(int type) {
@@ -534,20 +525,19 @@ public class LevelScreen implements Screen {
 
     public void showCopsBar() {
         lowerBar = copsBar;
+    }
+
+    public void showUpgradeBar() {
+        lowerBar = upgradeBar;
     }    @Override
     protected void finalize() throws Throwable {
         stage.dispose();
         shapeRenderer.dispose();
         ot.dispose();
-//        level.map.dispose();
         topBar.dispose();
         upgradeBar.dispose();
         copsBar.dispose();
         super.finalize();
-    }
-
-    public void showUpgradeBar() {
-        lowerBar = upgradeBar;
     }
 
     public Level getLevel() {
@@ -555,20 +545,4 @@ public class LevelScreen implements Screen {
     }
 
 
-
-//    public void unSelectLastPlaza() {
-//        if (lastPlazaId != -1) {
-//            objects.getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
-//        }
-//    }
-
-
-//    public int getLastPlazaId() {
-//        return lastPlazaId;
-//    }
-
-//    public LevelScreen setLastPlazaId(int lastPlazaId) {
-//        this.lastPlazaId = lastPlazaId;
-//        return this;
-//    }
 }
