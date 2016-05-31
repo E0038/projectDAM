@@ -1,6 +1,5 @@
 package org.e38.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -66,7 +65,7 @@ public class LevelScreen implements Screen {
     private UpgradeBar upgradeBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Stage stage;
-//    private int lastPlazaId = 0;
+    //    private int lastPlazaId = 0;
     private Actor areaCopButton;
     private Actor damageOverCopButton;
     private Actor lentoCopButton;
@@ -126,13 +125,13 @@ public class LevelScreen implements Screen {
         errorDialog.padTop(40).padLeft(5);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
-        TextButton dbutton = new TextButton("Volver al menú",new TextButton.TextButtonStyle(drawable, drawable,drawable, new BitmapFont()));
+        TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
         errorDialog.text(new Label("Lorem ipsum dolor sit amet,\n consectetur adipiscing elit.\n Quisque facilisis, nulla ultrices gravida porta", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         errorDialog.button(dbutton, true);
 
-        dbutton.addListener(new ClickListener(){
+        dbutton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new LevelSelectScreen(game));
@@ -141,7 +140,7 @@ public class LevelScreen implements Screen {
         Level.OnEndListerner onEndListerner = new Level.OnEndListerner() {
             @Override
             public void onEnd(boolean isWined) {
-                if (isWined){
+                if (isWined) {
                     ProfileManager.getInstance().save(level);
                 }
                 errorDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
@@ -235,11 +234,72 @@ public class LevelScreen implements Screen {
 
     }
 
+    public void changeButtonsState() {
+        if (lowerBar instanceof CopsBar) {
+            for (Actor a : botonesCop) {
+                a.setTouchable(Touchable.enabled);
+            }
+            for (Actor a : botonesUpgrade) {
+                a.setTouchable(Touchable.disabled);
+            }
+        } else if (lowerBar instanceof UpgradeBar) {
+            for (Actor a : botonesCop) {
+                a.setTouchable(Touchable.disabled);
+            }
+            for (Actor a : botonesUpgrade) {
+                a.setTouchable(Touchable.enabled);
+            }
+        } else {
+            for (Actor a : botonesCop) {
+                a.setTouchable(Touchable.disabled);
+            }
+            for (Actor a : botonesUpgrade) {
+                a.setTouchable(Touchable.disabled);
+            }
+        }
+    }
+
+    private void createButtons() {
+        this.back = new ImageButton(new TextureRegionDrawable(new TextureRegion(World.getRecurses().back)));
+        umuteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().unmute));
+        muteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().mute));
+        volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
+    }
+
+    private void configureButtons() {
+        back.setSize(World.getRecurses().back.getWidth() * 0.75f, World.getRecurses().back.getHeight() * 0.75f);
+        back.setPosition(0, stage.getViewport().getWorldHeight() - back.getHeight());
+
+        volumeSwitch.setSize(World.getRecurses().mute.getWidth(), World.getRecurses().mute.getHeight());
+        volumeSwitch.setPosition(back.getWidth(), stage.getViewport().getWorldHeight() - World.getRecurses().mute.getHeight());
+
+        volumeSwitch.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                volumeSwitch.getStyle().imageUp = World.isMuted() ? umuteDrawable : muteDrawable;
+                World.onSwichMuteUnMute();
+                World.play(Recurses.POP);
+                super.clicked(event, x, y);
+            }
+        });
+
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+                super.clicked(event, x, y);
+            }
+        });
+
+
+    }
+
     private void renderCops(Batch batch) {
-        for (Cop c : level.cops) {
-            float x = c.getPosition().x;
-            float y = c.getPosition().y;
-            batch.draw(World.getRecurses().getPolicia(c), x, y);
+        for (Plaza plaza : plazas) {
+            if (plaza.isOcupada()) {
+                Cop cop = plaza.getCop();
+                batch.draw(World.getRecurses().getPolicia(cop), cop.getPosition().x, cop.getPosition().y);
+            }
         }
     }
 
@@ -269,7 +329,7 @@ public class LevelScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 if (level.getCoins() >= 40) {
                     Plaza plaza = getSelected();
-                    if (plaza != null){
+                    if (plaza != null) {
                         Area a = new Area();
                         a.spawn();
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
@@ -357,7 +417,7 @@ public class LevelScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Cop cop = getSelected().getCop();
-                if(cop != null) {
+                if (cop != null) {
                     if (level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
                         level.setCoins((int) (level.getCoins() - cop.getNivel().getPrecioCompra()));
                         cop.onUpgrade();
@@ -392,64 +452,11 @@ public class LevelScreen implements Screen {
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
     }
 
-    private void createButtons() {
-        this.back = new ImageButton(new TextureRegionDrawable(new TextureRegion(World.getRecurses().back)));
-        umuteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().unmute));
-        muteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().mute));
-        volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
-    }
-
-    private void configureButtons() {
-        back.setSize(World.getRecurses().back.getWidth() * 0.75f, World.getRecurses().back.getHeight() * 0.75f);
-        back.setPosition(0, stage.getViewport().getWorldHeight()- back.getHeight());
-
-        volumeSwitch.setSize(World.getRecurses().mute.getWidth(), World.getRecurses().mute.getHeight());
-        volumeSwitch.setPosition(back.getWidth(), stage.getViewport().getWorldHeight()- World.getRecurses().mute.getHeight());
-
-        volumeSwitch.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                volumeSwitch.getStyle().imageUp = World.isMuted() ? umuteDrawable : muteDrawable;
-                World.onSwichMuteUnMute();
-                World.play(Recurses.POP);
-                super.clicked(event, x, y);
-            }
-        });
-
-        back.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
-                super.clicked(event, x, y);
-            }
-        });
-
-
-    }
-
-    public void changeButtonsState() {
-        if (lowerBar instanceof CopsBar) {
-            for (Actor a : botonesCop) {
-                a.setTouchable(Touchable.enabled);
-            }
-            for (Actor a : botonesUpgrade) {
-                a.setTouchable(Touchable.disabled);
-            }
-        } else if (lowerBar instanceof UpgradeBar) {
-            for (Actor a : botonesCop) {
-                a.setTouchable(Touchable.disabled);
-            }
-            for (Actor a : botonesUpgrade) {
-                a.setTouchable(Touchable.enabled);
-            }
-        } else {
-            for (Actor a : botonesCop) {
-                a.setTouchable(Touchable.disabled);
-            }
-            for (Actor a : botonesUpgrade) {
-                a.setTouchable(Touchable.disabled);
-            }
+    private Plaza getSelected() {
+        for (Plaza p : plazas) {
+            if (p.isSelected) return p;
         }
+        return null;
     }
 
     @Override
@@ -496,18 +503,6 @@ public class LevelScreen implements Screen {
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        stage.dispose();
-        shapeRenderer.dispose();
-        ot.dispose();
-//        level.map.dispose();
-        topBar.dispose();
-        upgradeBar.dispose();
-        copsBar.dispose();
-        super.finalize();
-    }
-
-    @Override
     public void hide() {
     }
 
@@ -525,27 +520,24 @@ public class LevelScreen implements Screen {
 //        }
     }
 
-    private Plaza getSelected() {
-        for (Plaza p : plazas) {
-            if (p.isSelected) return p;
-        }
-        return null;
-    }
-
-//    public void unSelectLastPlaza() {
-//        if (lastPlazaId != -1) {
-//            objects.getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
-//        }
-//    }
-
     public void updateLowerBar(int type) {
         if (type == TYPE_COPS) {
             copsBar.updateBar(level.getCoins());
         } else {
             Cop cop = getSelected().getCop();
-            if(cop != null)
+            if (cop != null)
                 upgradeBar.updateBar(level.getCoins(), cop);
         }
+    }    @Override
+    protected void finalize() throws Throwable {
+        stage.dispose();
+        shapeRenderer.dispose();
+        ot.dispose();
+//        level.map.dispose();
+        topBar.dispose();
+        upgradeBar.dispose();
+        copsBar.dispose();
+        super.finalize();
     }
 
     public void showCopsBar() {
@@ -559,6 +551,15 @@ public class LevelScreen implements Screen {
     public Level getLevel() {
         return level;
     }
+
+//    public void unSelectLastPlaza() {
+//        if (lastPlazaId != -1) {
+//            objects.getObjects().get(lastPlazaId).getProperties().put("isSelected", false);
+//        }
+//    }
+
+
+
 
 //    public int getLastPlazaId() {
 //        return lastPlazaId;
