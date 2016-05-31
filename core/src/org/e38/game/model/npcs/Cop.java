@@ -1,9 +1,12 @@
 package org.e38.game.model.npcs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Bullet;
 import org.e38.game.utils.Recurses;
+
+import java.util.Arrays;
 
 import static org.e38.game.model.npcs.NPC.State.*;
 
@@ -14,7 +17,7 @@ public abstract class Cop implements NPC {
 
     protected static CopLevel[] copLevels;
     public volatile long updatesSinceLastFire;
-    protected Vector2 posicion=new Vector2(0,0);
+    protected Vector2 posicion = new Vector2(0, 0);
     protected float range;
     protected State state;
     protected volatile boolean isAreaDamage = false;
@@ -33,11 +36,6 @@ public abstract class Cop implements NPC {
 
     public void setCircle(Circle circle) {
         this.circle = circle;
-    }
-
-    public void setRange(float range) {
-        this.range = range;
-        circle = new Circle(posicion, this.range);
     }
 
     public long getFireRate() {
@@ -151,7 +149,13 @@ public abstract class Cop implements NPC {
 
     public Cop setPosicion(Vector2 posicion) {
         this.posicion = posicion;
+        setRange(range);// circle
         return this;
+    }
+
+    public void setRange(float range) {
+        this.range = range;
+        circle = new Circle(posicion, this.range);
     }
 
     public CopLevel getNivel() {
@@ -164,6 +168,7 @@ public abstract class Cop implements NPC {
     }
 
     public void fire(Criminal... criminal) {
+        Gdx.app.debug(getClass().getName(), getName() + " fires to " + Arrays.toString(criminal));
         if (criminal.length == 0) return;
         updatesSinceLastFire = 0;
         Bullet bullet = nivel.newBullet();
@@ -206,6 +211,10 @@ public abstract class Cop implements NPC {
      * default impl does nothing , override to play sell animations
      */
     public void onSell() {
+    }
+
+    public boolean isFireReady() {
+        return true;// TODO: 5/31/16 write function
     }
 
     public static class CopLevel {

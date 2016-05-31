@@ -3,6 +3,8 @@ package org.e38.game.utils;
 import org.e38.game.model.Level;
 import org.e38.game.model.Plaza;
 import org.e38.game.model.Wave;
+import org.e38.game.model.npcs.Cop;
+import org.e38.game.model.npcs.Criminal;
 import org.e38.game.screens.LevelScreen;
 
 /**
@@ -21,12 +23,11 @@ public class LevelUpdater {
         if (level.getLifes() <= 0) level.fail();
         if (level.wavePointer < level.waves.size()) {
             final Wave wave = level.waves.get(level.wavePointer);
-            wave.onUpdate(delta);
+            wave.onUpdate(delta,screen);
             if (wave.isClear()) level.wavePointer++;
         }
-        for (Plaza plaza : screen.getPlazas()) {
-            if (plaza.isOcupada()) plaza.getCop().onUpdate(delta);
-        }
+
+
     }
 }
 

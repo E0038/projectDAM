@@ -2,8 +2,8 @@ package org.e38.game.model.npcs;
 
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
-import org.e38.game.utils.Recurses;
 import org.e38.game.model.Level;
+import org.e38.game.utils.Recurses;
 
 /**
  * Created by sergi on 4/20/16.
@@ -30,11 +30,6 @@ public class Criminal implements Hittable {
     protected long lastNext;
 
     public Criminal() {
-    }
-
-    public Criminal setName(String name) {
-        this.name = name;
-        return this;
     }
 
     public Criminal(Level level) {
@@ -154,7 +149,6 @@ public class Criminal implements Hittable {
 
     /**
      * note only support moves in horizontal or vertical
-     *
      */
     private void setsOritantionRelativeTo(MapProperties currentPoint, MapProperties nextPoint) {
         float x0 = (float) currentPoint.get("x");
@@ -182,8 +176,14 @@ public class Criminal implements Hittable {
         return name;
     }
 
+    public Criminal setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     @Override
     public void onDie() {
+        state = State.DEAD;
         if (onEndListener != null) onEndListener.onEnd(this, true);
     }
 
