@@ -17,11 +17,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
+import org.e38.game.model.Level;
 import org.e38.game.persistance.Profile;
 import org.e38.game.persistance.ProfileManager;
 import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by sergi on 4/20/16.
@@ -44,6 +50,7 @@ public class MenuScreen implements Screen {
     private ImageButton volumeSwitch;
     private TextureRegionDrawable umuteDrawable;
     private TextureRegionDrawable muteDrawable;
+    private TextButton ranking;
 
     public MenuScreen(final MainGame game) {
         this.game = game;
@@ -55,7 +62,7 @@ public class MenuScreen implements Screen {
         createButtons();
         configureButtons();
         game.resume();//fix false pause state
-        stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch);
+        stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch, ranking);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -93,6 +100,7 @@ public class MenuScreen implements Screen {
 
         volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
 
+        ranking = new TextButton("Ranking", new TextButton.TextButtonStyle(style));
     }
 
     private void configureButtons() {
@@ -145,7 +153,9 @@ public class MenuScreen implements Screen {
         selectLevel.setDisabled(isNewGame);
         continueGame.setDisabled(isNewGame);
 
+        //noinspection Duplicates
         volumeSwitch.addListener(new ClickListener() {
+            @SuppressWarnings("Duplicates")
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 volumeSwitch.getStyle().imageUp = World.isMuted() ? umuteDrawable : muteDrawable;
@@ -176,14 +186,20 @@ public class MenuScreen implements Screen {
     private void selectLevel() {
         game.setScreen(new LevelSelectScreen(game));
         World.play(Recurses.POP);
-
     }
 
     private void continueGame() {
-        System.out.println("continue");
         Profile profile = ProfileManager.getInstance().getProfile();
         if (profile.getCompleteLevels().size() > 0) {
-            // TODO: 5/25/16
+            List<Level> list = new ArrayList<>(profile.getCompleteLevels());
+            list.get(list.size() - 1);
+            Level lastComplete = Collections.max(list, new Comparator<Level>() {
+                @Override
+                public int compare(Level o1, Level o2) {
+                    return World.levels.indexOf(o1) - World.levels.indexOf(o2);
+                }
+            });
+            game.setScreen(new LevelScreen(World.levels.get(World.levels.indexOf(lastComplete)), game));
         } else {
             selectLevel();
         }
