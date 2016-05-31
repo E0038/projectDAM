@@ -63,6 +63,7 @@ public class Wave {
         }
     }
 
+    // TODO: 5/31/16 add Criminal and Plaza Circles Collisions
     private void updateCriminals(float delta, LevelScreen screen) {
         boolean ck = true;
 //        System.out.println(criminals);

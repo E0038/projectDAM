@@ -1,6 +1,7 @@
 package org.e38.game.model.npcs;
 
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Level;
 import org.e38.game.utils.Recurses;
@@ -8,6 +9,7 @@ import org.e38.game.utils.Recurses;
 /**
  * Created by sergi on 4/20/16.
  */
+// TODO: 5/31/16 add Circles
 public class Criminal implements Hittable {
     protected volatile State state = State.SPAWING;
     protected float hpPoints;
@@ -28,6 +30,7 @@ public class Criminal implements Hittable {
     protected float totalHpPoins = 10f;
     protected String name = Recurses.AnimatedCriminals.bane.name();
     protected long lastNext;
+    private transient volatile Circle circle = new Circle(0, 0, 0);
 
     public Criminal() {
     }
@@ -81,16 +84,6 @@ public class Criminal implements Hittable {
     }
 
     /**
-     * get the points (Money) of Criminal
-     *
-     * @return the points that give on die
-     */
-    public int getPoints() {
-        //// TODO: 5/23/16 review formula
-        return (int) (totalHpPoins  * 0.75f);
-    }
-
-    /**
      * determines if is dead
      */
     public boolean isDead() {
@@ -118,6 +111,16 @@ public class Criminal implements Hittable {
         if (hpPoints <= 0) onDie();
     }
 
+    /**
+     * get the points (Money) of Criminal
+     *
+     * @return the points that give on die
+     */
+    public int getPoints() {
+        //// TODO: 5/23/16 review formula
+        return (int) (totalHpPoins * 0.75f);
+    }
+
     @Override
     public void onDodge() {
 
@@ -138,7 +141,7 @@ public class Criminal implements Hittable {
     protected void nextPosition() {
         if (pathPointer < level.getPath().size() - 1) {
             int next = pathPointer + 1;
-            setsOritantionRelativeTo(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
+            changePoint(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
             pathPointer = next;
         } else {
             level.setLifes(level.getLifes() - getPoints());
@@ -152,11 +155,12 @@ public class Criminal implements Hittable {
     /**
      * note only support moves in horizontal or vertical
      */
-    private void setsOritantionRelativeTo(MapProperties currentPoint, MapProperties nextPoint) {
+    private void changePoint(MapProperties currentPoint, MapProperties nextPoint) {
         float x0 = (float) currentPoint.get("x");
         float y0 = (float) currentPoint.get("y");
         float x1 = (float) nextPoint.get("x");
         float y1 = (float) nextPoint.get("y");
+        circle.set(x1, y1, 16f);
         setOritentationRelative(x0, y0, x1, y1);
     }
 

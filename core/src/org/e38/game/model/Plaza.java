@@ -2,10 +2,9 @@ package org.e38.game.model;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.screens.LevelScreen;
 
@@ -15,7 +14,7 @@ import java.util.Iterator;
  * Created by ALUMNEDAM on 25/05/2016.
  */
 public class Plaza extends Actor {
-//    public MapObject object;
+    //    public MapObject object;
     public boolean isSelected = false;
     LevelScreen levelScreen;
     private Cop cop;
@@ -95,6 +94,8 @@ public class Plaza extends Actor {
     public void setCop(Cop cop) {
         this.cop = cop;
     }
+    // TODO: 5/31/16 pintar range Circles
+    // TODO: 5/31/16 move Cop Circles to Plaza Circles
 //    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 //    @Override
 //    public void draw(Batch batch, float parentAlpha) {
