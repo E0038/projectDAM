@@ -42,7 +42,6 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
-// TODO: 5/29/16 migrate all uses of  lastPlazaId, and use of 'MapLayer objects' to Object Orientation design patterns
 // TODO: 5/29/16 add floating buttons (Back and Mute/Unmute) Support. ##Low priority##
 public class LevelScreen implements Screen {
 
@@ -223,7 +222,6 @@ public class LevelScreen implements Screen {
         areaCopButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("area");
                 if (level.getCoins() >= 40) {
                     Plaza plaza = getSelected();
                     if (plaza != null){
