@@ -11,7 +11,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.model.Level;
@@ -21,22 +24,21 @@ import org.e38.game.utils.World;
 /**
  * Created by sergi on 4/22/16.
  */
-// TODO: 5/29/16 add error dialog
 public class SplashScreen implements Screen {
     public static final int LOADING_GIF_PARTS = 24;
     private final MainGame game;
     private AnimationManager loadingGif;
     private Texture loadingSprite;
     private Stage stage;
+    private boolean showDialog;
+    private Dialog errorDialog;
 
     public SplashScreen(final MainGame game) {
         this.game = game;
         game.loader.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                // TODO: 5/30/16
-                //catch loading error,
-                //NOTE for impl: this is executed in NO GDX/GL Thread!! NOT USE GRAFICS RELATED CODE HERE!!
+                showDialog = true;
             }
         });
     }
@@ -51,6 +53,8 @@ public class SplashScreen implements Screen {
         label.setX((stage.getViewport().getWorldWidth() / 2) - (loadingSprite.getWidth() / LOADING_GIF_PARTS / 2));
         label.setY((stage.getViewport().getWorldHeight() / 2) + loadingSprite.getHeight());
         label.setFontScale(2f);
+        errorDialog = new Dialog("Error al cargar el juego.", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg))));
+        errorDialog.padTop(40).padLeft(60);
         stage.addActor(label);
         stage.addActor(new Actor() {
             @Override
@@ -73,6 +77,8 @@ public class SplashScreen implements Screen {
         } else {
             stage.draw();
         }
+        if(showDialog)
+            errorDialog.show(stage);
     }
 
     private void onGameLoaded() {
