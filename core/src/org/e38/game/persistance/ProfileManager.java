@@ -5,16 +5,20 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.e38.game.utils.World;
 import org.e38.game.model.Level;
+import org.e38.game.utils.World;
 
-import javax.crypto.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -292,7 +296,11 @@ public class ProfileManager {
      * @return a map with user pogres
      */
     public Map<Integer, Integer> getGameProgres() {
-        return null;// TODO: 5/29/16
+        Map<Integer, Integer> ranking = new HashMap<>();
+        for (Level level : profile.getCompleteLevels()) {
+            ranking.put(World.levels.indexOf(level), level.getScore());
+        }
+        return ranking;
     }
 
     public boolean newGame() {
