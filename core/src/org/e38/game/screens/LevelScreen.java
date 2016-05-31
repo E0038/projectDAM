@@ -114,6 +114,7 @@ public class LevelScreen implements Screen {
         this.level = level;
         this.game = game;
         camera = new OrthographicCamera();
+        this.level.onRestart();
 
         topBar = new TopBar(level.getLifes(), level.getCoins());
         lowerBar = voidBar;
@@ -128,7 +129,7 @@ public class LevelScreen implements Screen {
         TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
-        errorDialog.text(new Label("Lorem ipsum dolor sit amet,\n consectetur adipiscing elit.\n Quisque facilisis, nulla ultrices gravida porta", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        errorDialog.text(new Label("Estadísticas:\n Dinero en el banco restante: "+level.getLifes()+"\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         errorDialog.button(dbutton, true);
 
         dbutton.addListener(new ClickListener() {
@@ -333,7 +334,8 @@ public class LevelScreen implements Screen {
                         Area a = new Area();
                         a.spawn();
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
-                        level.cops.add(a);
+                        plaza.setCop(a);
+                        //level.cops.add(a);
                         lowerBar = voidBar;
                         level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
                         plaza.setCop(a);
