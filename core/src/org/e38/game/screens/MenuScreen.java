@@ -185,20 +185,7 @@ public class MenuScreen implements Screen {
     }
 
     private void fillRanking(){
-        Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
-        TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
-        dbutton.getStyle().fontColor = Color.BLACK;
-        dbutton.setSize(10, 10);
-        rankingDialog.button(dbutton, true);
-        dbutton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
-            }
-        });
-
         //TODO Separar boton respecto a la tabla
-
         Table table = new Table();
         table.add(new Label("Nivel:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));;
         table.add(new Label ("Puntuación:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
@@ -209,6 +196,20 @@ public class MenuScreen implements Screen {
             table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         }
         rankingDialog.add(table);
+        rankingDialog.getContentTable().add(table).padTop(-70).padLeft(-150);
+
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+        TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
+        dbutton.getStyle().fontColor = Color.BLACK;
+        dbutton.setSize(10, 10);
+        rankingDialog.button(dbutton, true);
+        rankingDialog.getButtonTable().add(dbutton).padTop(10);
+        dbutton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+            }
+        });
     }
 
     private void newGame() {
