@@ -14,10 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * container class
  */
 public class Wave {
+    private final Object waveLocker = new Object();
     private List<Criminal> criminals = new ArrayList<>();
     private long gap = 0;
     private transient volatile AtomicInteger spawnPointer = new AtomicInteger(-1);
-
     private boolean isAllSpawn = false;
     private boolean isClear = false;
 
@@ -117,17 +117,19 @@ public class Wave {
     }
 
     private void launchWave() {
-        int idx = spawnPointer.incrementAndGet();
-        if (isAllSpawn || idx < criminals.size())
-            criminals.get(idx).onSpawn();
-        else isAllSpawn = false;
-        if (!isAllSpawn) {
-            new SheludedAction(gap) {
-                @Override
-                public void onFinish() {
-                    Wave.this.launchWave();
-                }
-            }.start();
+        synchronized (waveLocker) {
+            int idx = spawnPointer.incrementAndGet();
+            if (!isAllSpawn || idx < criminals.size() - 1)
+                criminals.get(idx).onSpawn();
+            else isAllSpawn = true;
+            if (!isAllSpawn) {
+                new SheludedAction(gap) {
+                    @Override
+                    public void onFinish() {
+                        Wave.this.launchWave();
+                    }
+                }.start();
+            }
         }
     }
 

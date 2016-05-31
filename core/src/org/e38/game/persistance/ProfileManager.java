@@ -342,11 +342,19 @@ public class ProfileManager {
                         Gdx.app.debug(getClass().getName(), e.getMessage(), e);
                     }
                 }
-                try {
-                    Thread.sleep(WAIT_TIME);
-                } catch (InterruptedException e) {
-                    Gdx.app.debug(getClass().getName(), e.getMessage(), e);
+                for (int i = 0; i < WAIT_TIME / 1000; i++) {
+                    if (!doUpdate.get()) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            Gdx.app.debug(getClass().getName(), e.getMessage(), e);
+                        }
+                    } else {
+                        System.out.println("force");
+                        break;
+                    }
                 }
+
             }
         }
 

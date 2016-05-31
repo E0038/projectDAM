@@ -7,10 +7,12 @@ import com.badlogic.gdx.Gdx;
  */
 public abstract class SheludedAction extends Thread {
     public static final int MILLIS = 1000 / 60;
+    private static int count;
     protected long duration;
 
     public SheludedAction(long duration) {
         this.duration = duration;
+        setName("SheludedAction-" + count++);
     }
 
     @Override

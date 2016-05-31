@@ -7,12 +7,14 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by sergi on 5/29/16.
  */
 public abstract class RecurentAction extends Thread {
+    private static int count;
     private volatile AtomicLong durationInterval = new AtomicLong();
     private volatile AtomicBoolean stop = new AtomicBoolean(false);
 
     public RecurentAction(long durationInterval) {
 
         this.durationInterval.set(durationInterval);
+        setName("RecurentAction-" + count++);
     }
 
     public synchronized long getDurationInterval() {
