@@ -20,6 +20,7 @@ public abstract class Cop implements NPC {
     protected Vector2 posicion = new Vector2(0, 0);
     protected float range;
     protected State state;
+    protected long lastFire = 0l;
     protected volatile boolean isAreaDamage = false;
     /**
      * fire rate calculted with delta
@@ -168,6 +169,7 @@ public abstract class Cop implements NPC {
     }
 
     public void fire(Criminal... criminal) {
+        lastFire = System.currentTimeMillis();
         Gdx.app.debug(getClass().getName(), getName() + " fires to " + Arrays.toString(criminal));
         if (criminal.length == 0) return;
         updatesSinceLastFire = 0;
@@ -214,7 +216,7 @@ public abstract class Cop implements NPC {
     }
 
     public boolean isFireReady() {
-        return true;// TODO: 5/31/16 write function
+        return System.currentTimeMillis() - lastFire > fireRate;
     }
 
     public static class CopLevel {

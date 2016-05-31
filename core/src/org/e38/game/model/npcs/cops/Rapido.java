@@ -29,7 +29,7 @@ public class Rapido extends Cop {
     public void onSpawn() {
         setRange(50);
         isAreaDamage = true;
-        fireRate = 30; // 0.5s
+        fireRate = 500; // 0.5s
         Collections.addAll(levels, copLevels);
         onUpgrade();//level 1
     }

@@ -30,7 +30,7 @@ public class Area extends Cop {
     public void onSpawn() {
         setRange(30f);
         isAreaDamage = true;
-        fireRate = 60 * 5; // 5s a 60fps
+        fireRate = 3000;
         Collections.addAll(levels, copLevels);
         onUpgrade();//level 1
     }
