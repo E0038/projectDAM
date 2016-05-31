@@ -118,6 +118,9 @@ public class Level {
     }
 
     public Level setLifes(int lifes) {
+        if(lifes <= 0){
+            fail();this.lifes = lifes;
+            return this;}
         for (OnChangeStateListener change : onChangeStateList) {
             change.onChangeState(this.lifes, lifes, TYPE_LIFE);
         }

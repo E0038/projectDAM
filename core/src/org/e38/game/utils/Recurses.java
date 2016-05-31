@@ -42,6 +42,7 @@ public class Recurses implements Disposable {
     public Texture mute;
     public Texture unmute;
     public Texture exitBtt;
+    public Texture back;
     public Texture upgrade_bar;
     private TextureAtlas atlasPolicias;
     private TextureAtlas atlasAnimCriminals;
@@ -50,7 +51,6 @@ public class Recurses implements Disposable {
     public Texture bar_L30;
     public Texture bar_L40;
     public Texture bar_ALL;
-    public Texture cuadradoBlanco;
 
     /**
      * NOTE : create the instance in Gdx thread and call load in a separate Tread
@@ -157,7 +157,7 @@ public class Recurses implements Disposable {
                 super.finalize();
             }
         };
-        cuadradoBlanco = new Texture("grafics/textures/cuadradoBlanco.png") {
+        back = new Texture("grafics/textures/Back_Arrow.png") {
             @Override
             protected void finalize() throws Throwable {
                 dispose();

@@ -87,7 +87,7 @@ public class Criminal implements Hittable {
      */
     public int getPoints() {
         //// TODO: 5/23/16 review formula
-        return (int) (totalHpPoins * dodgeRate * speed);
+        return (int) (totalHpPoins  * 0.75f);
     }
 
     /**
@@ -141,6 +141,8 @@ public class Criminal implements Hittable {
             setsOritantionRelativeTo(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
             pathPointer = next;
         } else {
+            level.setLifes(level.getLifes() - getPoints());
+
             if (onEndListener != null) onEndListener.onEnd(this, false);
             state = State.DEAD;
         }
@@ -184,6 +186,7 @@ public class Criminal implements Hittable {
     @Override
     public void onDie() {
         state = State.DEAD;
+        level.setCoins(level.getCoins() + getPoints());
         if (onEndListener != null) onEndListener.onEnd(this, true);
     }
 

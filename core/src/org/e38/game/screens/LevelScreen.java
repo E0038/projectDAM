@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -18,8 +20,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import org.e38.game.MainGame;
 import org.e38.game.hud.CopsBar;
 import org.e38.game.hud.LowerBar;
 import org.e38.game.hud.TopBar;
@@ -33,7 +40,9 @@ import org.e38.game.model.npcs.cops.Area;
 import org.e38.game.model.npcs.cops.DamageOverTime;
 import org.e38.game.model.npcs.cops.Lento;
 import org.e38.game.model.npcs.cops.Rapido;
+import org.e38.game.persistance.ProfileManager;
 import org.e38.game.utils.LevelUpdater;
+import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
 import java.util.ArrayList;
@@ -49,7 +58,7 @@ public class LevelScreen implements Screen {
     public static final int TYPE_COPS = 1;
     public MapLayer objects;
     private Level level;
-    private Game game;
+    private MainGame game;
     private OrthogonalTiledMapRenderer ot;
     private OrthographicCamera camera;
     private TopBar topBar;
@@ -68,6 +77,10 @@ public class LevelScreen implements Screen {
     private LevelUpdater levelUpdater;
     private Actor[] botonesCop;
     private Actor[] botonesUpgrade;
+    private ImageButton back;
+    private ImageButton volumeSwitch;
+    private TextureRegionDrawable umuteDrawable;
+    private TextureRegionDrawable muteDrawable;
     private LowerBar voidBar = new LowerBar() {
         private Stage stage = new Stage();
 
@@ -96,7 +109,7 @@ public class LevelScreen implements Screen {
     };
     private List<Plaza> plazas = new ArrayList<>();
 
-    public LevelScreen(Level level, Game game) {
+    public LevelScreen(Level level, MainGame game) {
         //grosor bordes plaza
         Gdx.gl.glLineWidth(30);
         this.level = level;
@@ -109,6 +122,7 @@ public class LevelScreen implements Screen {
         upgradeBar = new UpgradeBar(topBar.table.getY() - topBar.table.getHeight());
         level.addOnChangeStateListerner(topBar);
         levelUpdater = new LevelUpdater(this);
+
     }
 
     public List<Plaza> getPlazas() {
@@ -171,6 +185,10 @@ public class LevelScreen implements Screen {
             }
         }
         stage.getActors().addAll(plazas.toArray(new Actor[plazas.size()]));
+        createButtons();
+        configureButtons();
+        stage.addActor(back);
+        stage.addActor(volumeSwitch);
         ot = new OrthogonalTiledMapRenderer(map) {
             @Override
             protected void endRender() {
@@ -347,6 +365,41 @@ public class LevelScreen implements Screen {
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
     }
 
+    private void createButtons() {
+        this.back = new ImageButton(new TextureRegionDrawable(new TextureRegion(World.getRecurses().back)));
+        umuteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().unmute));
+        muteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().mute));
+        volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
+    }
+
+    private void configureButtons() {
+        back.setSize(World.getRecurses().back.getWidth() * 0.75f, World.getRecurses().back.getHeight() * 0.75f);
+        back.setPosition(0, stage.getViewport().getWorldHeight()- back.getHeight());
+
+        volumeSwitch.setSize(World.getRecurses().mute.getWidth(), World.getRecurses().mute.getHeight());
+        volumeSwitch.setPosition(back.getWidth(), stage.getViewport().getWorldHeight()- World.getRecurses().mute.getHeight());
+
+        volumeSwitch.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                volumeSwitch.getStyle().imageUp = World.isMuted() ? umuteDrawable : muteDrawable;
+                World.onSwichMuteUnMute();
+                World.play(Recurses.POP);
+                super.clicked(event, x, y);
+            }
+        });
+
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+                super.clicked(event, x, y);
+            }
+        });
+
+
+    }
+
     public void changeButtonsState() {
         if (lowerBar instanceof CopsBar) {
             for (Actor a : botonesCop) {
@@ -383,6 +436,7 @@ public class LevelScreen implements Screen {
         renderPlazas();
         topBar.stage.draw();
         lowerBar.getStage().draw();
+        stage.draw();
 
         copsBar.table.setY(topBar.table.getY() - topBar.table.getHeight());
     }
