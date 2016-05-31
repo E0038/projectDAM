@@ -43,6 +43,7 @@ public class Recurses implements Disposable {
     public Texture unmute;
     public Texture exitBtt;
     public Texture back;
+    public Texture cuadradoBlanco;
     public Texture upgrade_bar;
     private TextureAtlas atlasPolicias;
     private TextureAtlas atlasAnimCriminals;
@@ -158,6 +159,13 @@ public class Recurses implements Disposable {
             }
         };
         back = new Texture("grafics/textures/Back_Arrow.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        cuadradoBlanco = new Texture("grafics/textures/cuadradoBlanco.png") {
             @Override
             protected void finalize() throws Throwable {
                 dispose();

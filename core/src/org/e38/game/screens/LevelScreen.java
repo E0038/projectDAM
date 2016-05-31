@@ -20,10 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
@@ -81,6 +80,7 @@ public class LevelScreen implements Screen {
     private ImageButton volumeSwitch;
     private TextureRegionDrawable umuteDrawable;
     private TextureRegionDrawable muteDrawable;
+    private Dialog errorDialog;
     private LowerBar voidBar = new LowerBar() {
         private Stage stage = new Stage();
 
@@ -109,7 +109,7 @@ public class LevelScreen implements Screen {
     };
     private List<Plaza> plazas = new ArrayList<>();
 
-    public LevelScreen(Level level, MainGame game) {
+    public LevelScreen(final Level level, final MainGame game) {
         //grosor bordes plaza
         Gdx.gl.glLineWidth(30);
         this.level = level;
@@ -122,7 +122,34 @@ public class LevelScreen implements Screen {
         upgradeBar = new UpgradeBar(topBar.table.getY() - topBar.table.getHeight());
         level.addOnChangeStateListerner(topBar);
         levelUpdater = new LevelUpdater(this);
+        errorDialog = new Dialog("Juego finalizado", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
+        errorDialog.padTop(40).padLeft(60);
 
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+        TextButton dbutton = new TextButton("Volver al menú",new TextButton.TextButtonStyle(drawable, drawable,drawable, new BitmapFont()));
+        dbutton.getStyle().fontColor = Color.BLACK;
+        dbutton.setSize(10, 10);
+        errorDialog.text(new Label("Lorem ipsum dolor sit amet,\n consectetur adipiscing elit.\n Quisque facilisis, nulla ultrices gravida porta", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        errorDialog.button(dbutton, true);
+
+        dbutton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new LevelSelectScreen(game));
+            }
+        });
+        Level.OnEndListerner onEndListerner = new Level.OnEndListerner() {
+            @Override
+            public void onEnd(boolean isWined) {
+                if (isWined){
+                    ProfileManager.getInstance().save(level);
+                }
+                errorDialog.getTitleLabel().setText(isWined ? "wined":"loss");
+                errorDialog.show(stage);
+
+            }
+        };
+        level.addOnEndListerner(onEndListerner);
     }
 
     public List<Plaza> getPlazas() {
