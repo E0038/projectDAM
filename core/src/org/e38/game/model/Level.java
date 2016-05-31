@@ -4,7 +4,6 @@ package org.e38.game.model;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.utils.World;
 
@@ -24,7 +23,6 @@ public class Level {
     private static final float MODIFICADOR_VIDAS = 10;
 
     public Dificultat dificultat;
-    public List<Cop> cops = new ArrayList<>();
     //    public TiledMap map;
     public List<Wave> waves;
     //    public List<Wave> remaingWaves = new ArrayList<Wave>();
@@ -122,12 +120,13 @@ public class Level {
         int old = this.lifes;
         this.lifes = lifes;
         if (this.lifes < 0) this.lifes = 0;
-        if (lifes <= 0) {
-            fail();
-        }
         for (OnChangeStateListener change : onChangeStateList) {
             change.onChangeState(old, this.lifes, TYPE_LIFE);
         }
+        if (lifes <= 0) {
+            fail();
+        }
+
         return this;
     }
 
@@ -188,6 +187,7 @@ public class Level {
         lifes = initLifes;
         //add reference to criminals
         for (Wave wave : this.waves) {
+            wave.restart();
             for (Criminal criminal : wave.getCriminals()) {
                 criminal.setLevel(this);
             }
@@ -235,7 +235,6 @@ public class Level {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Level{");
         sb.append("dificultat=").append(dificultat);
-        sb.append(", cops=").append(cops);
 //        sb.append(", map=").append(map);
         sb.append(", waves=").append(waves);
         sb.append(", wavePointer=").append(wavePointer);

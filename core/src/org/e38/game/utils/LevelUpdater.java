@@ -25,6 +25,9 @@ public class LevelUpdater {
             final Wave wave = level.waves.get(level.wavePointer);
             wave.onUpdate(delta,screen);
             if (wave.isClear()) level.wavePointer++;
+        }else {
+            level.setIsWined((byte) level.getLifes());
+            level.onEnd();
         }
 
 

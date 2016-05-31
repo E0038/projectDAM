@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
@@ -196,6 +197,20 @@ public class MenuScreen implements Screen {
     }
 
     private void fillRanking(){
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+        TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
+        dbutton.getStyle().fontColor = Color.BLACK;
+        dbutton.setSize(10, 10);
+        rankingDialog.button(dbutton, true);
+        dbutton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+            }
+        });
+
+        //TODO Separar boton respecto a la tabla
+
         Table table = new Table();
         table.add(new Label("Nivel:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));;
         table.add(new Label ("Puntuación:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));

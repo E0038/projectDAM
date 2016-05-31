@@ -130,4 +130,10 @@ public class Wave {
             }.start();
         }
     }
+
+    public void restart() {
+        spawnPointer.set(-1);
+        isAllSpawn = false;
+        isClear = false;
+    }
 }
