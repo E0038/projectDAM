@@ -1,13 +1,12 @@
 package org.e38.game.model;
 
 
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import org.e38.game.utils.World;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
+import org.e38.game.utils.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +25,7 @@ public class Level {
 
     public Dificultat dificultat;
     public List<Cop> cops = new ArrayList<>();
-//    public TiledMap map;
+    //    public TiledMap map;
     public List<Wave> waves;
     //    public List<Wave> remaingWaves = new ArrayList<Wave>();
     public int wavePointer = 0;
@@ -106,10 +105,12 @@ public class Level {
     }
 
     public Level setCoins(int coins) {
+        int old = this.coins;
+        this.coins = coins;
+        if (this.coins < 0) this.coins = 0;
         for (OnChangeStateListener change : onChangeStateList) {
             change.onChangeState(this.coins, coins, TYPE_COIN);
         }
-        this.coins = coins;
         return this;
     }
 
@@ -118,14 +119,27 @@ public class Level {
     }
 
     public Level setLifes(int lifes) {
-        if(lifes <= 0){
-            fail();this.lifes = lifes;
-            return this;}
-        for (OnChangeStateListener change : onChangeStateList) {
-            change.onChangeState(this.lifes, lifes, TYPE_LIFE);
-        }
+        int old = this.lifes;
         this.lifes = lifes;
+        if (this.lifes < 0) this.lifes = 0;
+        if (lifes <= 0) {
+            fail();
+        }
+        for (OnChangeStateListener change : onChangeStateList) {
+            change.onChangeState(old, this.lifes, TYPE_LIFE);
+        }
         return this;
+    }
+
+    public void fail() {
+        isWined = 0;
+        onEnd();
+    }
+
+    public void onEnd() {
+        for (OnEndListerner listerner : onEndListerners) {
+            listerner.onEnd(isWined != 0);
+        }
     }
 
     public List<MapObject> getPath() {
@@ -146,26 +160,11 @@ public class Level {
         return this;
     }
 
-//    public TiledMap getMap() {
-//        return map;
-//    }
-
     public int getScore() {
         return (int) ((coins * dificultat.modificadorPuntos) + (lifes * MODIFICADOR_VIDAS)) * isWined;
     }
 
     protected void onDestroy() {
-    }
-
-    public void fail() {
-        isWined = 0;
-        onEnd();
-    }
-
-    public void onEnd() {
-        for (OnEndListerner listerner : onEndListerners) {
-            listerner.onEnd(isWined == 1);
-        }
     }
 
     public void win() {
@@ -185,7 +184,7 @@ public class Level {
     public void onCreate() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         TiledMap map = new TmxMapLoader().load(mapPath);
-        this.path = buildPath(map,4);
+        this.path = buildPath(map, 4);
         lifes = initLifes;
         //add reference to criminals
         for (Wave wave : this.waves) {
