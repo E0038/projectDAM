@@ -17,11 +17,19 @@ public class DesktopLauncher {
 
     /*
     scripting testing code
-
+#1r RUN :desktop.other.dist
+import os,sys
+sys.path.append(os.path.abspath("../desktop/build/libs/desktop-1.0.jar"))
 from org.e38.game import *
+from org.e38.game.utils import *
+from org.e38.game.model import *
+from org.e38.game.hud import *
 from com.badlogic.gdx.backends.lwjgl import *
 from com.badlogic.gdx import *
+
 conf = LwjglApplicationConfiguration()
+conf.height = World.WORLD_HEIGHT
+conf.width = World.WORLD_WIDTH
 game = MainGame()
 LwjglApplication(game,conf)
 
