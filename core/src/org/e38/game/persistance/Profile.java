@@ -1,21 +1,18 @@
 package org.e38.game.persistance;
 
-import org.e38.game.model.Level;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * Created by sergi on 4/21/16.
  */
 public class Profile {
     //TODO : migrate to Idx of levels array
-    private Set<Level> completeLevels = new HashSet<>();
+    private HashMap<Integer, Integer> completeLevels = new HashMap<>();
 
     public Profile() {
     }
 
-    public Set<Level> getCompleteLevels() {
+    public HashMap<Integer, Integer> getCompleteLevels() {
         return completeLevels;
     }
 

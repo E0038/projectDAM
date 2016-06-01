@@ -251,7 +251,7 @@ public class Recurses implements Disposable {
     public void load() {
         ProfileManager.getInstance();//load static context
         createSounds();
-        loadLevels();
+//        loadLevels(); moved
         isLoaded.set(true);
     }
 
@@ -270,15 +270,6 @@ public class Recurses implements Disposable {
 
     }
 
-    private void loadLevels() {
-        try {
-            String json = Gdx.files.internal("raw/rawLevels.json").readString("UTF-8");
-            World.levels = ProfileManager.getInstance().gson.fromJson(json, new TypeToken<List<Level>>() {
-            }.getType());
-        } catch (GdxRuntimeException e) {
-            Gdx.app.error(getClass().getName(), e.getMessage(), e);
-        }
-    }
 
     public enum AnimatedCriminals {
         bane, bicicletaFinal, enemigoEspadon, ladronEscopetaBueno

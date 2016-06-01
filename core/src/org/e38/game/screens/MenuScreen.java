@@ -16,17 +16,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
-import org.e38.game.model.Level;
 import org.e38.game.persistance.Profile;
 import org.e38.game.persistance.ProfileManager;
 import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
-import java.util.*;
-import java.util.List;
-
-import static com.badlogic.gdx.scenes.scene2d.utils.FocusListener.FocusEvent.Type.scroll;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Created by sergi on 4/20/16.
@@ -198,13 +195,37 @@ public class MenuScreen implements Screen {
         });
     }
 
-    private void fillRanking(){
+    private void newGame() {
+        if (ProfileManager.getInstance().newGame()) {
+            game.setScreen(new LevelSelectScreen(game));
+        }
+        World.play(Recurses.POP);
+    }
+
+    private void selectLevel() {
+        game.setScreen(new LevelSelectScreen(game));
+        World.play(Recurses.POP);
+    }
+
+    private void continueGame() {
+        Profile profile = ProfileManager.getInstance().getProfile();
+        if (profile.getCompleteLevels().size() > 0) {
+//            List<Level> list = new ArrayList<>(profile.getCompleteLevels());
+            Integer lastComplete = Collections.max(profile.getCompleteLevels().keySet());
+            game.setScreen(new LevelScreen(World.levels.get(lastComplete), game));
+        } else {
+            selectLevel();
+        }
+        World.play(Recurses.POP);
+    }
+
+    private void fillRanking() {
         //TODO Separar boton respecto a la tabla
         Table table = new Table();
         table.add(new Label("Nivel  ", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
-        table.add(new Label ("Puntuación", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        table.add(new Label("Puntuación", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         Map<Integer, Integer> puntuaciones = ProfileManager.getInstance().getGameProgres();
-        for (int level :puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)
+        for (int level : puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)
             table.row();
             table.add(new Label(String.valueOf(level), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
             table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
@@ -225,36 +246,6 @@ public class MenuScreen implements Screen {
             }
         });
 
-    }
-
-    private void newGame() {
-        if (ProfileManager.getInstance().newGame()) {
-            game.setScreen(new LevelSelectScreen(game));
-        }
-        World.play(Recurses.POP);
-    }
-
-    private void selectLevel() {
-        game.setScreen(new LevelSelectScreen(game));
-        World.play(Recurses.POP);
-    }
-
-    private void continueGame() {
-        Profile profile = ProfileManager.getInstance().getProfile();
-        if (profile.getCompleteLevels().size() > 0) {
-            List<Level> list = new ArrayList<>(profile.getCompleteLevels());
-            list.get(list.size() - 1);
-            Level lastComplete = Collections.max(list, new Comparator<Level>() {
-                @Override
-                public int compare(Level o1, Level o2) {
-                    return World.levels.indexOf(o1) - World.levels.indexOf(o2);
-                }
-            });
-            game.setScreen(new LevelScreen(World.levels.get(World.levels.indexOf(lastComplete)), game));
-        } else {
-            selectLevel();
-        }
-        World.play(Recurses.POP);
     }
 
     @Override

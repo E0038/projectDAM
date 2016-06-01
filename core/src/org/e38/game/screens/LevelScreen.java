@@ -136,6 +136,7 @@ public class LevelScreen implements Screen {
         dbutton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                LevelScreen.this.level.onEndListerners.clear();
                 game.setScreen(new LevelSelectScreen(game));
             }
         });
@@ -148,7 +149,6 @@ public class LevelScreen implements Screen {
                 dialogLabel.setText("Estadísticas:\n Dinero en el banco restante: " + LevelScreen.this.level.getLifes() + "\n Placas restantes: " + LevelScreen.this.level.getCoins());
                 errorDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
                 errorDialog.show(stage);
-                LevelScreen.this.level.onEndListerners.clear();
             }
         };
         level.addOnEndListerner(onEndListerner);

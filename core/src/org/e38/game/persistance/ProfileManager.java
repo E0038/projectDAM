@@ -3,8 +3,10 @@ package org.e38.game.persistance;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.e38.game.model.Level;
 import org.e38.game.utils.World;
 
@@ -52,6 +54,7 @@ public class ProfileManager {
 
     private ProfileManager() throws IOException {
         conf();
+        loadLevels();
         dataInit();
         autoSaveInit();
     }
@@ -62,6 +65,16 @@ public class ProfileManager {
         loadStructure();
         Configuration configuration = readConfig();
         applyConf(configuration);
+    }
+
+    private void loadLevels() {
+        try {
+            String json = Gdx.files.internal("raw/rawLevels.json").readString("UTF-8");
+            World.levels = gson.fromJson(json, new TypeToken<List<Level>>() {
+            }.getType());
+        } catch (GdxRuntimeException e) {
+            Gdx.app.error(getClass().getName(), e.getMessage(), e);
+        }
     }
 
     private void dataInit() throws IOException {
@@ -95,10 +108,10 @@ public class ProfileManager {
     }
 
     private void configureJson() {
-       gson= gsonBuilder
-               .registerTypeAdapter(Level.class, new LevelSerializer())
-               .enableComplexMapKeySerialization()
-       .create();
+        gson = gsonBuilder
+                .registerTypeAdapter(Level.class, new LevelSerializer())
+                .enableComplexMapKeySerialization()
+                .create();
 
 
     }
@@ -229,16 +242,19 @@ public class ProfileManager {
     }
 
     public void save(Level level) {
-        List<Level> list = new ArrayList<>(profile.getCompleteLevels());
+        List<Level> list = new ArrayList<>();
+        for (Integer idx : profile.getCompleteLevels().keySet()) {
+            list.add(World.levels.get(idx));
+        }
         if (list.contains(level)) {
             int idx = list.indexOf(level);
             if (level.getScore() > list.get(idx).getScore()) {
                 list.remove(level);
-                profile.getCompleteLevels().add(level);
+                profile.getCompleteLevels().put(World.levels.indexOf(level),level.getScore());
                 sycronizer.doUpdate.set(true);
             }
         } else {
-            profile.getCompleteLevels().add(level);
+            profile.getCompleteLevels().put(World.levels.indexOf(level),level.getScore());
             sycronizer.doUpdate.set(true);
         }
     }
@@ -281,19 +297,6 @@ public class ProfileManager {
         return configuration;
     }
 
-    /**
-     * gets de scrore of a saved level on the current profile
-     *
-     * @return -1 if not found , the saved Scorre if found
-     */
-    public Integer getScrore(Level level) {
-        List<Level> levels = new ArrayList<>(profile.getCompleteLevels());
-        int idx = levels.indexOf(level) + 1;
-        if (idx < 0) {
-            return -1;
-        }
-        return levels.get(idx).getScore();
-    }
 
     /**
      * get the game progress in format {LevelNumber: LevelPoins}
@@ -301,11 +304,12 @@ public class ProfileManager {
      * @return a map with user pogres
      */
     public Map<Integer, Integer> getGameProgres() {
-        Map<Integer, Integer> ranking = new HashMap<>();
-        for (Level level : profile.getCompleteLevels()) {
-            ranking.put(World.levels.indexOf(level), level.getScore());
-        }
-        return ranking;
+//        Map<Integer, Integer> ranking = new HashMap<>();
+//        for (Integer idx : profile.getCompleteLevels()) {
+//            ranking.put(idx + 1, World.levels.get(idx).getScore());
+//        }
+//        return ranking;
+        return profile.getCompleteLevels();
     }
 
     public boolean newGame() {
@@ -365,18 +369,18 @@ public class ProfileManager {
 
         private boolean checkChanges() {
             synchronized (ProfileManager.this.persistLocker) {
-                List<Level> fileLevels;
+                HashMap<Integer, Integer> fileLevels;
                 try {
-                    fileLevels = new ArrayList<>(readProfile().getCompleteLevels());
+                    fileLevels = readProfile().getCompleteLevels();
                 } catch (IOException | NullPointerException e) {
                     Gdx.app.debug(getClass().getName(), e.getMessage(), e);
                     return false;
                 }
                 if (profile.getCompleteLevels().size() == fileLevels.size()) {
                     boolean ck = false;
-                    for (Level level : profile.getCompleteLevels()) {
-                        Level fileLevel = fileLevels.get(fileLevels.indexOf(level));
-                        if (level.getScore() > fileLevel.getScore()) {
+                    for (Integer idx : profile.getCompleteLevels().keySet()) {
+                        if (!fileLevels.containsKey(idx)) return true;
+                        if (World.levels.get(idx).getScore() > fileLevels.get(idx)) {
                             ck = true;
                             break;
                         }

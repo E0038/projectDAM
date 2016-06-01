@@ -17,15 +17,15 @@ public class LevelUpdater {
     }
 
     public void update(float delta) {
-        if (level.getLifes() <= 0){
+        if (level.getLifes() <= 0) {
             level.fail();
-        }
-        else if (level.wavePointer < level.waves.size()) {
+        } else if (level.wavePointer < level.waves.size()) {
             final Wave wave = level.waves.get(level.wavePointer);
             wave.onUpdate(delta, screen);
             if (wave.isClear()) level.wavePointer++;
-        } else  {
-//            level.setIsWined((byte) level.getLifes());
+        }
+         else  {
+            level.setIsWined((byte) level.getLifes());
             level.onEnd();
         }
 
