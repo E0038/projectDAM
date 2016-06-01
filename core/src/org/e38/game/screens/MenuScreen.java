@@ -49,6 +49,8 @@ public class MenuScreen implements Screen {
     private TextButton ranking;
     private TextButton settings;
     private Dialog rankingDialog;
+    private Dialog newGameDialog;
+    private boolean isNewGame;
 
     public MenuScreen(final MainGame game) {
         this.game = game;
@@ -62,6 +64,7 @@ public class MenuScreen implements Screen {
         game.resume();//fix false pause state
         stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch, ranking, settings);
         rankingDialog = new Dialog("Ranking", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
+        newGameDialog = new Dialog("New Game", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -170,7 +173,7 @@ public class MenuScreen implements Screen {
         });
 
 
-        boolean isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
+         isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
         selectLevel.setDisabled(isNewGame);
         continueGame.setDisabled(isNewGame);
 
@@ -196,8 +199,36 @@ public class MenuScreen implements Screen {
     }
 
     private void newGame() {
-        if (ProfileManager.getInstance().newGame()) {
-            game.setScreen(new LevelSelectScreen(game));
+        if (!isNewGame) {
+            newGameDialog.text((new Label("If you choose that option, all your progess of the game will be removed.\nIf you want to continue with your progres select the menu options:\nContinue or Select level.", new Label.LabelStyle(new BitmapFont(), Color.BLACK))));
+            Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
+            TextButton rbutton = new TextButton("Return to the menu", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
+            rbutton.getStyle().fontColor = Color.BLACK;
+            rbutton.setSize(10, 10);
+            newGameDialog.button(rbutton, true);
+            newGameDialog.getButtonTable().add(rbutton);
+            rbutton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new MenuScreen(game));
+                }
+            });
+            TextButton rbutton2 = new TextButton("Continue with New Game", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
+            rbutton2.getStyle().fontColor = Color.BLACK;
+            rbutton2.setSize(10, 10);
+            newGameDialog.button(rbutton2, true);
+            newGameDialog.getButtonTable().add(rbutton2);
+            rbutton2.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                        game.setScreen(new LevelSelectScreen(game));
+                }
+            });
+            newGameDialog.show(stage);
+        } else {
+            if (ProfileManager.getInstance().newGame()) {
+                game.setScreen(new LevelSelectScreen(game));
+            }
         }
         World.play(Recurses.POP);
     }
@@ -227,7 +258,7 @@ public class MenuScreen implements Screen {
         Map<Integer, Integer> puntuaciones = ProfileManager.getInstance().getGameProgres();
         for (int level : puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)
             table.row();
-            table.add(new Label(String.valueOf(level), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+            table.add(new Label(String.valueOf(level+1), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
             table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         }
         rankingDialog.add(table);
