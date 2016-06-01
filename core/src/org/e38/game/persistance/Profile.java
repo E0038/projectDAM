@@ -17,9 +17,7 @@ public class Profile {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Profile{");
-        sb.append("completeLevels=").append(completeLevels);
-        sb.append('}');
-        return sb.toString();
+        return "Profile{" + "completeLevels=" + completeLevels +
+                '}';
     }
 }

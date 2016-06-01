@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-@SuppressWarnings("FieldAccessedSynchronizedAndUnsynchronized")
+@SuppressWarnings({"FieldAccessedSynchronizedAndUnsynchronized", "TryFinallyCanBeTryWithResources", "ResultOfMethodCallIgnored"})
 public class ProfileManager {
     public static final String ALGORIM = "AES";
     private static final String b64Key = "Whiy3TtJhr484rDop7vsfg==";
@@ -105,6 +105,7 @@ public class ProfileManager {
             decrypter.init(Cipher.DECRYPT_MODE, secretKey);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             Gdx.app.log(getClass().getName(), "KEY error", e);
+            throw new IOException(e);
         }
 
     }

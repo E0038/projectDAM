@@ -1,14 +1,10 @@
 package org.e38.game.model;
 
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.screens.LevelScreen;
-
-import java.util.Iterator;
 
 /**
  * Created by ALUMNEDAM on 25/05/2016.

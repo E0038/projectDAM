@@ -279,21 +279,10 @@ public class Criminal implements Hittable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Criminal{");
-        sb.append("state=").append(state);
-//        sb.append(", hpPoints=").append(hpPoints);
-//        sb.append(", dodgeRate=").append(dodgeRate);
-//        sb.append(", protecion=").append(protecion);
-//        sb.append(", speed=").append(speed);
-//        sb.append(", orientation=").append(orientation);
-//        sb.append(", listener=").append(listener);
-        sb.append(", pathPointer=").append(pathPointer);
-//        sb.append(", level=").append(level);
-//        sb.append(", totalHpPoins=").append(totalHpPoins);
-        sb.append(", name='").append(name).append('\'');
-//        sb.append(", lastNext=").append(lastNext);
-        sb.append('}');
-        return sb.toString();
+        return "Criminal{" + "state=" + state +
+                ", pathPointer=" + pathPointer +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public interface OnEndListener {

@@ -1,12 +1,9 @@
 package org.e38.game.model.npcs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Bullet;
 import org.e38.game.utils.Recurses;
-
-import java.util.Arrays;
 
 import static org.e38.game.model.npcs.NPC.State.*;
 
@@ -20,7 +17,7 @@ public abstract class Cop implements NPC {
     protected Vector2 posicion = new Vector2(0, 0);
     protected float range;
     protected State state;
-    protected long lastFire = 0l;
+    protected long lastFire = 0L;
     protected volatile boolean isAreaDamage = false;
     /**
      * fire rate calculted with delta
@@ -175,9 +172,9 @@ public abstract class Cop implements NPC {
         Bullet bullet = nivel.newBullet();
         onFire();
         if (isAreaDamage) {
-            bullet.fireArea(this, criminal);
+            bullet.fireArea(criminal);
         } else {
-            bullet.fireSingle(this, criminal[0]);
+            bullet.fireSingle(criminal[0]);
         }
     }
 

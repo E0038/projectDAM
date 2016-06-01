@@ -7,15 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.google.gson.reflect.TypeToken;
-import org.e38.game.model.Level;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.model.npcs.NPC;
 import org.e38.game.persistance.ProfileManager;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**

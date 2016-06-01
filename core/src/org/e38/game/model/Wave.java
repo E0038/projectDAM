@@ -1,6 +1,5 @@
 package org.e38.game.model;
 
-import com.badlogic.gdx.maps.MapObject;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.model.npcs.NPC;
@@ -8,6 +7,7 @@ import org.e38.game.screens.LevelScreen;
 import org.e38.game.utils.SheludedAction;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -15,11 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Wave {
     private final Object waveLocker = new Object();
-    private List<Criminal> criminals = new ArrayList<>();
+    private final AtomicBoolean isAllSpawn = new AtomicBoolean(false);
+    private final AtomicBoolean isClear = new AtomicBoolean(false);
+    private volatile List<Criminal> criminals = new ArrayList<>();
     private long gap = 0;
     private transient volatile AtomicInteger spawnPointer = new AtomicInteger(-1);
-    private boolean isAllSpawn = false;
-    private boolean isClear = false;
 
     public Wave() {
     }
@@ -29,11 +29,11 @@ public class Wave {
     }
 
     public boolean isAllSpawn() {
-        return isAllSpawn;
+        return isAllSpawn.get();
     }
 
     public boolean isClear() {
-        return isClear;
+        return isClear.get();
     }
 
     public List<Criminal> getCriminals() {
@@ -55,7 +55,7 @@ public class Wave {
     }
 
     public void onUpdate(float delta, LevelScreen screen) {
-        if (!isClear) {
+        if (!isClear.get()) {
             if (spawnPointer.get() < 0) {
                 spawner();
             }
@@ -73,9 +73,6 @@ public class Wave {
                 ck = false;
                 if (criminal.getState() == NPC.State.ALIVE) {
                     criminal.onUpdate(delta);
-                    MapObject object = screen.getLevel().getPath().get(criminal.getPathPointer());
-                    float x = (float) object.getProperties().get("x");
-                    float y = (float) object.getProperties().get("y");
                     for (Cop cop : getCops(screen)) {
                         if (cop.isFireReady() && cop.getCircle().overlaps(criminal.getCircle())) {
                             if (!fireMapping.containsKey(cop)) {
@@ -95,7 +92,7 @@ public class Wave {
                 cop.fire(fireMapping.get(cop).toArray(new Criminal[1]));
             else cop.fire(fireMapping.get(cop).get(0));
         }
-        isClear = ck;
+        isClear.set(ck);
     }
 
     private List<Cop> getCops(LevelScreen screen) {
@@ -119,12 +116,12 @@ public class Wave {
     private void launchWave() {
         synchronized (waveLocker) {
             int idx = spawnPointer.incrementAndGet();
-            if (!isAllSpawn) {
+            if (!isAllSpawn.get()) {
                 if (idx < criminals.size())
                     criminals.get(idx).onSpawn();
-                else isAllSpawn = true;
+                else isAllSpawn.set(true);
             }
-            if (!isAllSpawn) {
+            if (!isAllSpawn.get()) {
                 new SheludedAction(gap) {
                     @Override
                     public void onFinish() {
@@ -137,7 +134,7 @@ public class Wave {
 
     public void restart() {
         spawnPointer.set(-1);
-        isAllSpawn = false;
-        isClear = false;
+        isAllSpawn.set(false);
+        isClear.set(false);
     }
 }

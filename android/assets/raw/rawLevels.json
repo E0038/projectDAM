@@ -10,7 +10,8 @@
           },
           {
             "name": "bane",
-            "totalHpPoins": 500
+            "totalHpPoins": 500,
+            "speed": 5000
           },
           {
             "state": "SPAWING",

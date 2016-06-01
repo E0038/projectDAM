@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.e38.game.utils.World;
 import org.e38.game.model.Level;
+import org.e38.game.utils.World;
 
 public class TopBar implements Disposable, Level.OnChangeStateListener {
     public Stage stage;
@@ -26,7 +26,13 @@ public class TopBar implements Disposable, Level.OnChangeStateListener {
 
         table = new Table();
 
-        table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().top_bar)){@Override protected void finalize() throws Throwable {dispose();super.finalize();}});
+        table.background(new TextureRegionDrawable(new TextureRegion(World.getRecurses().top_bar)) {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        });
 
         table.setSize(300, 26);
 
@@ -40,12 +46,6 @@ public class TopBar implements Disposable, Level.OnChangeStateListener {
         table.add(labelsl).padLeft((table.getWidth() / 10) * 1);
 
         stage.addActor(table);
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        this.dispose();
-        super.finalize();
     }
 
     @Override

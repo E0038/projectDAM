@@ -30,7 +30,7 @@ public class SettingsScreen implements Screen {
     private TextButton menu;
     private Label volumeLabel;
     private Label volumeValue;
-    private SelectBox difficulty;
+    private SelectBox<Level.Dificultat> difficulty;
     private Label difficultyLabel;
 
     public SettingsScreen(MainGame game) {
@@ -73,6 +73,7 @@ public class SettingsScreen implements Screen {
         slider.setPosition((stage.getViewport().getWorldWidth() / 2) - slider.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 8);
         slider.setAnimateDuration(0.3f);
         slider.addListener(new ChangeListener() {
+            @Override
             public void changed (ChangeEvent event, Actor actor) {
                 World.volumeChange(slider.getValue());
                 World.play(Recurses.POP);
@@ -85,15 +86,15 @@ public class SettingsScreen implements Screen {
         volumeValue.setPosition((stage.getViewport().getWorldWidth() / 2) - volumeValue.getWidth() + slider.getWidth(), stage.getViewport().getWorldHeight() / 10 * 8 + volumeValue.getHeight());
         difficultyLabel.setPosition((stage.getViewport().getWorldWidth() / 2) - difficultyLabel.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 6);
 
-        difficulty = new SelectBox<Level.Dificultat>(new Skin(Gdx.files.internal("skin/uiskin.json")));
+        difficulty = new SelectBox<>(new Skin(Gdx.files.internal("skin/uiskin.json")));
         difficulty.setItems(Level.Dificultat.values());
         difficulty.setWidth(100);
         difficulty.setPosition((stage.getViewport().getWorldWidth() / 2) - difficulty.getWidth() /2, stage.getViewport().getWorldHeight() / 10 * 5);
         difficulty.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                World.selecteDificultat = difficulty.getSelected().toString();
-                System.out.println(difficulty.getSelected().toString());
+                World.selecteDificultat = difficulty.getSelected().name();
+                System.out.println(difficulty.getSelected());
             }
         });
 

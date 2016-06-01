@@ -2,8 +2,6 @@ package org.e38.game.persistance;
 
 import org.e38.game.model.Level;
 
-import static org.e38.game.utils.World.*;
-
 /**
  * Created by sergi on 5/5/16.
  */
@@ -12,7 +10,7 @@ public class Configuration {
     /**
      * One of EASY , NORMAL , HARD
      */
-    public String selecteDificultat = Level.Dificultat.NORMAL.name();;
+    public String selecteDificultat = Level.Dificultat.NORMAL.name();
     public float speed = 1.0f;
     //etc
 }

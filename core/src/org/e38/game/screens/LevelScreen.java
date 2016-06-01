@@ -50,6 +50,7 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
+@SuppressWarnings({"ConstantConditions", "MagicNumber", "unused"})
 public class LevelScreen implements Screen {
 
     public static final int TYPE_UPGRADE = 0;
@@ -65,13 +66,6 @@ public class LevelScreen implements Screen {
     private UpgradeBar upgradeBar;
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Stage stage;
-    //    private int lastPlazaId = 0;
-    private Actor areaCopButton;
-    private Actor damageOverCopButton;
-    private Actor lentoCopButton;
-    private Actor rapidoCopButton;
-    private Actor sellCopButton;
-    private Actor upgradeCopButton;
     private LevelUpdater levelUpdater;
     private Actor[] botonesCop;
     private Actor[] botonesUpgrade;
@@ -108,6 +102,7 @@ public class LevelScreen implements Screen {
     };
     private List<Plaza> plazas = new ArrayList<>();
 
+    @SuppressWarnings("FeatureEnvy")
     public LevelScreen(final Level level, final MainGame game) {
         //grosor bordes plaza
         Gdx.gl.glLineWidth(30);
@@ -235,7 +230,6 @@ public class LevelScreen implements Screen {
         camera.update();
         game.resume();
         Gdx.input.setInputProcessor(stage);
-
     }
 
     public void changeButtonsState() {
@@ -263,6 +257,7 @@ public class LevelScreen implements Screen {
         }
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private void createButtons() {
         this.back = new ImageButton(new TextureRegionDrawable(new TextureRegion(World.getRecurses().back)));
         umuteDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().unmute));
@@ -270,6 +265,7 @@ public class LevelScreen implements Screen {
         volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private void configureButtons() {
         back.setSize(World.getRecurses().back.getWidth() * 0.75f, World.getRecurses().back.getHeight() * 0.75f);
         back.setPosition(0, stage.getViewport().getWorldHeight() - back.getHeight());
@@ -325,7 +321,7 @@ public class LevelScreen implements Screen {
 
     @SuppressWarnings("FeatureEnvy")
     private void initActors() {
-        areaCopButton = new Actor();
+        Actor areaCopButton = new Actor();
         areaCopButton.setTouchable(Touchable.disabled);
         areaCopButton.setBounds(519, 600 - 85 - 60, 100, 60);
         stage.addActor(areaCopButton);
@@ -349,7 +345,7 @@ public class LevelScreen implements Screen {
         });
 
 
-        damageOverCopButton = new Actor();
+        Actor damageOverCopButton = new Actor();
         damageOverCopButton.setTouchable(Touchable.disabled);
         damageOverCopButton.setBounds(249, 600 - 85 - 60, 100, 60);
         stage.addActor(damageOverCopButton);
@@ -371,7 +367,7 @@ public class LevelScreen implements Screen {
             }
         });
 
-        lentoCopButton = new Actor();
+        Actor lentoCopButton = new Actor();
         lentoCopButton.setTouchable(Touchable.disabled);
         lentoCopButton.setBounds(386, 600 - 85 - 60, 100, 60);
         stage.addActor(lentoCopButton);
@@ -393,7 +389,7 @@ public class LevelScreen implements Screen {
             }
         });
 
-        rapidoCopButton = new Actor();
+        Actor rapidoCopButton = new Actor();
         rapidoCopButton.setTouchable(Touchable.disabled);
         rapidoCopButton.setBounds(114, 600 - 85 - 60, 100, 60);
         stage.addActor(rapidoCopButton);
@@ -415,7 +411,7 @@ public class LevelScreen implements Screen {
             }
         });
 
-        upgradeCopButton = new Actor();
+        Actor upgradeCopButton = new Actor();
         upgradeCopButton.setTouchable(Touchable.disabled);
         upgradeCopButton.setBounds(155, 600 - 85 - 85, 200, 100);
         stage.addActor(upgradeCopButton);
@@ -432,7 +428,7 @@ public class LevelScreen implements Screen {
             }
         });
 
-        sellCopButton = new Actor();
+        Actor sellCopButton = new Actor();
         sellCopButton.setTouchable(Touchable.disabled);
         sellCopButton.setBounds(455, 600 - 85 - 85, 200, 100);
         stage.addActor(sellCopButton);
@@ -521,9 +517,11 @@ public class LevelScreen implements Screen {
         if (type == TYPE_COPS) {
             copsBar.updateBar(level.getCoins());
         } else {
-            Cop cop = getSelected().getCop();
-            if (cop != null)
-                upgradeBar.updateBar(level.getCoins(), cop);
+            Cop cop;
+            Plaza plaza;
+            if ((plaza = getSelected()) != null)
+                if ((cop = plaza.getCop()) != null)
+                    upgradeBar.updateBar(level.getCoins(), cop);
         }
     }
 
@@ -549,6 +547,4 @@ public class LevelScreen implements Screen {
         copsBar.dispose();
         super.finalize();
     }
-
-
 }

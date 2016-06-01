@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
 import org.e38.game.persistance.Profile;
 import org.e38.game.persistance.ProfileManager;
-import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
@@ -32,11 +30,6 @@ import java.util.Map;
 public class MenuScreen implements Screen {
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     private final MainGame game;
-    int count = 0;
-    AnimationManager[] animationManagers;
-    private String[] polis = new String[]{Recurses.POLICIA_ESCOPETA, Recurses.POLICIA_BAZOOKA, Recurses.SNIPER_BUENO, Recurses.POLICIA_BUENO};
-    private SpriteBatch batcher;
-    private Recurses.AnimatedCriminals[] criminals = Recurses.AnimatedCriminals.values();
     private Stage stage;
     private TextButton newGame;
     private TextButton continueGame;
@@ -68,6 +61,7 @@ public class MenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private void createButtons() {
         TextureRegionDrawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
@@ -106,6 +100,7 @@ public class MenuScreen implements Screen {
         settings = new TextButton("Settings", new TextButton.TextButtonStyle(style));
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private void configureButtons() {
         float centerX = (stage.getViewport().getWorldWidth() / 2) - World.getRecurses().buttonBg.getWidth() / 2;
         float bttWidth = World.getRecurses().buttonBg.getWidth();
@@ -114,6 +109,7 @@ public class MenuScreen implements Screen {
         title.setFontScale(1.5f);
         title.setX(centerX + title.getWidth() / 2);
         title.setY((stage.getViewport().getWorldHeight() / 10) * 8);
+
 
         newGame.setSize(bttWidth, bttHeight);
         newGame.setY((stage.getViewport().getWorldHeight() / 10) * 6);
@@ -173,7 +169,7 @@ public class MenuScreen implements Screen {
         });
 
 
-         isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
+        isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
         selectLevel.setDisabled(isNewGame);
         continueGame.setDisabled(isNewGame);
 
@@ -198,9 +194,10 @@ public class MenuScreen implements Screen {
         });
     }
 
+    @SuppressWarnings({"FeatureEnvy", "MagicNumber"})
     private void newGame() {
         if (!isNewGame) {
-            newGameDialog.text((new Label("If you choose that option, all your progess of the game will be removed.\nIf you want to continue with your progres select the menu options:\nContinue or Select level.", new Label.LabelStyle(new BitmapFont(), Color.BLACK))));
+            newGameDialog.text(new Label("If you choose that option, all your progess of the game will be removed.\nIf you want to continue with your progres select the menu options:\nContinue or Select level.", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
             Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
             TextButton rbutton = new TextButton("Return to the menu", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
             rbutton.getStyle().fontColor = Color.BLACK;
@@ -223,7 +220,7 @@ public class MenuScreen implements Screen {
             rbutton2.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                        game.setScreen(new LevelSelectScreen(game));
+                    game.setScreen(new LevelSelectScreen(game));
                 }
             });
             newGameDialog.show(stage);
@@ -252,6 +249,7 @@ public class MenuScreen implements Screen {
         World.play(Recurses.POP);
     }
 
+    @SuppressWarnings("MagicNumber")
     private void fillRanking() {
         //TODO Separar boton respecto a la tabla
         rankingDialog.getTitleLabel().setY(rankingDialog.getTitleLabel().getY() - 5);
@@ -260,9 +258,9 @@ public class MenuScreen implements Screen {
         table.add(new Label("Nivel  ", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         table.add(new Label("Puntuación", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         Map<Integer, Integer> puntuaciones = ProfileManager.getInstance().getGameProgres();
-        for (int level : puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)
+        for (int level : puntuaciones.keySet()) {
             table.row();
-            table.add(new Label(String.valueOf(level+1), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+            table.add(new Label(String.valueOf(level + 1), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
             table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         }
         rankingDialog.add(table);

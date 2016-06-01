@@ -81,10 +81,6 @@ public class UpgradeBar implements Disposable, LowerBar {
     @Override
     public Stage getStage() {
         return stage;
-    }    @Override
-    protected void finalize() throws Throwable {
-        this.dispose();
-        super.finalize();
     }
 
 

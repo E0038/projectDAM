@@ -20,8 +20,8 @@ public class Level {
 
     public static final int TYPE_COIN = 0;
     public static final int TYPE_LIFE = 1;
+    public static final int PADING = 4;
     private static final float MODIFICADOR_VIDAS = 10;
-
     public Dificultat dificultat = Dificultat.NORMAL;
     //    public TiledMap map;
     public List<Wave> waves;
@@ -30,12 +30,12 @@ public class Level {
     public String mapPath;
     public float waveGap = 3000f;
     public List<OnChangeStateListener> onChangeStateList = new ArrayList<>();
+    //    private MapLayer layer;
+    public List<OnEndListerner> onEndListerners = new ArrayList<>();
     protected int initLifes;
     protected int coins;
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
-    //    private MapLayer layer;
-    public List<OnEndListerner> onEndListerners = new ArrayList<>();
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -107,7 +107,7 @@ public class Level {
         this.coins = coins;
         if (this.coins < 0) this.coins = 0;
         for (OnChangeStateListener change : onChangeStateList) {
-            change.onChangeState(this.coins, coins, TYPE_COIN);
+            change.onChangeState(old, this.coins, TYPE_COIN);
         }
         return this;
     }
@@ -184,7 +184,7 @@ public class Level {
     public void onCreate() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         TiledMap map = new TmxMapLoader().load(mapPath);
-        this.path = buildPath(map, 4);
+        this.path = buildPath(map);
         lifes = initLifes;
         //add reference to criminals
         for (Wave wave : this.waves) {
@@ -195,7 +195,7 @@ public class Level {
         }
     }
 
-    private List<MapObject> buildPath(TiledMap map, final int pading) {
+    private List<MapObject> buildPath(TiledMap map) {
         List<MapObject> caminos = new ArrayList<>();
         for (MapObject object : map.getLayers().get("objetos").getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("camino")) {
@@ -213,7 +213,7 @@ public class Level {
 
             private String addPading(String s) {
                 StringBuilder builder = new StringBuilder();
-                for (int i = s.length(); i < pading; i++) {
+                for (int i = s.length(); i < PADING; i++) {
                     builder.append('0');
                 }
                 builder.append(s);
@@ -234,21 +234,18 @@ public class Level {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Level{");
-        sb.append("dificultat=").append(dificultat);
-//        sb.append(", map=").append(map);
-        sb.append(", waves=").append(waves);
-        sb.append(", wavePointer=").append(wavePointer);
-        sb.append(", mapPath='").append(mapPath).append('\'');
-        sb.append(", waveGap=").append(waveGap);
-        sb.append(", initLifes=").append(initLifes);
-        sb.append(", coins=").append(coins);
-        sb.append(", lifes=").append(lifes);
-        sb.append(", path=").append(path);
-        sb.append(", onEndListerners=").append(onEndListerners);
-        sb.append(", isWined=").append(isWined);
-        sb.append('}');
-        return sb.toString();
+        return "Level{" + "dificultat=" + dificultat +
+                ", waves=" + waves +
+                ", wavePointer=" + wavePointer +
+                ", mapPath='" + mapPath + '\'' +
+                ", waveGap=" + waveGap +
+                ", initLifes=" + initLifes +
+                ", coins=" + coins +
+                ", lifes=" + lifes +
+                ", path=" + path +
+                ", onEndListerners=" + onEndListerners +
+                ", isWined=" + isWined +
+                '}';
     }
 
     public enum Dificultat {

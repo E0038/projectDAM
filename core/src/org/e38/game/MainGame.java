@@ -1,11 +1,7 @@
 package org.e38.game;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.e38.game.screens.SplashScreen;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;

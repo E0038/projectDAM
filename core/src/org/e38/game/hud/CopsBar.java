@@ -64,12 +64,6 @@ public class CopsBar implements Disposable, LowerBar {
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        this.dispose();
-        super.finalize();
-    }
-
-    @Override
     public void dispose() {
         stage.dispose();
     }

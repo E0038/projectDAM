@@ -1,6 +1,5 @@
 package org.e38.game.model;
 
-import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
 
 /**
@@ -20,7 +19,7 @@ public class Bullet {
         this.damage = damage;
     }
 
-    public final void fireSingle(Cop from, Criminal to) {
+    public final void fireSingle(Criminal to) {
         onSingleAtack(to);
     }
 
@@ -43,7 +42,7 @@ public class Bullet {
         return damage;
     }
 
-    public final void fireArea(Cop from, Criminal[] criminals) {
+    public final void fireArea(Criminal[] criminals) {
         onAreaAtack(criminals);
     }
 

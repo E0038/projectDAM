@@ -42,6 +42,7 @@ public class LevelSelectScreen implements Screen {
         game.resume();
     }
 
+    @SuppressWarnings("MagicNumber")
     private void createStage() {
         TextureRegionDrawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
