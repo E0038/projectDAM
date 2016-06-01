@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
+import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
 /**
@@ -26,6 +27,7 @@ public class SettingsScreen implements Screen {
     private Stage stage;
     private Slider slider;
     private TextButton menu;
+    private ProgressBar bar;
 
     public SettingsScreen(MainGame game) {
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
@@ -61,8 +63,9 @@ public class SettingsScreen implements Screen {
     }
     @Override
     public void show() {
-        slider = new Slider(0, 1, 0.1f, false, new Slider.SliderStyle( new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg)), new TextureRegionDrawable(new TextureRegion(World.getRecurses().knob))));
-        slider.setValue(0.3f);
+//        slider = new Slider(0, 1, 0.1f, false, new Slider.SliderStyle( new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg)), new TextureRegionDrawable(new TextureRegion(World.getRecurses().knob))));
+        slider = new Slider(0, 1, 0.1f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
+        slider.setValue(1f);
         slider.setSize(100, 50);
         slider.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2);
         slider.setAnimateDuration(0.3f);
@@ -71,9 +74,17 @@ public class SettingsScreen implements Screen {
             public void changed (ChangeEvent event, Actor actor) {
                 System.out.println("slider: " + slider.getValue());
                 World.volumeChange(slider.getValue());
+                World.play(Recurses.POP);
+                slider.setStyle(slider.getStyle());
 
             }
         });
+
+        bar = new ProgressBar(0, 100, 1, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
+        bar.setSize(100, 50);
+        bar.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2 - 60);
+        bar.setValue(1f);
+        stage.addActor(bar);
         stage.addActor(menu);
         stage.addActor(slider);
         Gdx.input.setInputProcessor(stage);
@@ -83,6 +94,7 @@ public class SettingsScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        bar.setValue(slider.getValue()*100);
 
         stage.draw();
     }
