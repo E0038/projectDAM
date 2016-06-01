@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @SuppressWarnings({"TryFinallyCanBeTryWithResources", "ResultOfMethodCallIgnored"})
 public class ProfileManager {
     public static final String ALGORIM = "AES";
+    public static final int BUFF_SIZE = 1024;
     private static final String b64Key = "Whiy3TtJhr484rDop7vsfg==";
     private static ProfileManager ourInstance;
 
@@ -185,7 +186,7 @@ public class ProfileManager {
 
     public static String readChars(File file) throws IOException {
         Reader reader = new FileReader(file);
-        char[] chars = new char[1024];
+        char[] chars = new char[BUFF_SIZE];
         StringBuilder builder = new StringBuilder();
         int n;
         while ((n = reader.read(chars)) != -1) {
@@ -230,6 +231,7 @@ public class ProfileManager {
         sycronizer.stop.set(true);
     }
 
+    @SuppressWarnings("unused")
     public void restartAutoSave() {
         if (!sycronizer.stop.get()) {//if autosave is stoped
             try {
