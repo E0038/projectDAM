@@ -16,8 +16,8 @@ public class Criminal implements Hittable {
     /**
      * value between 0 and 1
      */
-    protected float dodgeRate;
-    protected float protecion;
+    protected float dodgeRate = 0;
+    protected float protecion = 0;
     /**
      * diff time between pointer increment
      */
@@ -29,7 +29,7 @@ public class Criminal implements Hittable {
     protected transient Level level;
     protected float totalHpPoins = 10f;
     protected String name = Recurses.AnimatedCriminals.bane.name();
-    protected long lastNext;
+    protected long lastNext = 0;
     private transient volatile Circle circle = new Circle(0, 0, 0);
 
     public Criminal() {
@@ -37,6 +37,14 @@ public class Criminal implements Hittable {
 
     public Criminal(Level level) {
         this.level = level;
+    }
+
+    public float getTotalHpPoins() {
+        return totalHpPoins;
+    }
+
+    public void setTotalHpPoins(float totalHpPoins) {
+        this.totalHpPoins = totalHpPoins;
     }
 
     public OnEndListener getOnEndListener() {

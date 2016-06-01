@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.e38.game.model.Level;
+import org.e38.game.model.Wave;
+import org.e38.game.model.npcs.Criminal;
 import org.e38.game.utils.World;
 
 import javax.crypto.BadPaddingException;
@@ -110,10 +112,10 @@ public class ProfileManager {
     private void configureJson() {
         gson = gsonBuilder
                 .registerTypeAdapter(Level.class, new LevelSerializer())
+                .registerTypeAdapter(Criminal.class, new CriminalAdapter())
+                .registerTypeAdapter(Wave.class, new WaveAdapter())
                 .enableComplexMapKeySerialization()
                 .create();
-
-
     }
 
     private void loadStructure() {

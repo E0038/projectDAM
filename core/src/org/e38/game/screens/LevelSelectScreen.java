@@ -68,7 +68,7 @@ public class LevelSelectScreen implements Screen {
         HashMap<Integer, Integer> completeLevels = ProfileManager.getInstance().getProfile().getCompleteLevels();
         int lastLevel = 0;
         if (completeLevels.size() > 0) {
-            lastLevel = Collections.max(completeLevels.keySet()) +1;
+            lastLevel = Collections.max(completeLevels.keySet()) + 1;
         }
         for (int i = 0, size = World.levels.size(); i < size; i++) {
             TextButton actor = new DisableableTextButon("Level - " + (i + 1), new TextButton.TextButtonStyle(buttonStyle));
@@ -92,7 +92,8 @@ public class LevelSelectScreen implements Screen {
             }
         }
         for (int i = 0; i <= lastLevel; i++) {
-            ((TextButton) table.getCells().get(i).getActor()).setDisabled(false);
+            if (i < table.getCells().size)
+                ((TextButton) table.getCells().get(i).getActor()).setDisabled(false);
         }
     }
 

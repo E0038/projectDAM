@@ -170,7 +170,6 @@ public abstract class Cop implements NPC {
 
     public void fire(Criminal... criminal) {
         lastFire = System.currentTimeMillis();
-        Gdx.app.debug(getClass().getName(), getName() + " fires to " + Arrays.toString(criminal));
         if (criminal.length == 0) return;
         updatesSinceLastFire = 0;
         Bullet bullet = nivel.newBullet();

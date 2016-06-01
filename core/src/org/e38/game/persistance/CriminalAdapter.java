@@ -3,6 +3,9 @@ package org.e38.game.persistance;
 import com.google.gson.*;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.model.npcs.criminals.Bane;
+import org.e38.game.model.npcs.criminals.Bicicleta;
+import org.e38.game.model.npcs.criminals.Espadon;
+import org.e38.game.model.npcs.criminals.LadronEscopeta;
 import org.e38.game.utils.Recurses;
 
 import java.lang.reflect.Type;
@@ -19,11 +22,40 @@ public class CriminalAdapter implements JsonDeserializer<Criminal>, JsonSerializ
         Recurses.AnimatedCriminals enumCrimi = context.deserialize(object.get("name"), Recurses.AnimatedCriminals.class);
         Criminal criminal;
         switch (enumCrimi) {
+            case bane:
+                criminal = new Bane();
+                break;
+            case bicicletaFinal:
+                criminal = new Bicicleta();
+                break;
+            case enemigoEspadon:
+                criminal = new Espadon();
+                break;
+            case ladronEscopetaBueno:
+                criminal = new LadronEscopeta();
+                break;
             default:
                 criminal = new Bane();
+                break;
         }
-        //etc
-        return null;
+/*
+#####################
+extras modifications optionals != defaults
+#####################
+*/
+        if (object.has("totalHpPoins")) {
+            criminal.setTotalHpPoins(object.get("totalHpPoins").getAsFloat());
+        }
+        if (object.has("protecion")) {
+            criminal.setProtecion(object.get("protecion").getAsFloat());
+        }
+        if (object.has("speed")) {
+            criminal.setSpeed(object.get("speed").getAsLong());
+        }
+        if (object.has("dodgeRate")) {
+            criminal.setDodgeRate(object.get("dodgeRate").getAsFloat());
+        }
+        return criminal;
     }
 
     // TODO: 5/31/16 JSON FORMAT {"name":"Recurses.AnimatedCriminals Enum",etc}
