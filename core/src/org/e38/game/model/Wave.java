@@ -119,7 +119,7 @@ public class Wave {
     private void launchWave() {
         synchronized (waveLocker) {
             int idx = spawnPointer.incrementAndGet();
-            if (!isAllSpawn || idx < criminals.size() - 1)
+            if (!isAllSpawn || idx < criminals.size())
                 criminals.get(idx).onSpawn();
             else isAllSpawn = true;
             if (!isAllSpawn) {

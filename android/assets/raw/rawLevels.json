@@ -70,8 +70,8 @@
     "waveGap": 3000.0
   },
   {
-    "coins": 0,
-    "INIT_LIFES": 0,
+    "coins": 100,
+    "INIT_LIFES": 100,
     "waves": [
       {
         "criminals": [

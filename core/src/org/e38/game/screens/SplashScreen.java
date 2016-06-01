@@ -38,6 +38,7 @@ public class SplashScreen implements Screen {
         game.loader.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
+                Gdx.app.error(MainGame.class.getName(), e.getMessage(), e);
                 showDialog = true;
             }
         });
@@ -77,7 +78,7 @@ public class SplashScreen implements Screen {
         } else {
             stage.draw();
         }
-        if(showDialog)
+        if (showDialog)
             errorDialog.show(stage);
     }
 

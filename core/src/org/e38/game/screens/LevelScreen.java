@@ -130,7 +130,7 @@ public class LevelScreen implements Screen {
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
         errorDialog.button(dbutton, true);
-        final Label dialogLabel=new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        final Label dialogLabel = new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         errorDialog.text(dialogLabel);
 
         dbutton.addListener(new ClickListener() {
@@ -148,6 +148,7 @@ public class LevelScreen implements Screen {
                 dialogLabel.setText("Estadísticas:\n Dinero en el banco restante: " + LevelScreen.this.level.getLifes() + "\n Placas restantes: " + LevelScreen.this.level.getCoins());
                 errorDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
                 errorDialog.show(stage);
+                LevelScreen.this.level.onEndListerners.clear();
             }
         };
         level.addOnEndListerner(onEndListerner);
@@ -529,7 +530,13 @@ public class LevelScreen implements Screen {
 
     public void showUpgradeBar() {
         lowerBar = upgradeBar;
-    }    @Override
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    @Override
     protected void finalize() throws Throwable {
         stage.dispose();
         shapeRenderer.dispose();
@@ -538,10 +545,6 @@ public class LevelScreen implements Screen {
         upgradeBar.dispose();
         copsBar.dispose();
         super.finalize();
-    }
-
-    public Level getLevel() {
-        return level;
     }
 
 

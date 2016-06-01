@@ -30,15 +30,19 @@ public class LevelSerializer implements JsonDeserializer<Level>, JsonSerializer<
         Level level = new Level();
         level.waves = context.deserialize(object.get(waves), new TypeToken<List<Wave>>() {
         }.getType());
+        level.onEndListerners.clear();
         level.setInitLifes(lif).setLifes(lif).setCoins(coins).setMapPath(path).setWaveGap(waveGap);
         level.waveGap = waveGap;
+        if (object.get(dificultat) != null) {
+            level.dificultat = Level.Dificultat.valueOf(object.get(dificultat).getAsString());
+        }
         return level;
     }
 
     @Override
     public JsonElement serialize(Level src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject element = new JsonObject();
-//        element.addProperty(dificultat, src.dificultat.name());
+        element.addProperty(dificultat, src.dificultat.name());
         element.addProperty(coins, src.getCoins());
         element.addProperty(INIT_LIFES, src.getLifes());
 //        element.add(waves, context.serialize(src.getPath()));

@@ -22,7 +22,7 @@ public class Level {
     public static final int TYPE_LIFE = 1;
     private static final float MODIFICADOR_VIDAS = 10;
 
-    public Dificultat dificultat;
+    public Dificultat dificultat = Dificultat.NORMAL;
     //    public TiledMap map;
     public List<Wave> waves;
     //    public List<Wave> remaingWaves = new ArrayList<Wave>();
@@ -35,7 +35,7 @@ public class Level {
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
     //    private MapLayer layer;
-    private List<OnEndListerner> onEndListerners = new ArrayList<>();
+    public List<OnEndListerner> onEndListerners = new ArrayList<>();
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -174,6 +174,7 @@ public class Level {
     public void onRestart() {
         isWined = 0;
         wavePointer = 0;
+        onEndListerners = new ArrayList<>();
         onCreate();
     }
 

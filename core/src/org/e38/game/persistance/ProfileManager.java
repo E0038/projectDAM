@@ -95,8 +95,12 @@ public class ProfileManager {
     }
 
     private void configureJson() {
-        gsonBuilder.registerTypeAdapter(Level.class, new LevelSerializer());
-        gson = gsonBuilder.create();
+       gson= gsonBuilder
+               .registerTypeAdapter(Level.class, new LevelSerializer())
+               .enableComplexMapKeySerialization()
+       .create();
+
+
     }
 
     private void loadStructure() {
@@ -246,6 +250,7 @@ public class ProfileManager {
      */
     public void persistentSave() throws IOException {
         synchronized (persistLocker) {
+            localBackup.delete();
             profilesFile.copyTo(localBackup);
             try {
                 profilesFile.delete();//truncate

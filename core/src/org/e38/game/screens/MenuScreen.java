@@ -201,8 +201,8 @@ public class MenuScreen implements Screen {
     private void fillRanking(){
         //TODO Separar boton respecto a la tabla
         Table table = new Table();
-        table.add(new Label("Nivel:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));;
-        table.add(new Label ("Puntuación:", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
+        table.add(new Label("Nivel", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));;
+        table.add(new Label ("Puntuación", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         Map<Integer, Integer> puntuaciones = ProfileManager.getInstance().getGameProgres();
         for (int level :puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)
             table.row();
@@ -210,7 +210,7 @@ public class MenuScreen implements Screen {
             table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         }
         rankingDialog.add(table);
-        rankingDialog.getContentTable().add(table).padTop(-70).padLeft(-150);
+        rankingDialog.getContentTable().add(table).padTop(-70).padLeft(5);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
