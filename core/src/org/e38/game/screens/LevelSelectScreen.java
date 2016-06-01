@@ -13,7 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.e38.game.MainGame;
+import org.e38.game.persistance.ProfileManager;
+import org.e38.game.utils.DisableableTextButon;
 import org.e38.game.utils.World;
+
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Created by sergi on 4/28/16.
@@ -60,17 +65,24 @@ public class LevelSelectScreen implements Screen {
 
     private void fillTable(TextButton.TextButtonStyle buttonStyle, float actorWidth, float actorHeight) {
         int colCount = 0;
+        HashMap<Integer, Integer> completeLevels = ProfileManager.getInstance().getProfile().getCompleteLevels();
+        int lastLevel = 0;
+        if (completeLevels.size() > 0) {
+            lastLevel = Collections.max(completeLevels.keySet()) +1;
+        }
         for (int i = 0, size = World.levels.size(); i < size; i++) {
-            TextButton actor = new TextButton("Level - " + (i + 1), new TextButton.TextButtonStyle(buttonStyle));
+            TextButton actor = new DisableableTextButon("Level - " + (i + 1), new TextButton.TextButtonStyle(buttonStyle));
             final int finalI = i;
             actor.addListener(new ClickListener() {
                 int idx = finalI;
+
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     game.setScreen(new LevelScreen(World.levels.get(idx), game));
                     super.clicked(event, x, y);
                 }
             });
+            actor.setDisabled(true);
             actor.setSize(actorWidth, actorHeight);
             table.add(actor).width(actorWidth).height(actorHeight).pad(10);
 
@@ -78,6 +90,9 @@ public class LevelSelectScreen implements Screen {
                 table.row();
                 colCount = 0;
             }
+        }
+        for (int i = 0; i <= lastLevel; i++) {
+            ((TextButton) table.getCells().get(i).getActor()).setDisabled(false);
         }
     }
 
