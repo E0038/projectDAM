@@ -43,8 +43,8 @@ public class UpgradeBar implements Disposable, LowerBar {
         table.setX(0);
         table.setY(y);
 
-        mejorar = new Label("Mejorar", new Label.LabelStyle(new BitmapFont(), Color.RED));
-        vender = new Label("Vender", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
+        mejorar = new Label("Upgrade", new Label.LabelStyle(new BitmapFont(), Color.RED));
+        vender = new Label("Sell", new Label.LabelStyle(new BitmapFont(), Color.GREEN));
         vender.setFontScale(0.7f);
         mejorar.setFontScale(0.7f);
 
