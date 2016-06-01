@@ -283,7 +283,7 @@ public class ProfileManager {
      */
     public Integer getScrore(Level level) {
         List<Level> levels = new ArrayList<>(profile.getCompleteLevels());
-        int idx = levels.indexOf(level);
+        int idx = levels.indexOf(level) + 1;
         if (idx < 0) {
             return -1;
         }

@@ -26,7 +26,7 @@ public class Criminal implements Hittable {
     protected OrientationListener listener;
     protected OnEndListener onEndListener;
     protected int pathPointer = 0;
-    protected Level level;
+    protected transient Level level;
     protected float totalHpPoins = 10f;
     protected String name = Recurses.AnimatedCriminals.bane.name();
     protected long lastNext;
