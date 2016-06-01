@@ -488,8 +488,8 @@ public class LevelScreen implements Screen {
                 Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
                 shapeRenderer.rect(coordinates.x,
                         Gdx.graphics.getHeight() - coordinates.y,
-                        plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH),
-                        plaza.getHeight() * (Gdx.graphics.getHeight() / World.WORLD_HEIGHT));
+                        plaza.getWidth() * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH),
+                        plaza.getHeight() * ((float) Gdx.graphics.getHeight() / (float) World.WORLD_HEIGHT));
                 if (plaza.isOcupada()) {
                     Circle circle = plaza.getCop().getCircle();
                     shapeRenderer.circle(circle.x, circle.y, circle.radius);

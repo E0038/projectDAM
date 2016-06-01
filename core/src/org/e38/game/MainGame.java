@@ -29,7 +29,7 @@ public class MainGame extends Game {
         loader.setDaemon(true);
         loader.start();
         setScreen(new SplashScreen(this));
-        Gdx.app.setLogLevel(Application.LOG_ERROR);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
     @Override
