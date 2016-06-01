@@ -18,7 +18,7 @@ public class LevelUpdater {
 
     public void update(float delta) {
         if (level.getLifes() <= 0) level.fail();
-        if (level.wavePointer < level.waves.size()) {
+        if (level.wavePointer < level.waves.size() -1) {
             final Wave wave = level.waves.get(level.wavePointer);
             wave.onUpdate(delta, screen);
             if (wave.isClear()) level.wavePointer++;
