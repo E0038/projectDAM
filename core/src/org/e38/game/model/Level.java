@@ -252,7 +252,7 @@ public class Level {
     }
 
     public enum Dificultat {
-        FACIL(0.4f), NORMAL(0.6f), DIFICIL(1f);
+        EASY(0.4f), NORMAL(0.6f), HARD(1f);
         private float modificadorPuntos;
 
         Dificultat(float modificadorPuntos) {

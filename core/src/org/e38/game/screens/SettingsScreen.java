@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.e38.game.MainGame;
+import org.e38.game.model.Level;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
@@ -84,8 +85,8 @@ public class SettingsScreen implements Screen {
         volumeValue.setPosition((stage.getViewport().getWorldWidth() / 2) - volumeValue.getWidth() + slider.getWidth(), stage.getViewport().getWorldHeight() / 10 * 8 + volumeValue.getHeight());
         difficultyLabel.setPosition((stage.getViewport().getWorldWidth() / 2) - difficultyLabel.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 6);
 
-        difficulty = new SelectBox(new Skin(Gdx.files.internal("skin/uiskin.json")));
-        difficulty.setItems(World.FACIL,  World.NORMAL, World.DIFICIL);
+        difficulty = new SelectBox<Level.Dificultat>(new Skin(Gdx.files.internal("skin/uiskin.json")));
+        difficulty.setItems(Level.Dificultat.values());
         difficulty.setWidth(100);
         difficulty.setPosition((stage.getViewport().getWorldWidth() / 2) - difficulty.getWidth() /2, stage.getViewport().getWorldHeight() / 10 * 5);
         difficulty.addListener(new ChangeListener() {

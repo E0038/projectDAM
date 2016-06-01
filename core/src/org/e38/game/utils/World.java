@@ -15,7 +15,7 @@ import java.util.List;
  */
 @SuppressWarnings("UtilityClassCanBeEnum")
 public final class World {
-    public static final String FACIL = "FACIL", NORMAL = "NORMAL", DIFICIL = "DIFICIL";
+//    public static final String FACIL = "EASY", NORMAL = "NORMAL", DIFICIL = "HARD";
     public static final float MAX_SPEED = 3.0f;
     public static final int WORLD_WIDTH = 800;
     public static final int WORLD_HEIGHT = 600;
@@ -23,7 +23,7 @@ public final class World {
      * valueOf Enum dificultat the enum will be restored with Level.Dificultat.valueOf();
      * default: NORMAL
      */
-    public static String selecteDificultat = NORMAL;
+    public static String selecteDificultat = Level.Dificultat.NORMAL.name();
     public static float speed = 1.0f;
     public static List<Level> levels = new ArrayList<>();
     private static float volume = 0.5f;

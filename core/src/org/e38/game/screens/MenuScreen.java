@@ -218,6 +218,8 @@ public class MenuScreen implements Screen {
             rbutton2.setSize(10, 10);
             newGameDialog.button(rbutton2, true);
             newGameDialog.getButtonTable().add(rbutton2);
+            newGameDialog.getButtonTable().padBottom(5);
+            newGameDialog.padTop(30).padLeft(10).padRight(14);
             rbutton2.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -252,6 +254,8 @@ public class MenuScreen implements Screen {
 
     private void fillRanking() {
         //TODO Separar boton respecto a la tabla
+        rankingDialog.getTitleLabel().setY(rankingDialog.getTitleLabel().getY() - 5);
+        //rankingDialog.get
         Table table = new Table();
         table.add(new Label("Nivel  ", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         table.add(new Label("Puntuación", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
@@ -269,7 +273,8 @@ public class MenuScreen implements Screen {
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
         rankingDialog.button(dbutton, true);
-        rankingDialog.getButtonTable().add(dbutton).padTop(10);
+        rankingDialog.getButtonTable().add(dbutton).padTop(10).padBottom(5);
+        rankingDialog.padTop(30).padLeft(5).padRight(5);
         dbutton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

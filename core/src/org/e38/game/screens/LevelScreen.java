@@ -130,6 +130,7 @@ public class LevelScreen implements Screen {
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
         errorDialog.button(dbutton, true);
+        errorDialog.getButtonTable().padBottom(5).padRight(5);
         final Label dialogLabel = new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         errorDialog.text(dialogLabel);
 
