@@ -51,8 +51,8 @@ public class ProfileManager {
     private final AtomicReference<Profile> profile = new AtomicReference<>();
     private FileHandle configFile = Gdx.files.local("data/app.conf");
     private GsonBuilder gsonBuilder = new GsonBuilder();
-    private Cipher decrypter;
-    private volatile Cipher encryper;
+    private final AtomicReference<Cipher> decrypter = new AtomicReference<>();
+    private final AtomicReference<Cipher> encryper = new AtomicReference<>();
     private ProfileSycronizer sycronizer = new ProfileSycronizer();
     private Thread autosaveThread;
 
@@ -101,10 +101,10 @@ public class ProfileManager {
         byte[] decodedKey = Base64Coder.decode(b64Key);
         Key secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
         try {
-            decrypter = Cipher.getInstance(ALGORIM);
-            encryper = Cipher.getInstance(ALGORIM);
-            encryper.init(Cipher.ENCRYPT_MODE, secretKey);
-            decrypter.init(Cipher.DECRYPT_MODE, secretKey);
+            decrypter.set(Cipher.getInstance(ALGORIM));
+            encryper.set(Cipher.getInstance(ALGORIM));
+            encryper.get().init(Cipher.ENCRYPT_MODE, secretKey);
+            decrypter.get().init(Cipher.DECRYPT_MODE, secretKey);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             Gdx.app.log(getClass().getName(), "KEY error", e);
             throw new IOException(e);
@@ -161,7 +161,7 @@ public class ProfileManager {
             Writer writer = new FileWriter(profile);
             this.profile.set(new Profile());
             try {
-                byte[] crypt = encryper.doFinal(gson.get().toJson(this.profile.get()).getBytes());
+                byte[] crypt = encryper.get().doFinal(gson.get().toJson(this.profile.get()).getBytes());
                 writer.write(Base64Coder.encode(crypt));
                 writer.close();
             } catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -176,7 +176,7 @@ public class ProfileManager {
         Gdx.app.log(getClass().getName(), "reading saved profile...");
         String readed = readChars(profile);
         try {
-            byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
+            byte[] bytes = decrypter.get().doFinal(Base64Coder.decode(readed));
             String p = new String(bytes);
             this.profile.set(gson.get().fromJson(p, Profile.class));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -217,7 +217,7 @@ public class ProfileManager {
             Profile profile;
             String readed = readChars(profilesFile.get().file());
             try {
-                byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
+                byte[] bytes = decrypter.get().doFinal(Base64Coder.decode(readed));
                 String p = new String(bytes);
                 profile = gson.get().fromJson(p, Profile.class);
             } catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -280,7 +280,7 @@ public class ProfileManager {
                 Writer writer = new FileWriter(profilesFile.get().file());
                 try {
 //                writer.write(base64Encoder.encodeToString(encryper.doFinal(gson.toJson(profile).getBytes())));
-                    writer.write(Base64Coder.encode(encryper.doFinal(gson.get().toJson(profile.get()).getBytes())));
+                    writer.write(Base64Coder.encode(encryper.get().doFinal(gson.get().toJson(profile.get()).getBytes())));
                 } catch (IllegalBlockSizeException | BadPaddingException e) {
                     throw new IOException(e);
                 } finally {
