@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,9 +27,10 @@ public class SettingsScreen implements Screen {
     private Stage stage;
     private Slider slider;
     private TextButton menu;
-//    private ProgressBar bar;
     private Label volumeLabel;
     private Label volumeValue;
+    private SelectBox difficulty;
+    private Label difficultyLabel;
 
     public SettingsScreen(MainGame game) {
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
@@ -48,6 +48,7 @@ public class SettingsScreen implements Screen {
         menu = new TextButton("Main Menu", style);
         volumeLabel = new Label("Set Volume", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         volumeValue = new Label("100", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        difficultyLabel = new Label("Difficulty", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
     }
 
     private void configureButtons() {
@@ -72,7 +73,6 @@ public class SettingsScreen implements Screen {
         slider.setAnimateDuration(0.3f);
         slider.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-//                System.out.println("slider: " + slider.getValue());
                 World.volumeChange(slider.getValue());
                 World.play(Recurses.POP);
                 volumeValue.setText(String.valueOf((int)(slider.getValue() * 100)));
@@ -82,19 +82,32 @@ public class SettingsScreen implements Screen {
 
         volumeLabel.setPosition((stage.getViewport().getWorldWidth() / 2) - volumeLabel.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 9);
         volumeValue.setPosition((stage.getViewport().getWorldWidth() / 2) - volumeValue.getWidth() + slider.getWidth(), stage.getViewport().getWorldHeight() / 10 * 8 + volumeValue.getHeight());
+        difficultyLabel.setPosition((stage.getViewport().getWorldWidth() / 2) - difficultyLabel.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 6);
 
-//        bar = new ProgressBar(0, 100, 1, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
-//        bar.setSize(100, 50);
-//        bar.setPosition(centerX, stage.getViewport().getWorldHeight() / 10 * 6);
-//        bar.setValue(1f);
+        difficulty = new SelectBox(new Skin(Gdx.files.internal("skin/uiskin.json")));
+        difficulty.setItems(World.FACIL,  World.NORMAL, World.DIFICIL);
+        difficulty.setWidth(100);
+        difficulty.setPosition((stage.getViewport().getWorldWidth() / 2) - difficulty.getWidth() /2, stage.getViewport().getWorldHeight() / 10 * 5);
+        difficulty.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                World.selecteDificultat = difficulty.getSelected().toString();
+                System.out.println(difficulty.getSelected().toString());
+            }
+        });
+
+
     }
     @Override
     public void show() {
-//        stage.addActor(bar);
         stage.addActor(menu);
         stage.addActor(slider);
         stage.addActor(volumeLabel);
         stage.addActor(volumeValue);
+        stage.addActor(difficulty);
+        stage.addActor(difficultyLabel);
+        //addAll lanza una excepción al tratar de cambiar la dificultad
+//        stage.getActors().addAll(menu, slider, volumeLabel, volumeValue, difficulty);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -103,6 +116,7 @@ public class SettingsScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //        bar.setValue(slider.getValue()*100);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); //you are likely missing THIS LINE :D
 
         stage.draw();
     }

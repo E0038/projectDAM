@@ -50,7 +50,6 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
-// TODO: 5/29/16 add floating buttons (Back and Mute/Unmute) Support. ##Low priority##
 public class LevelScreen implements Screen {
 
     public static final int TYPE_UPGRADE = 0;
@@ -453,7 +452,6 @@ public class LevelScreen implements Screen {
         });
 
         botonesCop = new Actor[]{areaCopButton, damageOverCopButton, rapidoCopButton, lentoCopButton};
-//        botonesCop = new Actor[]{areaCopButton};
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
     }
 
@@ -476,8 +474,6 @@ public class LevelScreen implements Screen {
         topBar.stage.draw();
         lowerBar.getStage().draw();
         stage.draw();
-
-        copsBar.table.setY(topBar.table.getY() - topBar.table.getHeight());
     }
 
     private void renderPlazas() {
