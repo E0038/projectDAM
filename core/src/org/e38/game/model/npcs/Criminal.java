@@ -172,6 +172,10 @@ public class Criminal implements Hittable {
         }
     }
 
+    public Circle getCircle() {
+        return circle;
+    }
+
     @Override
     public Vector2 getPosition() {
         return getPositionRetativeTo(level);

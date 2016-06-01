@@ -77,7 +77,7 @@ public class Wave {
                     float x = (float) object.getProperties().get("x");
                     float y = (float) object.getProperties().get("y");
                     for (Cop cop : getCops(screen)) {
-                        if (cop.isFireReady() && cop.getCircle().contains(x, y)) {
+                        if (cop.isFireReady() && cop.getCircle().overlaps(criminal.getCircle())) {
                             if (!fireMapping.containsKey(cop)) {
                                 ArrayList<Criminal> auxCriminals = new ArrayList<>();
                                 auxCriminals.add(criminal);

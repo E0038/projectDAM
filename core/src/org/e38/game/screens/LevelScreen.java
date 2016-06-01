@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -489,7 +490,12 @@ public class LevelScreen implements Screen {
                         Gdx.graphics.getHeight() - coordinates.y,
                         plaza.getWidth() * (Gdx.graphics.getWidth() / World.WORLD_WIDTH),
                         plaza.getHeight() * (Gdx.graphics.getHeight() / World.WORLD_HEIGHT));
+                if (plaza.isOcupada()) {
+                    Circle circle = plaza.getCop().getCircle();
+                    shapeRenderer.circle(circle.x, circle.y, circle.radius);
+                }
             }
+
         }
         shapeRenderer.end();
     }

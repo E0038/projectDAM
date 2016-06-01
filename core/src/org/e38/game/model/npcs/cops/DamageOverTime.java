@@ -26,7 +26,7 @@ public class DamageOverTime extends Cop {
 
     @Override
     public void onSpawn() {
-        setRange(30);
+        setRange(100);
         isAreaDamage = true;
         fireRate = 1000; // 0.5s
         Collections.addAll(levels, copLevels);

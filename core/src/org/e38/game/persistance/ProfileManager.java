@@ -250,11 +250,11 @@ public class ProfileManager {
             int idx = list.indexOf(level);
             if (level.getScore() > list.get(idx).getScore()) {
                 list.remove(level);
-                profile.getCompleteLevels().put(World.levels.indexOf(level),level.getScore());
+                profile.getCompleteLevels().put(World.levels.indexOf(level), level.getScore());
                 sycronizer.doUpdate.set(true);
             }
         } else {
-            profile.getCompleteLevels().put(World.levels.indexOf(level),level.getScore());
+            profile.getCompleteLevels().put(World.levels.indexOf(level), level.getScore());
             sycronizer.doUpdate.set(true);
         }
     }
@@ -315,6 +315,7 @@ public class ProfileManager {
     public boolean newGame() {
         localBackup.delete();
         profilesFile.delete();
+        profile = new Profile();
         try {
             createFiles(profilesFile.file());
             loadProfile(profilesFile.file());

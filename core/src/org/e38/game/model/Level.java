@@ -227,10 +227,10 @@ public class Level {
 //        return map.getLayers().get("objetos");
 //    }
 
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof Level && ((Level) obj).mapPath.equals(this.mapPath);
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        return obj instanceof Level && ((Level) obj).mapPath.equals(this.mapPath);
+//    }
 
     @Override
     public String toString() {
