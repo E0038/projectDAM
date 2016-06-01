@@ -103,7 +103,7 @@ public class MenuScreen implements Screen {
         volumeSwitch = new ImageButton(!World.isMuted() ? umuteDrawable : muteDrawable);
 
         ranking = new TextButton("Ranking", new TextButton.TextButtonStyle(style));
-        settings = new TextButton("Ajustes", new TextButton.TextButtonStyle(style));
+        settings = new TextButton("Settings", new TextButton.TextButtonStyle(style));
     }
 
     private void configureButtons() {
@@ -201,7 +201,7 @@ public class MenuScreen implements Screen {
     private void fillRanking(){
         //TODO Separar boton respecto a la tabla
         Table table = new Table();
-        table.add(new Label("Nivel", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));;
+        table.add(new Label("Nivel  ", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         table.add(new Label ("Puntuación", new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         Map<Integer, Integer> puntuaciones = ProfileManager.getInstance().getGameProgres();
         for (int level :puntuaciones.keySet()) {//TODO comprobar funcionamiento con ranking lleno (ProfileManager)

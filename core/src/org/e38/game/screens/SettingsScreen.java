@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,7 +28,9 @@ public class SettingsScreen implements Screen {
     private Stage stage;
     private Slider slider;
     private TextButton menu;
-    private ProgressBar bar;
+//    private ProgressBar bar;
+    private Label volumeLabel;
+    private Label volumeValue;
 
     public SettingsScreen(MainGame game) {
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
@@ -43,16 +46,17 @@ public class SettingsScreen implements Screen {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(defaultDrawable, defaultDrawable, defaultDrawable, new BitmapFont());
         style.fontColor = Color.BLACK;
         menu = new TextButton("Main Menu", style);
+        volumeLabel = new Label("Set Volume", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        volumeValue = new Label("100", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
     }
 
     private void configureButtons() {
-        float centerX = (stage.getViewport().getWorldWidth() / 2) - World.getRecurses().buttonBg.getWidth() / 2;
         float bttWidth = World.getRecurses().buttonBg.getWidth();
         float bttHeight = World.getRecurses().buttonBg.getHeight();
 
         menu.setSize(bttWidth, bttHeight);
-        menu.setY((stage.getViewport().getWorldHeight() / 10) * 6);
-        menu.setX(centerX);
+        menu.setY((stage.getViewport().getWorldHeight() / 10) * 1);
+        menu.setX((stage.getViewport().getWorldWidth() / 2) - World.getRecurses().buttonBg.getWidth() / 2);
 
         menu.addListener(new ClickListener() {
             @Override
@@ -60,33 +64,37 @@ public class SettingsScreen implements Screen {
                 game.setScreen(new MenuScreen(game));
             }
         });
-    }
-    @Override
-    public void show() {
-//        slider = new Slider(0, 1, 0.1f, false, new Slider.SliderStyle( new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg)), new TextureRegionDrawable(new TextureRegion(World.getRecurses().knob))));
+
         slider = new Slider(0, 1, 0.1f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
         slider.setValue(1f);
         slider.setSize(100, 50);
-        slider.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2);
+        slider.setPosition((stage.getViewport().getWorldWidth() / 2) - slider.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 8);
         slider.setAnimateDuration(0.3f);
-        //TODO hacer visible el movimento del knob
         slider.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                System.out.println("slider: " + slider.getValue());
+//                System.out.println("slider: " + slider.getValue());
                 World.volumeChange(slider.getValue());
                 World.play(Recurses.POP);
-                slider.setStyle(slider.getStyle());
+                volumeValue.setText(String.valueOf((int)(slider.getValue() * 100)));
 
             }
         });
 
-        bar = new ProgressBar(0, 100, 1, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
-        bar.setSize(100, 50);
-        bar.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2 - 60);
-        bar.setValue(1f);
-        stage.addActor(bar);
+        volumeLabel.setPosition((stage.getViewport().getWorldWidth() / 2) - volumeLabel.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 9);
+        volumeValue.setPosition((stage.getViewport().getWorldWidth() / 2) - volumeValue.getWidth() + slider.getWidth(), stage.getViewport().getWorldHeight() / 10 * 8 + volumeValue.getHeight());
+
+//        bar = new ProgressBar(0, 100, 1, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
+//        bar.setSize(100, 50);
+//        bar.setPosition(centerX, stage.getViewport().getWorldHeight() / 10 * 6);
+//        bar.setValue(1f);
+    }
+    @Override
+    public void show() {
+//        stage.addActor(bar);
         stage.addActor(menu);
         stage.addActor(slider);
+        stage.addActor(volumeLabel);
+        stage.addActor(volumeValue);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -94,7 +102,7 @@ public class SettingsScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        bar.setValue(slider.getValue()*100);
+//        bar.setValue(slider.getValue()*100);
 
         stage.draw();
     }
