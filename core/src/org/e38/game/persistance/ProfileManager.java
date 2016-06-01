@@ -26,9 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
-@SuppressWarnings({"FieldAccessedSynchronizedAndUnsynchronized", "TryFinallyCanBeTryWithResources", "ResultOfMethodCallIgnored"})
+@SuppressWarnings({"TryFinallyCanBeTryWithResources", "ResultOfMethodCallIgnored"})
 public class ProfileManager {
     public static final String ALGORIM = "AES";
     private static final String b64Key = "Whiy3TtJhr484rDop7vsfg==";
@@ -42,15 +43,15 @@ public class ProfileManager {
         }
     }
 
+    public final AtomicReference<Gson> gson = new AtomicReference<>();
     private final Object persistLocker = new Object();
-    public Gson gson;
-    private FileHandle localBackup;
+    private final AtomicReference<FileHandle> localBackup = new AtomicReference<>();
+    private final AtomicReference<FileHandle> profilesFile = new AtomicReference<>();
+    private final AtomicReference<Profile> profile = new AtomicReference<>();
     private FileHandle configFile = Gdx.files.local("data/app.conf");
-    private FileHandle profilesFile;
-    private Profile profile;
     private GsonBuilder gsonBuilder = new GsonBuilder();
     private Cipher decrypter;
-    private Cipher encryper;
+    private volatile Cipher encryper;
     private ProfileSycronizer sycronizer = new ProfileSycronizer();
     private Thread autosaveThread;
 
@@ -72,7 +73,7 @@ public class ProfileManager {
     private void loadLevels() {
         try {
             String json = Gdx.files.internal("raw/rawLevels.json").readString("UTF-8");
-            World.levels = gson.fromJson(json, new TypeToken<List<Level>>() {
+            World.levels = gson.get().fromJson(json, new TypeToken<List<Level>>() {
             }.getType());
         } catch (GdxRuntimeException e) {
             Gdx.app.error(getClass().getName(), e.getMessage(), e);
@@ -80,7 +81,7 @@ public class ProfileManager {
     }
 
     private void dataInit() throws IOException {
-        File file = profilesFile.file();
+        File file = profilesFile.get().file();
         if (!file.exists() || file.length() == 0) {
             createFiles(file);
         } else {
@@ -111,19 +112,19 @@ public class ProfileManager {
     }
 
     private void configureJson() {
-        gson = gsonBuilder
+        gson.set(gsonBuilder
                 .registerTypeAdapter(Level.class, new LevelSerializer())
                 .registerTypeAdapter(Criminal.class, new CriminalAdapter())
                 .registerTypeAdapter(Wave.class, new WaveAdapter())
                 .enableComplexMapKeySerialization()
-                .create();
+                .create());
     }
 
     private void loadStructure() {
         FileHandle dir = Gdx.files.local("data");
         if (!dir.exists()) dir.file().mkdir();
-        profilesFile = Gdx.files.local("data/profile");
-        localBackup = Gdx.files.local("data/profile.bak");
+        profilesFile.set(Gdx.files.local("data/profile"));
+        localBackup.set(Gdx.files.local("data/profile.bak"));
     }
 
     public Configuration readConfig() {
@@ -131,7 +132,7 @@ public class ProfileManager {
         if (configFile.exists()) {
             try {
                 String json = readChars(configFile.file());
-                configuration = gson.fromJson(json, Configuration.class);
+                configuration = gson.get().fromJson(json, Configuration.class);
                 return configuration;
             } catch (IOException e) {
                 Gdx.app.log(getClass().getName(), "readConfError", e);
@@ -153,20 +154,20 @@ public class ProfileManager {
     }
 
     private void createFiles(File profile) throws IOException {
-        if (localBackup.length() == 0) localBackup.delete();//backup no valida
-        if (!localBackup.exists()) {
+        if (localBackup.get().length() == 0) localBackup.get().delete();//backup no valida
+        if (!localBackup.get().exists()) {
             profile.createNewFile();
             Writer writer = new FileWriter(profile);
-            this.profile = new Profile();
+            this.profile.set(new Profile());
             try {
-                byte[] crypt = encryper.doFinal(gson.toJson(this.profile).getBytes());
+                byte[] crypt = encryper.doFinal(gson.get().toJson(this.profile.get()).getBytes());
                 writer.write(Base64Coder.encode(crypt));
                 writer.close();
             } catch (IllegalBlockSizeException | BadPaddingException e) {
                 throw new IOException(e);
             }
         } else {
-            localBackup.copyTo(profilesFile);
+            localBackup.get().copyTo(profilesFile.get());
         }
     }
 
@@ -176,7 +177,7 @@ public class ProfileManager {
         try {
             byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
             String p = new String(bytes);
-            this.profile = gson.fromJson(p, Profile.class);
+            this.profile.set(gson.get().fromJson(p, Profile.class));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new IOException(e);
         }
@@ -199,7 +200,7 @@ public class ProfileManager {
         try {
             configFile.file().createNewFile();
             Writer writer = new FileWriter(configFile.file());
-            gson.toJson(configuration, writer);
+            gson.get().toJson(configuration, writer);
             writer.close();
         } catch (IOException e) {
             Gdx.app.log(getClass().getName(), "writeConfError", e);
@@ -213,11 +214,11 @@ public class ProfileManager {
     private Profile readProfile() throws IOException {
         synchronized (persistLocker) {
             Profile profile;
-            String readed = readChars(profilesFile.file());
+            String readed = readChars(profilesFile.get().file());
             try {
                 byte[] bytes = decrypter.doFinal(Base64Coder.decode(readed));
                 String p = new String(bytes);
-                profile = gson.fromJson(p, Profile.class);
+                profile = gson.get().fromJson(p, Profile.class);
             } catch (IllegalBlockSizeException | BadPaddingException e) {
                 throw new IOException(e);
             }
@@ -241,23 +242,23 @@ public class ProfileManager {
     }
 
     public Profile getProfile() {
-        return profile;
+        return profile.get();
     }
 
     public void save(Level level) {
         List<Level> list = new ArrayList<>();
-        for (Integer idx : profile.getCompleteLevels().keySet()) {
+        for (Integer idx : profile.get().getCompleteLevels().keySet()) {
             list.add(World.levels.get(idx));
         }
         if (list.contains(level)) {
             int idx = list.indexOf(level);
             if (level.getScore() > list.get(idx).getScore()) {
                 list.remove(level);
-                profile.getCompleteLevels().put(World.levels.indexOf(level), level.getScore());
+                profile.get().getCompleteLevels().put(World.levels.indexOf(level), level.getScore());
                 sycronizer.doUpdate.set(true);
             }
         } else {
-            profile.getCompleteLevels().put(World.levels.indexOf(level), level.getScore());
+            profile.get().getCompleteLevels().put(World.levels.indexOf(level), level.getScore());
             sycronizer.doUpdate.set(true);
         }
     }
@@ -269,22 +270,22 @@ public class ProfileManager {
      */
     public void persistentSave() throws IOException {
         synchronized (persistLocker) {
-            localBackup.delete();
-            profilesFile.copyTo(localBackup);
+            localBackup.get().delete();
+            profilesFile.get().copyTo(localBackup.get());
             try {
-                profilesFile.delete();//truncate
-                if (!profilesFile.file().createNewFile()) throw new IOException("file not truncated");
-                Writer writer = new FileWriter(profilesFile.file());
+                profilesFile.get().delete();//truncate
+                if (!profilesFile.get().file().createNewFile()) throw new IOException("file not truncated");
+                Writer writer = new FileWriter(profilesFile.get().file());
                 try {
 //                writer.write(base64Encoder.encodeToString(encryper.doFinal(gson.toJson(profile).getBytes())));
-                    writer.write(Base64Coder.encode(encryper.doFinal(gson.toJson(profile).getBytes())));
+                    writer.write(Base64Coder.encode(encryper.doFinal(gson.get().toJson(profile.get()).getBytes())));
                 } catch (IllegalBlockSizeException | BadPaddingException e) {
                     throw new IOException(e);
                 } finally {
                     writer.close();
                 }
             } catch (IOException e) {
-                localBackup.copyTo(profilesFile);//restore bak if fail
+                localBackup.get().copyTo(profilesFile.get());//restore bak if fail
                 throw e;
             } finally {
                 writeConfig(extractRunTimeConfig());
@@ -312,16 +313,16 @@ public class ProfileManager {
 //            ranking.put(idx + 1, World.levels.get(idx).getScore());
 //        }
 //        return ranking;
-        return profile.getCompleteLevels();
+        return profile.get().getCompleteLevels();
     }
 
     public boolean newGame() {
-        localBackup.delete();
-        profilesFile.delete();
-        profile = new Profile();
+        localBackup.get().delete();
+        profilesFile.get().delete();
+        profile.set(new Profile());
         try {
-            createFiles(profilesFile.file());
-            loadProfile(profilesFile.file());
+            createFiles(profilesFile.get().file());
+            loadProfile(profilesFile.get().file());
             return true;
         } catch (IOException e) {
             Gdx.app.log(getClass().getName(), e.getMessage(), e);
@@ -380,9 +381,9 @@ public class ProfileManager {
                     Gdx.app.debug(getClass().getName(), e.getMessage(), e);
                     return false;
                 }
-                if (profile.getCompleteLevels().size() == fileLevels.size()) {
+                if (profile.get().getCompleteLevels().size() == fileLevels.size()) {
                     boolean ck = false;
-                    for (Integer idx : profile.getCompleteLevels().keySet()) {
+                    for (Integer idx : profile.get().getCompleteLevels().keySet()) {
                         if (!fileLevels.containsKey(idx)) return true;
                         if (World.levels.get(idx).getScore() > fileLevels.get(idx)) {
                             ck = true;
