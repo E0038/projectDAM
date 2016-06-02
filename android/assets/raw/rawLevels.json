@@ -1,27 +1,48 @@
 [
   {
-    "coins": 50,
-    "INIT_LIFES": 1000,
+    "coins": 100,
+    "INIT_LIFES": 300,
     "waves": [
       {
         "criminals": [
           {
             "name": "enemigoEspadon",
             "protecion":1,
-            "totalHpPoins":9900,
+            "totalHpPoins":100,
             "speed": 500
 
           },
           {
             "name": "bicicletaFinal",
             "protecion":1,
-            "hpPoints":600,
             "speed": 1000
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion":4,
-            "hpPoints":400,
+            "totalHpPoins":120,
+            "speed": 200
+          }
+        ],
+        "gap": 200
+      },
+      {
+        "criminals": [
+          {
+            "name": "enemigoEspadon",
+            "protecion":1,
+            "totalHpPoins":200,
+            "speed": 500
+
+          },
+          {
+            "name": "bicicletaFinal",
+            "protecion":1,
+            "speed": 1000
+          },
+          {
+            "name": "ladronEscopetaBueno",
+            "protecion":4,
             "speed": 200
           }
         ],
@@ -34,20 +55,17 @@
           {
             "name": "enemigoEspadon",
             "protecion":1,
-            "TotalHpPoints":200,
             "speed": 500
 
           },
           {
             "name": "bicicletaFinal",
             "protecion":1,
-            "hpPoints":600,
             "speed": 1000
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion":4,
-            "hpPoints":400,
             "speed": 200
           }
         ],
@@ -60,45 +78,16 @@
           {
             "name": "enemigoEspadon",
             "protecion":1,
-            "TotalHpPoints":200,
-            "speed": 500
-
-          },
-          {
-            "name": "bicicletaFinal",
-            "protecion":1,
-            "hpPoints":600,
-            "speed": 1000
-          },
-          {
-            "name": "ladronEscopetaBueno",
-            "protecion":4,
-            "hpPoints":400,
-            "speed": 200
-          }
-        ],
-        "gap": 200,
-        "isAllSpawn": false,
-        "isClear": false
-      },
-      {
-        "criminals": [
-          {
-            "name": "enemigoEspadon",
-            "protecion":1,
-            "totalHpPoints":99999,
             "speed": 500
           },
           {
             "name": "bicicletaFinal",
             "protecion":1,
-            "hpPoints":600,
             "speed": 1000
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion":4,
-            "hpPoints":400,
             "speed": 200
           }
         ],

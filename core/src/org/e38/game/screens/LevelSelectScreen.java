@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -30,6 +31,7 @@ public class LevelSelectScreen implements Screen {
     private final MainGame game;
     private Stage stage;
     private Table table;
+    private Image background;
 
     public LevelSelectScreen(MainGame game) {
         this.game = game;
@@ -52,6 +54,9 @@ public class LevelSelectScreen implements Screen {
         float actorHeight = stage.getViewport().getWorldHeight() / TABLE_COLS;
         fillTable(buttonStyle, actorWidth, actorHeight);
         table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 1.2f);
+        background = new Image(World.getRecurses().backgroundSettings);
+        background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
+        stage.addActor(background);
         stage.addActor(table);
         TextButton returnButon = new TextButton("Back", buttonStyle);
         returnButon.setSize(100, 50);

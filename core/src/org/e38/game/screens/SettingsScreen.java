@@ -33,6 +33,7 @@ public class SettingsScreen implements Screen {
     private Label volumeValue;
     private SelectBox<Level.Dificultat> difficulty;
     private Label difficultyLabel;
+    private Image background;
 
     public SettingsScreen(MainGame game) {
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
@@ -51,6 +52,7 @@ public class SettingsScreen implements Screen {
         volumeLabel = new Label("Set Volume", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         volumeValue = new Label("100", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         difficultyLabel = new Label("Difficulty", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        background = new Image(World.getRecurses().backgroundSettings);
     }
 
     private void configureButtons() {
@@ -98,11 +100,12 @@ public class SettingsScreen implements Screen {
                 System.out.println(difficulty.getSelected());
             }
         });
-
+        background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
 
     }
     @Override
     public void show() {
+        stage.addActor(background);
         stage.addActor(menu);
         stage.addActor(slider);
         stage.addActor(volumeLabel);
