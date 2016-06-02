@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import org.e38.game.MainGame;
+import org.e38.game.model.Level;
 import org.e38.game.persistance.ProfileManager;
 import org.e38.game.utils.DisableableTextButon;
 import org.e38.game.utils.World;
@@ -79,7 +80,9 @@ public class LevelSelectScreen implements Screen {
 
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new LevelScreen(World.levels.get(idx), game));
+                    Level level = World.levels.get(idx);
+                    level.onRestart();
+                    game.setScreen(new LevelScreen(level, game));
                     super.clicked(event, x, y);
                 }
             });

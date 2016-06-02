@@ -324,7 +324,7 @@ public class ProfileManager {
         profile.set(new Profile());
         try {
             createFiles(profilesFile.get().file());
-//            loadProfile(profilesFile.get().file());
+            loadProfile(profilesFile.get().file());
             return true;
         } catch (IOException e) {
             Gdx.app.log(getClass().getName(), e.getMessage(), e);

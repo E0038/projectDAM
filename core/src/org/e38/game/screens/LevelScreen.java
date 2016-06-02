@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -73,7 +72,7 @@ public class LevelScreen implements Screen {
     private ImageButton volumeSwitch;
     private TextureRegionDrawable umuteDrawable;
     private TextureRegionDrawable muteDrawable;
-    private Dialog errorDialog;
+    private Dialog endDialog;
     private LowerBar voidBar = new LowerBar() {
         private Stage stage = new Stage();
 
@@ -117,17 +116,17 @@ public class LevelScreen implements Screen {
         upgradeBar = new UpgradeBar(topBar.table.getY() - topBar.table.getHeight());
         level.addOnChangeStateListerner(topBar);
         levelUpdater = new LevelUpdater(this);
-        errorDialog = new Dialog("Juego finalizado", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
-        errorDialog.padTop(40).padLeft(5);
+        endDialog = new Dialog("Juego finalizado", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
+        endDialog.padTop(40).padLeft(5);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
         TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
-        errorDialog.button(dbutton, true);
-        errorDialog.getButtonTable().padBottom(5).padRight(5);
+        endDialog.button(dbutton, true);
+        endDialog.getButtonTable().padBottom(5).padRight(5);
         final Label dialogLabel = new Label("Estadísticas:\n Dinero en el banco restante: " + level.getLifes() + "\n Placas restantes: " + level.getCoins(), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        errorDialog.text(dialogLabel);
+        endDialog.text(dialogLabel);
 
         dbutton.addListener(new ClickListener() {
             @Override
@@ -143,8 +142,8 @@ public class LevelScreen implements Screen {
                     ProfileManager.getInstance().save(LevelScreen.this.level);
                 }
                 dialogLabel.setText("Estadísticas:\n Dinero en el banco restante: " + LevelScreen.this.level.getLifes() + "\n Placas restantes: " + LevelScreen.this.level.getCoins());
-                errorDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
-                errorDialog.show(stage);
+                endDialog.getTitleLabel().setText(isWined ? "Partida acabada" : "Partida fallida");
+                endDialog.show(stage);
             }
         };
         level.addOnEndListerner(onEndListerner);

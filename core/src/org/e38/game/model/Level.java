@@ -33,6 +33,7 @@ public class Level {
     //    private MapLayer layer;
     public List<OnEndListerner> onEndListerners = new ArrayList<>();
     protected int initLifes;
+    protected int initCoins;
     protected int coins;
     protected int lifes;
     protected List<MapObject> path = new ArrayList<>();
@@ -48,6 +49,15 @@ public class Level {
         this.mapPath = path;
         this.coins = initialCoins;
 //        this.levelUID = levelUID;
+    }
+
+    public int getInitCoins() {
+        return initCoins;
+    }
+
+    public Level setInitCoins(int initCoins) {
+        this.initCoins = initCoins;
+        return this;
     }
 
     public Level setWaveGap(float waveGap) {
@@ -176,7 +186,6 @@ public class Level {
         wavePointer = 0;
         onEndListerners = new ArrayList<>();
         onCreate();
-
     }
 
     /**
@@ -187,6 +196,7 @@ public class Level {
         TiledMap map = new TmxMapLoader().load(mapPath);
         this.path = buildPath(map);
         lifes = initLifes;
+        coins = initCoins;
         //add reference to criminals
         for (Wave wave : this.waves) {
             wave.restart();

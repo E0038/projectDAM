@@ -207,7 +207,7 @@ public class MenuScreen implements Screen {
             rbutton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new MenuScreen(game));
+                    newGameDialog.cancel();
                 }
             });
             TextButton rbutton2 = new TextButton("Continue with New Game", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
@@ -220,6 +220,7 @@ public class MenuScreen implements Screen {
             rbutton2.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    ProfileManager.getInstance().newGame();
                     game.setScreen(new LevelSelectScreen(game));
                 }
             });
