@@ -486,10 +486,10 @@ public class LevelScreen implements Screen {
                         Gdx.graphics.getHeight() - coordinates.y,
                         plaza.getWidth() * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH),
                         plaza.getHeight() * ((float) Gdx.graphics.getHeight() / (float) World.WORLD_HEIGHT));
-                if (plaza.isOcupada()) {
-                    Circle circle = plaza.getCop().getCircle();
-                    shapeRenderer.circle(circle.x, circle.y, circle.radius);
-                }
+//                if (plaza.isOcupada()) {
+//                    Circle circle = plaza.getCop().getCircle();
+//                    shapeRenderer.circle(circle.x, circle.y, circle.radius);
+//                }
             }
 
         }
