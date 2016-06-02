@@ -53,7 +53,7 @@ public class LevelSelectScreen implements Screen {
         float actorWidth = stage.getViewport().getWorldWidth() / TABLES_ROWS;
         float actorHeight = stage.getViewport().getWorldHeight() / TABLE_COLS;
         fillTable(buttonStyle, actorWidth, actorHeight);
-        table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 1.2f);
+        table.setPosition(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2);
         background = new Image(World.getRecurses().backgroundSettings);
         background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
         stage.addActor(background);
@@ -104,6 +104,7 @@ public class LevelSelectScreen implements Screen {
             if (i < table.getCells().size)
                 ((TextButton) table.getCells().get(i).getActor()).setDisabled(false);
         }
+
     }
 
     @Override

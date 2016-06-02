@@ -10,7 +10,7 @@ public class Espadon extends Criminal {
     public Espadon() {
 
         name = Recurses.AnimatedCriminals.enemigoEspadon.name();
-        speed = 200;
+        speed = 250;
         dodgeRate = 0.01f;
         protecion = 0.1f;
     }

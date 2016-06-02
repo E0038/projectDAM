@@ -215,8 +215,8 @@
         "criminals": [
           {
             "name": "bane",
-            "protecion":1,
-            "totalHpPoins":1000
+            "protecion": 1,
+            "totalHpPoins": 1000
           }
         ],
         "gap": 800
@@ -226,42 +226,161 @@
     "waveGap": 3000.0
   },
   {
-    "coins": 1000,
-    "INIT_LIFES": 100,
+    "coins": 100,
+    "INIT_LIFES": 400,
     "waves": [
       {
         "criminals": [
           {
-            "state": "SPAWING",
-            "hpPoints": 40.0,
-            "dodgeRate": 0.0,
-            "protecion": 0.0,
-            "speed": 1000,
-            "orientation": "LEFT",
-            "pathPointer": 0,
-            "totalHpPoins": 40.0,
-            "name": "bane",
-            "lastNext": 0
+            "name": "enemigoEspadon",
+            "protecion": 1,
+            "totalHpPoins": 120
           },
           {
-            "state": "SPAWING",
-            "hpPoints": 40.0,
-            "dodgeRate": 0.0,
-            "protecion": 0.0,
-            "speed": 500,
-            "orientation": "LEFT",
-            "pathPointer": 0,
-            "totalHpPoins": 40.0,
-            "name": "bane",
-            "lastNext": 0
+            "name": "ladronEscopetaBueno",
+            "protecion": 1,
+            "totalHpPoins": 120
           }
         ],
-        "gap": 0,
-        "isAllSpawn": false,
-        "isClear": false
+        "gap": 800
+      },
+      {
+        "criminals": [
+          {
+            "name": "enemigoEspadon",
+            "protecion": 1,
+            "totalHpPoins": 190
+          },
+          {
+            "name": "ladronEscopetaBueno",
+            "protecion": 1,
+            "totalHpPoins": 160
+          },
+          {
+            "name": "bicicletaFinal",
+            "protecion": 1,
+            "totalHpPoins": 250
+          },
+          {
+            "name": "bane",
+            "protecion": 1,
+            "totalHpPoins": 500
+          }
+        ],
+        "gap": 800
+      },
+      {
+        "criminals": [
+          {
+            "name": "enemigoEspadon",
+            "protecion": 1,
+            "totalHpPoins": 250
+          },
+          {
+            "name": "ladronEscopetaBueno",
+            "protecion": 1,
+            "totalHpPoins": 260
+          },
+          {
+            "name": "bane",
+            "protecion": 1,
+            "totalHpPoins": 500
+          },
+          {
+            "name": "enemigoEspadon",
+            "speed": 170,
+            "protecion": 1,
+            "totalHpPoins": 190
+          }
+        ],
+        "gap": 800
       }
     ],
     "mapPath": "grafics/map1/Mapa_lvl3.tmx",
+    "waveGap": 3000.0
+  },
+  {
+    "coins": 100,
+    "INIT_LIFES": 400,
+    "waves": [
+      {
+        "criminals": [
+          {
+            "name": "enemigoEspadon",
+            "protecion": 1,
+            "totalHpPoins": 120
+          },
+          {
+            "name": "ladronEscopetaBueno",
+            "protecion": 1,
+            "totalHpPoins": 120
+          }
+        ],
+        "gap": 800
+      },
+      {
+        "criminals": [
+          {
+            "name": "enemigoEspadon",
+            "protecion": 1,
+            "totalHpPoins": 190
+          },
+          {
+            "name": "ladronEscopetaBueno",
+            "protecion": 1,
+            "totalHpPoins": 160
+          },
+          {
+            "name": "bicicletaFinal",
+            "protecion": 1,
+            "totalHpPoins": 250
+          },
+          {
+            "name": "bane",
+            "protecion": 1,
+            "totalHpPoins": 500
+          }
+        ],
+        "gap": 800
+      },
+      {
+        "criminals": [
+          {
+            "name": "enemigoEspadon",
+            "protecion": 1,
+            "totalHpPoins": 250
+          },
+          {
+            "name": "ladronEscopetaBueno",
+            "protecion": 1,
+            "totalHpPoins": 260
+          },
+          {
+            "name": "bane",
+            "protecion": 1,
+            "totalHpPoins": 500
+          },
+          {
+            "name": "enemigoEspadon",
+            "speed": 170,
+            "protecion": 1,
+            "totalHpPoins": 190
+          }
+        ],
+        "gap": 800
+      },
+      {
+        "criminals": [
+          {
+            "name": "bane",
+            "protecion": 1,
+            "totalHpPoins": 2000
+          }
+        ],
+        "gap": 800
+      }
+    ],
+    "mapPath": "grafics/map1/Mapa_lvl4.tmx",
     "waveGap": 3000.0
   }
 ]

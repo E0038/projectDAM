@@ -19,7 +19,7 @@ public class Bane extends Criminal {
 
     public void init() {
         name = Recurses.AnimatedCriminals.bane.name();
-        speed = 200;
+        speed = 150;
         dodgeRate = 0.01f;
         protecion = 0.1f;
     }
