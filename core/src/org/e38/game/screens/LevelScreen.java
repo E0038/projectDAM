@@ -203,6 +203,7 @@ public class LevelScreen implements Screen {
                         lowerBar = plaza.isOcupada() ? upgradeBar : copsBar;
                         lowerBar.setPlaza(plaza);
                         changeButtonsState();
+                        updateLowerBar(lowerBar instanceof UpgradeBar ? TYPE_UPGRADE:TYPE_COPS);
                         plaza.onClick();
                     }
                 });
@@ -311,11 +312,13 @@ public class LevelScreen implements Screen {
                     idx = c.getPathPointer();
                     float x = (float) level.getPath().get(idx).getProperties().get("x");
                     float y = (float) level.getPath().get(idx).getProperties().get("y");
+
                     try {
                         batch.draw(c.animation.update(Gdx.graphics.getDeltaTime()), x, y);
-                    }catch (NullPointerException e){
-                        e.printStackTrace();
+                    }catch(NullPointerException ex){
+
                     }
+
                 }
             }
         }
@@ -425,6 +428,7 @@ public class LevelScreen implements Screen {
                     if (level.getCoins() >= cop.getNivel().getPrecioCompra() && cop.isUpgradeAvailable()) {
                         level.setCoins((int) (level.getCoins() - cop.getNivel().getPrecioCompra()));
                         cop.onUpgrade();
+                        updateLowerBar(TYPE_UPGRADE);
                     }
                 }
             }
@@ -445,7 +449,6 @@ public class LevelScreen implements Screen {
                     getSelected().setCop(null);
                     lowerBar = voidBar;
                     changeButtonsState();
-                    System.out.println(cop);
                 }
             }
         });

@@ -129,7 +129,7 @@ public class Criminal implements Hittable {
      */
     public int getPoints() {
         //// TODO: 5/23/16 review formula
-        return (int) (totalHpPoins * 0.75f);
+        return (int) (totalHpPoins * 0.25f);
     }
 
     @Override
