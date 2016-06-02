@@ -228,19 +228,19 @@
   },
   {
     "coins": 100,
-    "INIT_LIFES": 400,
+    "INIT_LIFES": 200,
     "waves": [
       {
         "criminals": [
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 120
+            "totalHpPoins": 110
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 1,
-            "totalHpPoins": 120
+            "totalHpPoins": 110
           }
         ],
         "gap": 800
@@ -250,22 +250,23 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 190
+            "totalHpPoins": 160
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 1,
-            "totalHpPoins": 160
+            "totalHpPoins": 140
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 250
+            "totalHpPoins": 100
           },
           {
             "name": "bane",
             "protecion": 1,
-            "totalHpPoins": 500
+            "speed":300,
+            "totalHpPoins": 400
           }
         ],
         "gap": 800
@@ -285,7 +286,14 @@
           {
             "name": "bane",
             "protecion": 1,
-            "totalHpPoins": 500
+            "speed":350,
+            "totalHpPoins": 400
+          },
+          {
+            "name": "bane",
+            "protecion": 1,
+            "speed":300,
+            "totalHpPoins": 400
           },
           {
             "name": "enemigoEspadon",
@@ -302,7 +310,7 @@
   },
   {
     "coins": 100,
-    "INIT_LIFES": 400,
+    "INIT_LIFES": 200,
     "waves": [
       {
         "criminals": [
@@ -334,11 +342,12 @@
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 250
+            "totalHpPoins": 110
           },
           {
             "name": "bane",
             "protecion": 1,
+            "speed":300,
             "totalHpPoins": 500
           }
         ],
@@ -374,6 +383,7 @@
         "criminals": [
           {
             "name": "bane",
+            "speed":400,
             "protecion": 1,
             "totalHpPoins": 2000
           }
