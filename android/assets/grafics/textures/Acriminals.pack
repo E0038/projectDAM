@@ -3,107 +3,114 @@ Acriminals.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+bicicletaFinal3-0
+  rotate: false
+  xy: 1, 84
+  size: 114, 40
+  orig: 114, 40
+  offset: 0, 0
+  index: -1
 bicicletaFinal2-0
   rotate: false
-  xy: 1, 76
+  xy: 1, 43
   size: 114, 39
   orig: 114, 39
   offset: 0, 0
   index: -1
 bicicletaFinal0-0
   rotate: false
-  xy: 1, 35
+  xy: 117, 85
   size: 114, 39
   orig: 114, 39
   offset: 0, 0
   index: -1
 bicicletaFinal1-0
   rotate: false
-  xy: 117, 76
+  xy: 1, 2
   size: 114, 39
   orig: 114, 39
   offset: 0, 0
   index: -1
 enemigoEspadon3-0
   rotate: false
-  xy: 117, 26
+  xy: 117, 35
   size: 96, 48
   orig: 96, 48
   offset: 0, 0
   index: -1
 enemigoEspadon1-0
   rotate: false
-  xy: 233, 67
+  xy: 233, 76
   size: 96, 48
   orig: 96, 48
   offset: 0, 0
   index: -1
 enemigoEspadon2-0
   rotate: false
-  xy: 331, 67
+  xy: 331, 76
   size: 96, 48
   orig: 96, 48
   offset: 0, 0
   index: -1
 enemigoEspadon0-0
   rotate: false
-  xy: 429, 67
+  xy: 429, 76
   size: 96, 48
   orig: 96, 48
   offset: 0, 0
   index: -1
 ladronEscopetaBueno0-0
   rotate: false
-  xy: 527, 69
+  xy: 527, 78
   size: 91, 46
   orig: 91, 46
   offset: 0, 0
   index: -1
 ladronEscopetaBueno3-0
   rotate: false
-  xy: 620, 69
+  xy: 620, 78
   size: 91, 46
   orig: 91, 46
   offset: 0, 0
   index: -1
 ladronEscopetaBueno2-0
   rotate: false
-  xy: 713, 69
+  xy: 713, 78
   size: 91, 46
   orig: 91, 46
   offset: 0, 0
   index: -1
 ladronEscopetaBueno1-0
   rotate: false
-  xy: 806, 69
+  xy: 806, 78
   size: 91, 46
   orig: 91, 46
   offset: 0, 0
   index: -1
 bane3-0
   rotate: false
-  xy: 1, 1
+  xy: 899, 92
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 bane2-0
   rotate: false
-  xy: 899, 83
+  xy: 117, 1
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 bane1-0
   rotate: false
-  xy: 215, 33
+  xy: 215, 42
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 bane0-0
   rotate: false
-  xy: 313, 33
+  xy: 215, 8
   size: 96, 32
   orig: 96, 32
   offset: 0, 0

@@ -118,7 +118,7 @@ public class Wave {
             int idx = spawnPointer.incrementAndGet();
             if (!isAllSpawn.get()) {
                 if (idx < criminals.size())
-                    criminals.get(idx).onSpawn();
+                    criminals.get(idx).spawn();
                 else isAllSpawn.set(true);
             }
             if (!isAllSpawn.get()) {
@@ -136,5 +136,8 @@ public class Wave {
         spawnPointer.set(-1);
         isAllSpawn.set(false);
         isClear.set(false);
+        for (Criminal criminal : criminals) {
+            criminal.onRestart();
+        }
     }
 }

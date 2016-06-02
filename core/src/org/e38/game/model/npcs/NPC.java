@@ -3,6 +3,8 @@ package org.e38.game.model.npcs;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.GameObject;
 
+import java.util.List;
+
 
 public interface NPC extends GameObject {
 
@@ -52,9 +54,9 @@ public interface NPC extends GameObject {
 
     NPC setOrientation(Orientation orientation);
 
-    OrientationListener getOrientationListener();
+    List<OrientationListener> getOrientationListener();
 
-    NPC setOrientationListener(OrientationListener listener);
+    void addOrientationListener(OrientationListener listener);
 
     enum State {
         ALIVE, DEAD, DYING, SPAWING, DESPAWNING, DESPAWNED

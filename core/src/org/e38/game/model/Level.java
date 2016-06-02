@@ -176,6 +176,7 @@ public class Level {
         wavePointer = 0;
         onEndListerners = new ArrayList<>();
         onCreate();
+
     }
 
     /**

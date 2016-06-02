@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Bullet;
 import org.e38.game.utils.Recurses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.e38.game.model.npcs.NPC.State.*;
 
 /**
@@ -13,7 +16,6 @@ import static org.e38.game.model.npcs.NPC.State.*;
 public abstract class Cop implements NPC {
 
     protected static CopLevel[] copLevels;
-    public volatile long updatesSinceLastFire;
     protected Vector2 posicion = new Vector2(0, 0);
     protected float range;
     protected State state;
@@ -25,7 +27,7 @@ public abstract class Cop implements NPC {
     protected long fireRate;
     protected CopLevel nivel;
     protected Orientation orientation = Orientation.RIGHT;
-    protected OrientationListener listener;
+    protected List<OrientationListener> orientationListeners = new ArrayList<>();
     private Circle circle;
 
     public Circle getCircle() {
@@ -60,7 +62,6 @@ public abstract class Cop implements NPC {
     @Override
     public void onUpdate(float delta) {
 // TODO: 4/28/16
-        updatesSinceLastFire++;
     }
 
     @Override
@@ -130,19 +131,20 @@ public abstract class Cop implements NPC {
     public Cop setOrientation(Orientation orientation) {
         Orientation old = this.orientation;
         this.orientation = orientation;
-        if (listener != null) listener.onChange(old, this.orientation);
+        for (OrientationListener listener : orientationListeners) {
+            listener.onChange(old, this.orientation);
+        }
         return this;
     }
 
     @Override
-    public OrientationListener getOrientationListener() {
-        return listener;
+    public List<OrientationListener> getOrientationListener() {
+        return orientationListeners;
     }
 
     @Override
-    public NPC setOrientationListener(OrientationListener listener) {
-        this.listener = listener;
-        return this;
+    public void addOrientationListener(OrientationListener listener) {
+        orientationListeners.add(listener);
     }
 
     public Cop setPosicion(Vector2 posicion) {
@@ -168,7 +170,6 @@ public abstract class Cop implements NPC {
     public void fire(Criminal... criminal) {
         lastFire = System.currentTimeMillis();
         if (criminal.length == 0) return;
-        updatesSinceLastFire = 0;
         Bullet bullet = nivel.newBullet();
         onFire();
         if (isAreaDamage) {
@@ -179,10 +180,6 @@ public abstract class Cop implements NPC {
     }
 
     public abstract void onFire();
-
-    public boolean mayFire() {
-        return fireRate >= updatesSinceLastFire;
-    }
 
     /**
      * determines if upgrade is supported

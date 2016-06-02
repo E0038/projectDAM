@@ -4,13 +4,19 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Level;
+import org.e38.game.utils.AnimationManager;
 import org.e38.game.utils.Recurses;
+import org.e38.game.utils.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sergi on 4/20/16.
  */
 // TODO: 5/31/16 add Circles
 public class Criminal implements Hittable {
+    public AnimationManager animation;
     protected volatile State state = State.SPAWING;
     protected float hpPoints;
     /**
@@ -23,7 +29,7 @@ public class Criminal implements Hittable {
      */
     protected long speed = 10;
     protected Orientation orientation = Orientation.LEFT;
-    protected OrientationListener listener;
+    protected List<OrientationListener> orientationListeners = new ArrayList<>();
     protected OnEndListener onEndListener;
     protected int pathPointer = 0;
     protected transient Level level;
@@ -33,6 +39,12 @@ public class Criminal implements Hittable {
     private transient volatile Circle circle = new Circle(0, 0, 0);
 
     public Criminal() {
+        addOrientationListener(new OrientationListener() {
+            @Override
+            public void onChange(Orientation old, Orientation nueva) {
+                animation.setAnimation(World.getRecurses().getACriminal(Criminal.this).getAnimation());
+            }
+        });
     }
 
     public Criminal(Level level) {
@@ -70,15 +82,6 @@ public class Criminal implements Hittable {
 
     public Criminal setLevel(Level level) {
         this.level = level;
-        return this;
-    }
-
-    public OrientationListener getListener() {
-        return listener;
-    }
-
-    public Criminal setListener(OrientationListener listener) {
-        this.listener = listener;
         return this;
     }
 
@@ -210,6 +213,7 @@ public class Criminal implements Hittable {
     public void spawn() {
         state = State.SPAWING;
         onSpawn();
+        animation = World.getRecurses().getACriminal(this);
         state = State.ALIVE;
     }
 
@@ -244,19 +248,20 @@ public class Criminal implements Hittable {
     public Criminal setOrientation(Orientation orientation) {
         Orientation old = this.orientation;
         this.orientation = orientation;
-        if (listener != null) listener.onChange(old, this.orientation);
+        for (OrientationListener listener : orientationListeners) {
+            listener.onChange(old, this.orientation);
+        }
         return this;
     }
 
     @Override
-    public OrientationListener getOrientationListener() {
-        return listener;
+    public List<OrientationListener> getOrientationListener() {
+        return orientationListeners;
     }
 
     @Override
-    public NPC setOrientationListener(OrientationListener listener) {
-        this.listener = listener;
-        return this;
+    public void addOrientationListener(OrientationListener listener) {
+        orientationListeners.add(listener);
     }
 
     public Criminal setSpeed(long speed) {
@@ -283,6 +288,10 @@ public class Criminal implements Hittable {
                 ", pathPointer=" + pathPointer +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public void onRestart() {
+        state = State.SPAWING;
     }
 
     public interface OnEndListener {

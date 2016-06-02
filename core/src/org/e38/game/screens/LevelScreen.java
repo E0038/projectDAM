@@ -312,10 +312,13 @@ public class LevelScreen implements Screen {
                     idx = c.getPathPointer();
                     float x = (float) level.getPath().get(idx).getProperties().get("x");
                     float y = (float) level.getPath().get(idx).getProperties().get("y");
-                    batch.draw(World.getRecurses().getACriminal(c).update(Gdx.graphics.getDeltaTime()), x, y);
+                    try {
+                        batch.draw(c.animation.update(Gdx.graphics.getDeltaTime()), x, y);
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                 }
             }
-
         }
     }
 
