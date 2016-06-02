@@ -143,7 +143,7 @@
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 160
+            "totalHpPoins": 100
           },
           {
             "name": "enemigoEspadon",
@@ -217,7 +217,7 @@
           {
             "name": "bane",
             "protecion": 1,
-            "totalHpPoins": 1000
+            "totalHpPoins": 500
           }
         ],
         "gap": 800
