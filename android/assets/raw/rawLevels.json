@@ -1,17 +1,17 @@
 [
   {
-    "coins": 900,
+    "coins": 50,
     "INIT_LIFES": 100,
     "waves": [
       {
         "criminals": [
           {
-            "name": "bane"
+            "name": "enemigoEspadon"
           },
           {
             "name": "bane",
             "totalHpPoins": 500,
-            "speed": 5000
+            "speed": 50
           },
           {
             "state": "SPAWING",
