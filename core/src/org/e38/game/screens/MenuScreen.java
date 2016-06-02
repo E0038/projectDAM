@@ -34,7 +34,7 @@ public class MenuScreen implements Screen {
     private TextButton newGame;
     private TextButton continueGame;
     private TextButton selectLevel;
-    private Label title;
+//    private Label title;
     private ImageButton exit;
     private ImageButton volumeSwitch;
     private TextureRegionDrawable umuteDrawable;
@@ -44,6 +44,7 @@ public class MenuScreen implements Screen {
     private Dialog rankingDialog;
     private Dialog newGameDialog;
     private boolean isNewGame;
+    private Image background;
 
     public MenuScreen(final MainGame game) {
         this.game = game;
@@ -55,7 +56,8 @@ public class MenuScreen implements Screen {
         createButtons();
         configureButtons();
         game.resume();//fix false pause state
-        stage.getActors().addAll(selectLevel, continueGame, newGame, title, exit, volumeSwitch, ranking, settings);
+        stage.addActor(background);
+        stage.getActors().addAll(selectLevel, continueGame, newGame, exit, volumeSwitch, ranking, settings);
         rankingDialog = new Dialog("Ranking", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
         newGameDialog = new Dialog("New Game", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
         Gdx.input.setInputProcessor(stage);
@@ -86,7 +88,7 @@ public class MenuScreen implements Screen {
             }
         };
 
-        title = new Label("Bank Defense", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+//        title = new Label("Bank Defense", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
 
 
         this.exit = new ImageButton(new TextureRegionDrawable(new TextureRegion(World.getRecurses().exitBtt)));
@@ -98,6 +100,8 @@ public class MenuScreen implements Screen {
 
         ranking = new TextButton("Ranking", new TextButton.TextButtonStyle(style));
         settings = new TextButton("Settings", new TextButton.TextButtonStyle(style));
+
+        background = new Image(World.getRecurses().background);
     }
 
     @SuppressWarnings("FeatureEnvy")
@@ -106,10 +110,9 @@ public class MenuScreen implements Screen {
         float bttWidth = World.getRecurses().buttonBg.getWidth();
         float bttHeight = World.getRecurses().buttonBg.getHeight();
 
-        title.setFontScale(1.5f);
-        title.setX(centerX + title.getWidth() / 2);
-        title.setY((stage.getViewport().getWorldHeight() / 10) * 8);
-
+//        title.setFontScale(1.5f);
+//        title.setX(centerX + title.getWidth() / 2);
+//        title.setY((stage.getViewport().getWorldHeight() / 10) * 8);
 
         newGame.setSize(bttWidth, bttHeight);
         newGame.setY((stage.getViewport().getWorldHeight() / 10) * 6);
@@ -168,7 +171,6 @@ public class MenuScreen implements Screen {
             }
         });
 
-
         isNewGame = ProfileManager.getInstance().getProfile().getCompleteLevels().size() == 0;
         selectLevel.setDisabled(isNewGame);
         continueGame.setDisabled(isNewGame);
@@ -192,6 +194,7 @@ public class MenuScreen implements Screen {
                 super.clicked(event, x, y);
             }
         });
+        background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
     }
 
     @SuppressWarnings({"FeatureEnvy", "MagicNumber"})

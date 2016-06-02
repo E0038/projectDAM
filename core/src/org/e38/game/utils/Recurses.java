@@ -50,6 +50,7 @@ public class Recurses implements Disposable {
     public Texture bar_ALL;
     public Texture slider;
     public Texture knob;
+    public Texture background;
 
     /**
      * NOTE : create the instance in Gdx thread and call load in a separate Tread
@@ -178,6 +179,13 @@ public class Recurses implements Disposable {
             }
         };
         knob = new Texture("grafics/textures/knob.png") {
+            @Override
+            protected void finalize() throws Throwable {
+                dispose();
+                super.finalize();
+            }
+        };
+        background = new Texture("grafics/hud/bancoSplashArtv3.png") {
             @Override
             protected void finalize() throws Throwable {
                 dispose();
