@@ -34,7 +34,7 @@ public class MenuScreen implements Screen {
     private TextButton newGame;
     private TextButton continueGame;
     private TextButton selectLevel;
-//    private Label title;
+    //    private Label title;
     private ImageButton exit;
     private ImageButton volumeSwitch;
     private TextureRegionDrawable umuteDrawable;
@@ -210,7 +210,7 @@ public class MenuScreen implements Screen {
             rbutton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    newGameDialog.cancel();
+                    game.setScreen(new MenuScreen(game));
                 }
             });
             TextButton rbutton2 = new TextButton("Continue with New Game", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
