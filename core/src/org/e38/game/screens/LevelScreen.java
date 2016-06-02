@@ -342,7 +342,7 @@ public class LevelScreen implements Screen {
                         plaza.setCop(a);
                         //plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        level.setCoins((int) (level.getCoins() - 40));
                         plaza.setCop(a);
                     }
                 }
@@ -365,7 +365,7 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        level.setCoins((int) (level.getCoins() - 20));
                         plaza.setCop(a);
                     }
                 }
@@ -387,7 +387,7 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        level.setCoins((int) (level.getCoins() - 30));
                         plaza.setCop(a);
                     }
                 }
@@ -409,7 +409,7 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - a.getNivel().getPrecioCompra()));
+                        level.setCoins((int) (level.getCoins() - 10));
                         plaza.setCop(a);
                     }
                 }

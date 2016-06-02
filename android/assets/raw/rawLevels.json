@@ -8,18 +8,19 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 100,
-            "speed": 500
+            "totalHpPoins": 10,
+            "speed": 400
           },
           {
             "name": "bicicletaFinal",
-            "protecion": 1,
+            "protecion": 0.4,
+            "totalHpPoins": 15,
             "speed": 100
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 4,
-            "totalHpPoins": 110,
+            "totalHpPoins": 20,
             "speed": 200
           }
         ],
@@ -30,18 +31,18 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 140,
+            "totalHpPoins": 20,
             "speed": 500
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 100
+            "totalHpPoins": 20
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 4,
-            "totalHpPoins": 110,
+            "totalHpPoins": 10,
             "speed": 200
           }
         ],
@@ -52,18 +53,18 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 160,
+            "totalHpPoins": 30,
             "speed": 500
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 140
+            "totalHpPoins": 30
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 4,
-            "totalHpPoins": 150,
+            "totalHpPoins": 35,
             "speed": 200
           }
         ],
@@ -76,18 +77,18 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 200,
-            "speed": 500
+            "totalHpPoins": 140,
+            "speed": 300
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 160
+            "totalHpPoins": 120
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 4,
-            "totalHpPoins": 170,
+            "totalHpPoins": 100,
             "speed": 200
           }
         ],
@@ -137,7 +138,7 @@
           {
             "name": "ladronEscopetaBueno",
             "protecion": 1,
-            "totalHpPoins": 330
+            "totalHpPoins": 180
           },
           {
             "name": "bicicletaFinal",
@@ -157,55 +158,55 @@
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 200,
+            "totalHpPoins": 140,
             "speed": 100
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 200,
+            "totalHpPoins": 140,
             "speed": 110
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 200,
+            "totalHpPoins": 140,
             "speed": 120
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 200,
+            "totalHpPoins": 140,
             "speed": 130
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 200,
+            "totalHpPoins": 140,
             "speed": 140
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 220,
+            "totalHpPoins": 140,
             "speed": 150
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 230,
+            "totalHpPoins": 140,
             "speed": 160
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 250,
+            "totalHpPoins": 140,
             "speed": 170
           },
           {
             "name": "bicicletaFinal",
             "protecion": 1,
-            "totalHpPoins": 240,
+            "totalHpPoins": 140,
             "speed": 180
           }
         ],
