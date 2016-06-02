@@ -267,11 +267,11 @@ public class MenuScreen implements Screen {
             table.add(new Label(String.valueOf(level + 1), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
             table.add(new Label(String.valueOf(puntuaciones.get(level)), new Label.LabelStyle(new BitmapFont(), Color.BLACK)));
         }
-        rankingDialog.add(table);
-        rankingDialog.getContentTable().add(table).padTop(-70).padLeft(5);
+//        rankingDialog.add(table);
+        rankingDialog.getContentTable().add(table).padTop(-50).padLeft(5);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(World.getRecurses().buttonBg));
-        TextButton dbutton = new TextButton("Volver al menú", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
+        TextButton dbutton = new TextButton("Back to menu", new TextButton.TextButtonStyle(drawable, drawable, drawable, new BitmapFont()));
         dbutton.getStyle().fontColor = Color.BLACK;
         dbutton.setSize(10, 10);
         rankingDialog.button(dbutton, true);
