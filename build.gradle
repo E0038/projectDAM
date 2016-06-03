@@ -75,8 +75,8 @@ project(":core") {
     apply plugin: "java"
 
     dependencies {
+        compile "org.tukaani:xz:1.5"
         compile "com.google.code.gson:gson:2.6.2"
-        compile "org.apache.directory.studio:org.apache.commons.codec:1.8"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
