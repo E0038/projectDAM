@@ -98,7 +98,7 @@
       }
     ],
     "mapPath": "grafics/map1/Mapa_lvl1.tmx",
-    "waveGap": 3000.0
+    "waveGap": 200
   },
   {
     "coins": 100,
@@ -224,7 +224,7 @@
       }
     ],
     "mapPath": "grafics/map1/Mapa_lvl2.tmx",
-    "waveGap": 3000.0
+    "waveGap": 200
   },
   {
     "coins": 100,
@@ -306,7 +306,7 @@
       }
     ],
     "mapPath": "grafics/map1/Mapa_lvl3.tmx",
-    "waveGap": 3000.0
+    "waveGap": 200
   },
   {
     "coins": 100,
@@ -392,6 +392,6 @@
       }
     ],
     "mapPath": "grafics/map1/Mapa_lvl4.tmx",
-    "waveGap": 3000.0
+    "waveGap": 200.0
   }
 ]
