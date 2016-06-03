@@ -116,6 +116,17 @@ public class LevelScreen implements Screen {
         copsBar = new CopsBar(level.getCoins(), topBar.table.getY() - topBar.table.getHeight());
         upgradeBar = new UpgradeBar(topBar.table.getY() - topBar.table.getHeight());
         level.addOnChangeStateListerner(topBar);
+        level.addOnChangeStateListerner(new Level.OnChangeStateListener() {
+            @Override
+            public void onChangeState(int oldValue, int newValue, int type) {
+                if (type == Level.TYPE_COIN){
+                    Plaza plaza = getSelected();
+                    if (plaza != null && plaza.isOcupada()) {
+                        upgradeBar.updateBar(newValue,plaza.getCop());
+                    }
+                }
+            }
+        });
         levelUpdater = new LevelUpdater(this);
         endDialog = new Dialog("Juego finalizado", new Window.WindowStyle(new BitmapFont(), new Color(Color.BLACK), new TextureRegionDrawable(new TextureRegion(World.getRecurses().cuadradoBlanco))));
         endDialog.padTop(40).padLeft(5);
