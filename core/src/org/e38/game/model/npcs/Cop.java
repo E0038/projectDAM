@@ -61,7 +61,6 @@ public abstract class Cop implements NPC {
      */
     @Override
     public void onUpdate(float delta) {
-// TODO: 4/28/16
     }
 
     @Override
