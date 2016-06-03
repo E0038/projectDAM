@@ -14,6 +14,14 @@ task run(dependsOn: classes, type: JavaExec) {
     ignoreExitValue = true
 }
 
+task pack_levels(dependsOn: classes, type: JavaExec) {
+    main = "org.e38.game.desktop.PackLevels"
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = ".."
+    ignoreExitValue = true
+}
+
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
