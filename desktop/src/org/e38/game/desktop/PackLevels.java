@@ -2,6 +2,7 @@ package org.e38.game.desktop;
 
 import org.lwjgl.Sys;
 import org.tukaani.xz.LZMA2Options;
+import org.tukaani.xz.XZInputStream;
 import org.tukaani.xz.XZOutputStream;
 
 import javax.crypto.Cipher;
@@ -27,9 +28,35 @@ public class PackLevels {
         ciper.init(Cipher.ENCRYPT_MODE, key);
         Cipher dcip = Cipher.getInstance("AES");
         dcip.init(Cipher.DECRYPT_MODE, key);
-        File tmp = File.createTempFile("lvl","tmp");
         byte[] buffer = new byte[1 << 15];
         System.out.println(System.getProperty("user.dir"));
-        tmp.deleteOnExit();
+        write(ciper, buffer);
+//debug
+//        Debug_Read(dcip, buffer);
+    }
+
+    private static void write(Cipher ciper, byte[] buffer) throws IOException {
+        int n;
+        try (FileInputStream inputStream = new FileInputStream(raw_path);
+             CipherOutputStream outputStream = new CipherOutputStream(new FileOutputStream(out_path), ciper);
+             XZOutputStream xzOutputStream = new XZOutputStream(outputStream, new LZMA2Options())
+        ) {
+            while ((n = inputStream.read(buffer)) != -1) {
+                xzOutputStream.write(buffer, 0, n);
+            }
+        }
+    }
+
+    private static void Debug_Read(Cipher dcip, byte[] buffer) throws IOException {
+        int n;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             XZInputStream xzInputStream = new XZInputStream(new CipherInputStream(new FileInputStream(out_path), dcip));
+        ) {
+
+            while ((n = xzInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, n);
+            }
+            System.out.println(outputStream);
+        }
     }
 }

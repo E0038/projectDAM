@@ -11,11 +11,9 @@ import org.e38.game.model.Level;
 import org.e38.game.model.Wave;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.utils.World;
+import org.tukaani.xz.XZInputStream;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidKeyException;
@@ -49,12 +47,13 @@ public class ProfileManager {
     private final AtomicReference<FileHandle> localBackup = new AtomicReference<>();
     private final AtomicReference<FileHandle> profilesFile = new AtomicReference<>();
     private final AtomicReference<Profile> profile = new AtomicReference<>();
-    private FileHandle configFile = Gdx.files.local("data/app.conf");
-    private GsonBuilder gsonBuilder = new GsonBuilder();
     private final AtomicReference<Cipher> decrypter = new AtomicReference<>();
     private final AtomicReference<Cipher> encryper = new AtomicReference<>();
+    private FileHandle configFile = Gdx.files.local("data/app.conf");
+    private GsonBuilder gsonBuilder = new GsonBuilder();
     private ProfileSycronizer sycronizer = new ProfileSycronizer();
     private Thread autosaveThread;
+    private FileHandle levels = Gdx.files.internal("raw/levels.crypt.lzma");
 
     private ProfileManager() throws IOException {
         conf();
@@ -71,9 +70,10 @@ public class ProfileManager {
         applyConf(configuration);
     }
 
-    private void loadLevels() {
+    private void loadLevels() throws IOException {
         try {
-            String json = Gdx.files.internal("raw/rawLevels.json").readString("UTF-8");
+//            String json = Gdx.files.internal("raw/rawLevels.json").readString("UTF-8");
+            String json = getJsonLevels();
             World.levels = gson.get().fromJson(json, new TypeToken<List<Level>>() {
             }.getType());
         } catch (GdxRuntimeException e) {
@@ -151,7 +151,25 @@ public class ProfileManager {
 
     public void applyConf(Configuration configuration) {
         World.volumeChange(configuration.volume);
+        World.selecteDificultat = configuration.selecteDificultat;
+        World.speed = configuration.speed;
         //etc
+    }
+
+    private String getJsonLevels() throws IOException {
+        int n;
+        byte[] buffer = new byte[1 << 11];
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        XZInputStream inputStream = new XZInputStream(new CipherInputStream(new ByteArrayInputStream(levels.readBytes()), decrypter.get()));
+        try {
+            while ((n = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, n);
+            }
+        } finally {
+            inputStream.close();
+            outputStream.close();
+        }
+        return outputStream.toString();
     }
 
     private void createFiles(File profile) throws IOException {
