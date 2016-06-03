@@ -1,6 +1,6 @@
 package org.e38.game.desktop;
 
-import org.lwjgl.Sys;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import org.tukaani.xz.LZMA2Options;
 import org.tukaani.xz.XZInputStream;
 import org.tukaani.xz.XZOutputStream;
@@ -8,10 +8,11 @@ import org.tukaani.xz.XZOutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
-import java.security.NoSuchAlgorithmException;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Base64;
 
 /**
@@ -22,8 +23,9 @@ public class PackLevels {
     static String out_path = "./android/assets/raw/levels.crypt.lzma";
 
     public static void main(String[] args) throws Exception {
-        byte[] decoded = Base64.getDecoder().decode("Whiy3TtJhr484rDop7vsfg==");
+        byte[] decoded = com.badlogic.gdx.utils.Base64Coder.decode("Whiy3TtJhr484rDop7vsfg==");
         Cipher ciper = Cipher.getInstance("AES");
+
         SecretKeySpec key = new SecretKeySpec(decoded, 0, decoded.length, "AES");
         ciper.init(Cipher.ENCRYPT_MODE, key);
         Cipher dcip = Cipher.getInstance("AES");
