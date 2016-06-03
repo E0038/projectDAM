@@ -20,7 +20,9 @@ public class LevelUpdater {
         if (level.getLifes() <= 0) {
             level.fail();
         } else if (level.wavePointer < level.waves.size()) {
+
             final Wave wave = level.waves.get(level.wavePointer);
+            wave.setWaveGap((long) level.waveGap);
             wave.onUpdate(delta, screen);
             if (wave.isClear()) level.wavePointer++;
         }

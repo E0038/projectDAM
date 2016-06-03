@@ -1,5 +1,6 @@
 package org.e38.game.model;
 
+import com.badlogic.gdx.Gdx;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.model.npcs.NPC;
@@ -19,6 +20,7 @@ public class Wave {
     private final AtomicBoolean isClear = new AtomicBoolean(false);
     private volatile List<Criminal> criminals = new ArrayList<>();
     private long gap = 0;
+    private long waveGap = 0;
     private transient volatile AtomicInteger spawnPointer = new AtomicInteger(-1);
 
     public Wave() {
@@ -26,6 +28,14 @@ public class Wave {
 
     public Wave(Collection<? extends Criminal> c) {
         criminals.addAll(c);
+    }
+
+    public long getWaveGap() {
+        return waveGap;
+    }
+
+    public void setWaveGap(long waveGap) {
+        this.waveGap = waveGap;
     }
 
     public boolean isAllSpawn() {
@@ -104,7 +114,7 @@ public class Wave {
     }
 
     public void spawner() {
-        new SheludedAction(gap) {
+        new SheludedAction(waveGap) {
             @Override
             public void onFinish() {
                 Wave.this.launchWave();
@@ -116,12 +126,17 @@ public class Wave {
         synchronized (waveLocker) {
             int idx = spawnPointer.incrementAndGet();
             if (!isAllSpawn.get()) {
-                if (idx < criminals.size())
+                if (idx < criminals.size()) {
                     criminals.get(idx).spawn();
-                else isAllSpawn.set(true);
+                    try {
+                        Thread.sleep(gap);
+                    } catch (InterruptedException e) {
+                        Gdx.app.error(Wave.class.getName(), e.getMessage(), e);
+                    }
+                } else isAllSpawn.set(true);
             }
             if (!isAllSpawn.get()) {
-                new SheludedAction(gap) {
+                new SheludedAction(waveGap) {
                     @Override
                     public void onFinish() {
                         Wave.this.launchWave();
