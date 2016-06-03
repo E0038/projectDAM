@@ -26,7 +26,6 @@ import java.util.Map;
 /**
  * Created by sergi on 4/20/16.
  */
-// TODO: 5/29/16 add ranking
 public class MenuScreen implements Screen {
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     private final MainGame game;
@@ -255,7 +254,6 @@ public class MenuScreen implements Screen {
 
     @SuppressWarnings("MagicNumber")
     private void fillRanking() {
-        //TODO Separar boton respecto a la tabla
         rankingDialog.getTitleLabel().setY(rankingDialog.getTitleLabel().getY() - 5);
         //rankingDialog.get
         Table table = new Table();

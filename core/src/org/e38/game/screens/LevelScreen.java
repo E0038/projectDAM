@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -203,7 +204,7 @@ public class LevelScreen implements Screen {
                         lowerBar = plaza.isOcupada() ? upgradeBar : copsBar;
                         lowerBar.setPlaza(plaza);
                         changeButtonsState();
-                        updateLowerBar(lowerBar instanceof UpgradeBar ? TYPE_UPGRADE:TYPE_COPS);
+                        updateLowerBar(lowerBar instanceof UpgradeBar ? TYPE_UPGRADE : TYPE_COPS);
                         plaza.onClick();
                     }
                 });
@@ -228,6 +229,7 @@ public class LevelScreen implements Screen {
         camera.position.set(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2, 0);
         initActors();
         camera.update();
+        ot.setView(camera);
         game.resume();
         Gdx.input.setInputProcessor(stage);
     }
@@ -254,6 +256,18 @@ public class LevelScreen implements Screen {
             for (Actor a : botonesUpgrade) {
                 a.setTouchable(Touchable.disabled);
             }
+        }
+    }
+
+    public void updateLowerBar(int type) {
+        if (type == TYPE_COPS) {
+            copsBar.updateBar(level.getCoins());
+        } else {
+            Cop cop;
+            Plaza plaza;
+            if ((plaza = getSelected()) != null)
+                if ((cop = plaza.getCop()) != null)
+                    upgradeBar.updateBar(level.getCoins(), cop);
         }
     }
 
@@ -315,7 +329,7 @@ public class LevelScreen implements Screen {
 
                     try {
                         batch.draw(c.animation.update(Gdx.graphics.getDeltaTime()), x, y);
-                    }catch(NullPointerException ex){
+                    } catch (NullPointerException ex) {
 
                     }
 
@@ -342,7 +356,7 @@ public class LevelScreen implements Screen {
                         plaza.setCop(a);
                         //plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - 40));
+                        level.setCoins(level.getCoins() - 40);
                         plaza.setCop(a);
                     }
                 }
@@ -365,7 +379,7 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - 20));
+                        level.setCoins(level.getCoins() - 20);
                         plaza.setCop(a);
                     }
                 }
@@ -387,7 +401,7 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - 30));
+                        level.setCoins(level.getCoins() - 30);
                         plaza.setCop(a);
                     }
                 }
@@ -409,7 +423,7 @@ public class LevelScreen implements Screen {
                         a.setPosicion(new Vector2(plaza.getX(), plaza.getY()));
                         plaza.setCop(a);
                         lowerBar = voidBar;
-                        level.setCoins((int) (level.getCoins() - 10));
+                        level.setCoins(level.getCoins() - 10);
                         plaza.setCop(a);
                     }
                 }
@@ -469,7 +483,6 @@ public class LevelScreen implements Screen {
         levelUpdater.update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        ot.setView(camera);
 
         ot.render();
         renderPlazas();
@@ -488,10 +501,11 @@ public class LevelScreen implements Screen {
                         Gdx.graphics.getHeight() - coordinates.y,
                         plaza.getWidth() * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH),
                         plaza.getHeight() * ((float) Gdx.graphics.getHeight() / (float) World.WORLD_HEIGHT));
-//                if (plaza.isOcupada()) {
-//                    Circle circle = plaza.getCop().getCircle();
-//                    shapeRenderer.circle(circle.x, circle.y, circle.radius);
-//                }
+                if (plaza.isOcupada()) {
+                    Circle circle = plaza.getCop().getCircle();
+                    coordinates = stage.stageToScreenCoordinates(new Vector2(circle.x, circle.y));
+                    shapeRenderer.circle(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, circle.radius * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH));
+                }
             }
 
         }
@@ -516,18 +530,6 @@ public class LevelScreen implements Screen {
 
     @Override
     public void dispose() {
-    }
-
-    public void updateLowerBar(int type) {
-        if (type == TYPE_COPS) {
-            copsBar.updateBar(level.getCoins());
-        } else {
-            Cop cop;
-            Plaza plaza;
-            if ((plaza = getSelected()) != null)
-                if ((cop = plaza.getCop()) != null)
-                    upgradeBar.updateBar(level.getCoins(), cop);
-        }
     }
 
     public void showCopsBar() {
