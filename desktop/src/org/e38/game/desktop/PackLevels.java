@@ -1,6 +1,5 @@
 package org.e38.game.desktop;
 
-import com.badlogic.gdx.utils.compression.lzma.Base;
 import org.tukaani.xz.LZMA2Options;
 import org.tukaani.xz.XZInputStream;
 import org.tukaani.xz.XZOutputStream;
@@ -13,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 
 /**
  * Created by sergi on 6/2/16.
