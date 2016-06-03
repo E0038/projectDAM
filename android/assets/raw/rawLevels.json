@@ -317,12 +317,12 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 120
+            "totalHpPoins": 100
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 1,
-            "totalHpPoins": 120
+            "totalHpPoins": 80
           }
         ],
         "gap": 800
@@ -332,12 +332,12 @@
           {
             "name": "enemigoEspadon",
             "protecion": 1,
-            "totalHpPoins": 190
+            "totalHpPoins": 150
           },
           {
             "name": "ladronEscopetaBueno",
             "protecion": 1,
-            "totalHpPoins": 160
+            "totalHpPoins": 120
           },
           {
             "name": "bicicletaFinal",
@@ -348,7 +348,7 @@
             "name": "bane",
             "protecion": 1,
             "speed":300,
-            "totalHpPoins": 500
+            "totalHpPoins": 400
           }
         ],
         "gap": 800

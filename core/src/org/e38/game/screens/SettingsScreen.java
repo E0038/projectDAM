@@ -90,6 +90,7 @@ public class SettingsScreen implements Screen {
 
         difficulty = new SelectBox<>(new Skin(Gdx.files.internal("skin/uiskin.json")));
         difficulty.setItems(Level.Dificultat.values());
+        difficulty.setSelected(Level.Dificultat.valueOf(World.selecteDificultat));
         difficulty.setWidth(100);
         difficulty.setPosition((stage.getViewport().getWorldWidth() / 2) - difficulty.getWidth() /2, stage.getViewport().getWorldHeight() / 10 * 5);
         difficulty.addListener(new ChangeListener() {
