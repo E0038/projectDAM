@@ -151,7 +151,8 @@ public class ProfileManager {
 
     public void applyConf(Configuration configuration) {
         World.volumeChange(configuration.volume);
-        //etc
+        World.selecteDificultat=configuration.selecteDificultat;
+        World.speed = configuration.speed;
     }
 
     private void createFiles(File profile) throws IOException {
