@@ -49,7 +49,7 @@ public class SettingsScreen implements Screen {
         style.fontColor = Color.BLACK;
         menu = new TextButton("Main Menu", style);
         volumeLabel = new Label("Set Volume", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-        volumeValue = new Label("100", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
+        volumeValue = new Label(String.valueOf((int) World.getVolume() * 100), new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         difficultyLabel = new Label("Difficulty", new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         background = new Image(World.getRecurses().backgroundSettings);
     }
@@ -70,16 +70,16 @@ public class SettingsScreen implements Screen {
         });
 
         slider = new Slider(0, 1, 0.1f, false, new Skin(Gdx.files.internal("skin/uiskin.json")));
-        slider.setValue(1f);
+        slider.setValue(World.getVolume());
         slider.setSize(100, 50);
         slider.setPosition((stage.getViewport().getWorldWidth() / 2) - slider.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 8);
         slider.setAnimateDuration(0.3f);
         slider.addListener(new ChangeListener() {
             @Override
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 World.volumeChange(slider.getValue());
                 World.play(Recurses.POP);
-                volumeValue.setText(String.valueOf((int)(slider.getValue() * 100)));
+                volumeValue.setText(String.valueOf((int) (slider.getValue() * 100)));
 
             }
         });
@@ -92,7 +92,7 @@ public class SettingsScreen implements Screen {
         difficulty.setItems(Level.Dificultat.values());
         difficulty.setSelected(Level.Dificultat.valueOf(World.selecteDificultat));
         difficulty.setWidth(100);
-        difficulty.setPosition((stage.getViewport().getWorldWidth() / 2) - difficulty.getWidth() /2, stage.getViewport().getWorldHeight() / 10 * 5);
+        difficulty.setPosition((stage.getViewport().getWorldWidth() / 2) - difficulty.getWidth() / 2, stage.getViewport().getWorldHeight() / 10 * 5);
         difficulty.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -102,6 +102,7 @@ public class SettingsScreen implements Screen {
         background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
 
     }
+
     @Override
     public void show() {
         stage.addActor(background);
