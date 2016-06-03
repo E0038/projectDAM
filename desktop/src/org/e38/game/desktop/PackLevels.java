@@ -8,10 +8,7 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by sergi on 6/2/16.
@@ -23,13 +20,12 @@ public class PackLevels {
     public static void main(String[] args) throws Exception {
         byte[] decoded = com.badlogic.gdx.utils.Base64Coder.decode("Whiy3TtJhr484rDop7vsfg==");
         Cipher ciper = Cipher.getInstance("AES");
-
+        System.out.println(new File(out_path).delete());
         SecretKeySpec key = new SecretKeySpec(decoded, 0, decoded.length, "AES");
         ciper.init(Cipher.ENCRYPT_MODE, key);
         Cipher dcip = Cipher.getInstance("AES");
         dcip.init(Cipher.DECRYPT_MODE, key);
         byte[] buffer = new byte[1 << 15];
-        System.out.println(System.getProperty("user.dir"));
         write(ciper, buffer);
 //debug
 //        Debug_Read(dcip, buffer);
