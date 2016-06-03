@@ -55,6 +55,7 @@ public class Criminal implements Hittable {
     }
 
     public void setTotalHpPoins(float totalHpPoins) {
+        if (totalHpPoins < 0) totalHpPoins = 0;
         this.totalHpPoins = totalHpPoins;
     }
 
@@ -89,6 +90,7 @@ public class Criminal implements Hittable {
     }
 
     public Criminal setProtecion(float protecion) {
+        if (protecion < 0) protecion = 0;
         this.protecion = protecion;
         return this;
     }
@@ -138,6 +140,7 @@ public class Criminal implements Hittable {
 
     public Criminal setDodgeRate(float dodgeRate) {
         this.dodgeRate = dodgeRate;
+        if (this.dodgeRate < 0f) this.dodgeRate = 0f;
         return this;
     }
 
@@ -211,9 +214,34 @@ public class Criminal implements Hittable {
     @Override
     public void spawn() {
         state = State.SPAWING;
+        applyDificultat();
         onSpawn();
         animation = World.getRecurses().getACriminal(this);
         state = State.ALIVE;
+    }
+
+    private void applyDificultat() {
+        Level.Dificultat dificultat = level.getDificultat();
+
+        switch (dificultat) {
+            case EASY:
+                setDodgeRate(dodgeRate - 0.1f)
+                        .setSpeed(speed + 50)
+                        .setProtecion(protecion - 1)
+                        .setTotalHpPoins(totalHpPoins - 20);
+
+                break;
+            case HARD:
+                setDodgeRate(dodgeRate + 0.1f)
+                        .setSpeed(speed - 20)
+                        .setProtecion(protecion + 10)
+                        .setTotalHpPoins(totalHpPoins + 20);
+                break;
+            case NORMAL:
+            default:
+                break;
+        }
+
     }
 
     @Override
@@ -264,6 +292,7 @@ public class Criminal implements Hittable {
     }
 
     public Criminal setSpeed(long speed) {
+        if (speed < 0) speed = 0;
         this.speed = speed;
         return this;
     }

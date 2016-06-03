@@ -24,7 +24,6 @@ import org.e38.game.utils.World;
  * Created by ALUMNEDAM on 31/05/2016.
  */
 public class SettingsScreen implements Screen {
-    public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
     private final MainGame game;
     private Stage stage;
     private Slider slider;
@@ -97,7 +96,6 @@ public class SettingsScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 World.selecteDificultat = difficulty.getSelected().name();
-                System.out.println(difficulty.getSelected());
             }
         });
         background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
