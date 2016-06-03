@@ -38,7 +38,6 @@ public class Area extends Cop {
     @Override
     public void onUpdate(float delta) {
         super.onUpdate(delta);
-        // TODO: 4/28/16
     }
 
     @Override

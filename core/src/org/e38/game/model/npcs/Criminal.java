@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Created by sergi on 4/20/16.
  */
-// TODO: 5/31/16 add Circles
 public class Criminal implements Hittable {
     public AnimationManager animation;
     protected volatile State state = State.SPAWING;

@@ -9,8 +9,6 @@ import org.e38.game.screens.LevelScreen;
 /**
  * Created by ALUMNEDAM on 25/05/2016.
  */
-// TODO: 5/31/16 pintar range Circles
-// TODO: 5/31/16 move Cop Circles to Plaza Circles
 public class Plaza extends Actor {
     //    public MapObject object;
     public boolean isSelected = false;

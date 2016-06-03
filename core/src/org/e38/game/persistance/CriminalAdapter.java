@@ -13,8 +13,6 @@ import java.lang.reflect.Type;
 /**
  * Created by sergi on 5/31/16.
  */
-// TODO: 5/31/16 implement
-// and Register Criminal adapter to ProfileManager.gson
 public class CriminalAdapter implements JsonDeserializer<Criminal>, JsonSerializer<Criminal> {
     @Override
     public Criminal deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -58,12 +56,14 @@ extras modifications optionals != defaults
         return criminal;
     }
 
-    // TODO: 5/31/16 JSON FORMAT {"name":"Recurses.AnimatedCriminals Enum",etc}
     @Override
     public JsonElement serialize(Criminal src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject object = new JsonObject();
         object.add("name", context.serialize(Recurses.AnimatedCriminals.valueOf(src.getName())));
-        //etc
+        object.addProperty("totalHpPoins", src.getTotalHpPoins());
+        object.addProperty("protecion", src.getProtecion());
+        object.addProperty("speed", src.getSpeed());
+        object.addProperty("dodgeRate", src.getDodgeRate());
         return object;
 
     }
