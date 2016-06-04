@@ -14,7 +14,7 @@ import java.util.Queue;
 public class DamageOverTime extends Cop {
     static {
         copLevels = new CopLevel[]{
-                new CopLevel(5, 0, 30), new CopLevel(10, 0, 50), new CopLevel(20, 0, 60)
+                new CopLevel(7, 1, 30), new CopLevel(14, 2, 50), new CopLevel(30, 5, 60)
         };
     }
     @Override

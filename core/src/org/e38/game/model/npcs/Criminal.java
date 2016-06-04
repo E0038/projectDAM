@@ -41,6 +41,7 @@ public class Criminal implements Hittable {
         addOrientationListener(new OrientationListener() {
             @Override
             public void onChange(Orientation old, Orientation nueva) {
+//                if (old != null && nueva != null)
                 animation.setAnimation(World.getRecurses().getACriminal(Criminal.this).getAnimation());
             }
         });
@@ -233,9 +234,9 @@ public class Criminal implements Hittable {
                 break;
             case HARD:
                 setDodgeRate(dodgeRate + 0.1f)
-                        .setSpeed(speed - 20)
-                        .setProtecion(protecion + 1)
-                        .setTotalHpPoins(totalHpPoins + 20);
+//                        .setSpeed(speed - 20)
+                        .setProtecion(protecion + 1).
+                        setTotalHpPoins(totalHpPoins + 20);
                 break;
             case NORMAL:
             default:

@@ -9,7 +9,7 @@ import org.e38.game.model.npcs.Criminal;
 public class Bicicleta extends Criminal {
     public Bicicleta() {
         name = Recurses.AnimatedCriminals.bicicletaFinal.name();
-        speed = 100;
+        speed = 200;
         dodgeRate = 0.01f;
         protecion = 0.1f;
     }

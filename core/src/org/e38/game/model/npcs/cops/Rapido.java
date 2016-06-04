@@ -14,7 +14,7 @@ import java.util.Queue;
 public class Rapido extends Cop {
     static {
         copLevels = new CopLevel[]{
-                new CopLevel(1, 0, 10), new CopLevel(3, 0, 30), new CopLevel(6, 0, 60)
+                new CopLevel(5, 0, 10), new CopLevel(10, 1, 30), new CopLevel(20, 2, 60)
         };
     }
 

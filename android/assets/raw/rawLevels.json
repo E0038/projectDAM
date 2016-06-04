@@ -379,6 +379,15 @@
         ],
         "gap": 800
       },
+      {"criminals": [
+        {"name": "enemigoEspadon","speed": 500, "protecion": 2,"totalHpPoins": 150},{"name": "enemigoEspadon","speed": 500, "protecion": 2,"totalHpPoins": 150},{"name": "enemigoEspadon","speed": 500, "protecion": 2,"totalHpPoins": 150},{"name": "ladronEscopetaBueno","speed": 500, "protecion": 2,"totalHpPoins": 150},{"name": "ladronEscopetaBueno","speed": 500, "protecion": 2,"totalHpPoins": 150},{"name": "ladronEscopetaBueno","speed": 500, "protecion": 2,"totalHpPoins": 150}
+      ],"gap": 2000},
+      {
+        "criminals": [
+          {"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110},{"name": "bicicletaFinal", "speed":100, "protecion": 1, "totalHpPoins": 110}
+        ],
+        "gap": 200
+      },
       {
         "criminals": [
           {

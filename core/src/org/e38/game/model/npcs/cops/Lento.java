@@ -14,7 +14,7 @@ import java.util.Queue;
 public class Lento extends Cop {
     static {
         copLevels = new CopLevel[]{
-                new CopLevel(10, 0, 25), new CopLevel(20, 0, 50), new CopLevel(40, 0, 100)
+                new CopLevel(10, 1, 25), new CopLevel(20, 2, 50), new CopLevel(40, 3, 100)
         };
     }
 
