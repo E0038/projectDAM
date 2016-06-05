@@ -38,7 +38,7 @@ public class Level {
     protected int initLifes;
     protected int initCoins;
     protected int coins;
-//    protected List<MapObject> path = new ArrayList<>();
+    //    protected List<MapObject> path = new ArrayList<>();
     protected int lifes;
     /**
      * C style boolean : 0 false , 1 true

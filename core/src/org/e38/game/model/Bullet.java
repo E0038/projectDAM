@@ -1,5 +1,6 @@
 package org.e38.game.model;
 
+import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
 
 /**
@@ -9,12 +10,7 @@ public class Bullet {
     private float protecionPenetration;
     private float damage;
 
-
-    public Bullet(float damage) {
-        this(0, damage);
-    }
-
-    public Bullet(float protecionPenetration, float damage) {
+    public Bullet(float protecionPenetration, float damage,Cop cop) {
         this.protecionPenetration = protecionPenetration;
         this.damage = damage;
     }
