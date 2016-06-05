@@ -119,10 +119,10 @@ public class LevelScreen implements Screen {
         level.addOnChangeStateListerner(new Level.OnChangeStateListener() {
             @Override
             public void onChangeState(int oldValue, int newValue, int type) {
-                if (type == Level.TYPE_COIN){
+                if (type == Level.TYPE_COIN) {
                     Plaza plaza = getSelected();
                     if (plaza != null && plaza.isOcupada()) {
-                        upgradeBar.updateBar(newValue,plaza.getCop());
+                        upgradeBar.updateBar(newValue, plaza.getCop());
                     }
                 }
             }
@@ -161,6 +161,13 @@ public class LevelScreen implements Screen {
         level.addOnEndListerner(onEndListerner);
     }
 
+    private Plaza getSelected() {
+        for (Plaza p : plazas) {
+            if (p.isSelected) return p;
+        }
+        return null;
+    }
+
     public List<Plaza> getPlazas() {
         return plazas;
     }
@@ -193,6 +200,7 @@ public class LevelScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(new FitViewport(World.WORLD_WIDTH, World.WORLD_HEIGHT));
+        addUnfocus();
         TiledMap map = new TmxMapLoader() {
             @Override
             protected void finalize() throws Throwable {
@@ -200,6 +208,31 @@ public class LevelScreen implements Screen {
                 super.finalize();
             }
         }.load(this.level.getMapPath());
+        mapTitleObjects(map);
+        stage.getActors().addAll(plazas.toArray(new Actor[plazas.size()]));
+        createButtons();
+        configureButtons();
+
+        ot = new OrthogonalTiledMapRenderer(map) {
+            @Override
+            protected void endRender() {
+                renderCops(getBatch());
+                renderCriminals(getBatch());
+                super.endRender();
+            }
+        };
+
+        camera.viewportHeight = stage.getViewport().getWorldHeight();
+        camera.viewportWidth = stage.getViewport().getWorldWidth();
+        camera.position.set(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2, 0);
+        initActors();
+        camera.update();
+        ot.setView(camera);
+        game.resume();
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private void mapTitleObjects(TiledMap map) {
         objects = map.getLayers().get("objetos");
         for (MapObject object : objects.getObjects()) {
             if (object.getProperties().get("type") != null && object.getProperties().get("type").equals("plaza")) {
@@ -221,28 +254,23 @@ public class LevelScreen implements Screen {
                 });
             }
         }
-        stage.getActors().addAll(plazas.toArray(new Actor[plazas.size()]));
-        createButtons();
-        configureButtons();
-        stage.addActor(back);
-        stage.addActor(volumeSwitch);
-        ot = new OrthogonalTiledMapRenderer(map) {
-            @Override
-            protected void endRender() {
-                renderCops(getBatch());
-                renderCriminals(getBatch());
-                super.endRender();
-            }
-        };
+    }
 
-        camera.viewportHeight = stage.getViewport().getWorldHeight();
-        camera.viewportWidth = stage.getViewport().getWorldWidth();
-        camera.position.set(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2, 0);
-        initActors();
-        camera.update();
-        ot.setView(camera);
-        game.resume();
-        Gdx.input.setInputProcessor(stage);
+    private void addUnfocus() {
+        Actor bg = new Actor();
+        bg.setSize(stage.getViewport().getScreenWidth(), stage.getViewport().getScreenHeight());
+        bg.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                for (Plaza plaza: plazas) {
+                    plaza.isSelected =false;
+                }
+                lowerBar = voidBar;
+                changeButtonsState();
+            }
+        });
+        bg.setZIndex(0);
+        stage.addActor(bg);
     }
 
     public void changeButtonsState() {
@@ -317,7 +345,8 @@ public class LevelScreen implements Screen {
             }
         });
 
-
+        stage.addActor(back);
+        stage.addActor(volumeSwitch);
     }
 
     private void renderCops(Batch batch) {
@@ -484,13 +513,6 @@ public class LevelScreen implements Screen {
 
         botonesCop = new Actor[]{areaCopButton, damageOverCopButton, rapidoCopButton, lentoCopButton};
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
-    }
-
-    private Plaza getSelected() {
-        for (Plaza p : plazas) {
-            if (p.isSelected) return p;
-        }
-        return null;
     }
 
     @Override
