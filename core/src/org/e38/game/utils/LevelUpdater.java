@@ -8,6 +8,7 @@ import org.e38.game.screens.LevelScreen;
  * Created by sergi on 24/05/2016.
  */
 public class LevelUpdater {
+    public static long updateTime = System.currentTimeMillis();
     private final LevelScreen screen;
     private Level level;
 
@@ -17,6 +18,7 @@ public class LevelUpdater {
     }
 
     public void update(float delta) {
+        updateTime = System.currentTimeMillis();
         if (level.getLifes() <= 0) {
             level.fail();
         } else if (level.wavePointer < level.waves.size()) {
@@ -25,8 +27,7 @@ public class LevelUpdater {
             wave.setWaveGap((long) level.waveGap);
             wave.onUpdate(delta, screen);
             if (wave.isClear()) level.wavePointer++;
-        }
-         else  {
+        } else {
             level.setIsWined((byte) level.getLifes());
             level.onEnd();
         }

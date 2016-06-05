@@ -4,6 +4,7 @@ package org.e38.game.model;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.npcs.Criminal;
 import org.e38.game.utils.World;
 
@@ -21,6 +22,7 @@ public class Level {
     public static final int TYPE_COIN = 0;
     public static final int TYPE_LIFE = 1;
     public static final int PADING = 4;
+    public static final float DEFAULT_GAP = 3000f;
     private static final float MODIFICADOR_VIDAS = 10;
     public Dificultat dificultat = Dificultat.NORMAL;
     //    public TiledMap map;
@@ -28,15 +30,16 @@ public class Level {
     //    public List<Wave> remaingWaves = new ArrayList<Wave>();
     public int wavePointer = 0;
     public String mapPath;
-    public float waveGap = 3000f;
+    public float waveGap = DEFAULT_GAP;
     public List<OnChangeStateListener> onChangeStateList = new ArrayList<>();
     //    private MapLayer layer;
     public List<OnEndListerner> onEndListerners = new ArrayList<>();
+    public List<Vector2> pathv2 = new ArrayList<>();
     protected int initLifes;
     protected int initCoins;
     protected int coins;
+//    protected List<MapObject> path = new ArrayList<>();
     protected int lifes;
-    protected List<MapObject> path = new ArrayList<>();
     /**
      * C style boolean : 0 false , 1 true
      */
@@ -151,14 +154,14 @@ public class Level {
         }
     }
 
-    public List<MapObject> getPath() {
-        return path;
+    public List<Vector2> getPath() {
+        return pathv2;
     }
 
-    public Level setPath(List<MapObject> path) {
-        this.path = path;
-        return this;
-    }
+//    public Level setPath(List<MapObject> path) {
+//        this.path = path;
+//        return this;
+//    }
 
     public Dificultat getDificultat() {
         return dificultat;
@@ -194,7 +197,13 @@ public class Level {
     public void onCreate() {
         dificultat = Dificultat.valueOf(World.selecteDificultat);
         TiledMap map = new TmxMapLoader().load(mapPath);
-        this.path = buildPath(map);
+        List<MapObject> mapObjects = buildPath(map);
+        //new otimized pre mapped path
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0, limit = mapObjects.size(); i < limit; i++) {
+            MapObject object = mapObjects.get(i);
+            pathv2.add(new Vector2((float) object.getProperties().get("x"), (float) object.getProperties().get("y")));
+        }
         lifes = initLifes;
         coins = initCoins;
         //add reference to criminals
@@ -253,7 +262,7 @@ public class Level {
                 ", initLifes=" + initLifes +
                 ", coins=" + coins +
                 ", lifes=" + lifes +
-                ", path=" + path +
+//                ", path=" + path +
                 ", onEndListerners=" + onEndListerners +
                 ", isWined=" + isWined +
                 '}';

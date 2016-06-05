@@ -232,6 +232,60 @@ public class LevelScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    @Override
+    public void render(float delta) {
+        levelUpdater.update(delta);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        ot.render();
+        renderPlazas();
+        topBar.stage.draw();
+        lowerBar.getStage().draw();
+        stage.draw();
+    }
+
+    private void renderPlazas() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        for (Plaza plaza : plazas) {
+            if (plaza.isSelected) {
+                Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
+                shapeRenderer.rect(coordinates.x,
+                        Gdx.graphics.getHeight() - coordinates.y,
+                        plaza.getWidth() * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH),
+                        plaza.getHeight() * ((float) Gdx.graphics.getHeight() / (float) World.WORLD_HEIGHT));
+                if (plaza.isOcupada()) {
+                    Circle circle = plaza.getCop().getCircle();
+                    coordinates = stage.stageToScreenCoordinates(new Vector2(circle.x, circle.y));
+                    shapeRenderer.circle(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, circle.radius * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH));
+                }
+            }
+
+        }
+        shapeRenderer.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void dispose() {
+    }
+
     private void mapTitleObjects(TiledMap map) {
         objects = map.getLayers().get("objetos");
         for (MapObject object : objects.getObjects()) {
@@ -262,8 +316,8 @@ public class LevelScreen implements Screen {
         bg.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                for (Plaza plaza: plazas) {
-                    plaza.isSelected =false;
+                for (Plaza plaza : plazas) {
+                    plaza.isSelected = false;
                 }
                 lowerBar = voidBar;
                 changeButtonsState();
@@ -364,13 +418,12 @@ public class LevelScreen implements Screen {
             for (Criminal c : w.getCriminals()) {
                 if (c.isAlive()) {
                     idx = c.getPathPointer();
-                    float x = (float) level.getPath().get(idx).getProperties().get("x");
-                    float y = (float) level.getPath().get(idx).getProperties().get("y");
-
+                    float x = level.getPath().get(idx).x;
+                    float y = level.getPath().get(idx).y;
                     try {
                         batch.draw(c.animation.update(Gdx.graphics.getDeltaTime()), x, y);
-                    } catch (NullPointerException ex) {
-
+                    } catch (NullPointerException ignored) {
+                        Gdx.app.debug(getClass().getName(), ignored.getMessage(), ignored);
                     }
 
                 }
@@ -513,60 +566,6 @@ public class LevelScreen implements Screen {
 
         botonesCop = new Actor[]{areaCopButton, damageOverCopButton, rapidoCopButton, lentoCopButton};
         botonesUpgrade = new Actor[]{upgradeCopButton, sellCopButton};
-    }
-
-    @Override
-    public void render(float delta) {
-        levelUpdater.update(delta);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        ot.render();
-        renderPlazas();
-        topBar.stage.draw();
-        lowerBar.getStage().draw();
-        stage.draw();
-    }
-
-    private void renderPlazas() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (Plaza plaza : plazas) {
-            if (plaza.isSelected) {
-                Vector2 coordinates = stage.stageToScreenCoordinates(new Vector2(plaza.getX(), plaza.getY()));
-                shapeRenderer.rect(coordinates.x,
-                        Gdx.graphics.getHeight() - coordinates.y,
-                        plaza.getWidth() * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH),
-                        plaza.getHeight() * ((float) Gdx.graphics.getHeight() / (float) World.WORLD_HEIGHT));
-                if (plaza.isOcupada()) {
-                    Circle circle = plaza.getCop().getCircle();
-                    coordinates = stage.stageToScreenCoordinates(new Vector2(circle.x, circle.y));
-                    shapeRenderer.circle(coordinates.x, Gdx.graphics.getHeight() - coordinates.y, circle.radius * ((float) Gdx.graphics.getWidth() / (float) World.WORLD_WIDTH));
-                }
-            }
-
-        }
-        shapeRenderer.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void dispose() {
     }
 
     public void showCopsBar() {

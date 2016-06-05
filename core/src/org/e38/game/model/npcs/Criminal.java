@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Level;
 import org.e38.game.utils.AnimationManager;
+import org.e38.game.utils.LevelUpdater;
 import org.e38.game.utils.Recurses;
 import org.e38.game.utils.World;
 
@@ -147,7 +148,7 @@ public class Criminal implements Hittable {
 
     @Override
     public void onUpdate(float delta) {
-        if (System.currentTimeMillis() - lastNext >= speed) {
+        if (LevelUpdater.updateTime - lastNext >= speed) {
             nextPosition();
         }
     }
@@ -155,25 +156,24 @@ public class Criminal implements Hittable {
     protected void nextPosition() {
         if (pathPointer < level.getPath().size() - 1) {
             int next = pathPointer + 1;
-            changePoint(level.getPath().get(pathPointer).getProperties(), level.getPath().get(next).getProperties());
+            changePoint(level.getPath().get(pathPointer), level.getPath().get(next));
             pathPointer = next;
         } else {
             level.setLifes(level.getLifes() - getPoints());
-
             if (onEndListener != null) onEndListener.onEnd(this, false);
             state = State.DEAD;
         }
-        lastNext = System.currentTimeMillis();
+        lastNext = LevelUpdater.updateTime;
     }
 
     /**
      * note only support moves in horizontal or vertical
      */
-    private void changePoint(MapProperties currentPoint, MapProperties nextPoint) {
-        float x0 = (float) currentPoint.get("x");
-        float y0 = (float) currentPoint.get("y");
-        float x1 = (float) nextPoint.get("x");
-        float y1 = (float) nextPoint.get("y");
+    private void changePoint(Vector2 currentPoint, Vector2 nextPoint) {
+        float x0 = currentPoint.x;
+        float y0 = currentPoint.y;
+        float x1 = nextPoint.x;
+        float y1 = nextPoint.y;
         circle.set(x1, y1, 16f);
         setOritentationRelative(x0, y0, x1, y1);
     }
@@ -304,11 +304,7 @@ public class Criminal implements Hittable {
     }
 
     protected Vector2 getPositionRetativeTo(Level level) {
-        float x, y;
-        MapProperties camino = level.getPath().get(pathPointer).getProperties();
-        x = (float) camino.get("x");
-        y = (float) camino.get("y");
-        return new Vector2(x, y);
+        return level.getPath().get(pathPointer);
     }
 
     @Override

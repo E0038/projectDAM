@@ -3,6 +3,7 @@ package org.e38.game.model.npcs;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import org.e38.game.model.Bullet;
+import org.e38.game.utils.LevelUpdater;
 import org.e38.game.utils.Recurses;
 
 import java.util.ArrayList;
@@ -167,9 +168,9 @@ public abstract class Cop implements NPC {
     }
 
     public void fire(Criminal... criminal) {
-        lastFire = System.currentTimeMillis();
+        lastFire = LevelUpdater.updateTime;
         if (criminal.length == 0) return;
-        Bullet bullet = nivel.newBullet();
+        Bullet bullet = new Bullet(nivel.penetration, nivel.damage, this);
         onFire();
         if (isAreaDamage) {
             bullet.fireArea(criminal);
@@ -208,7 +209,7 @@ public abstract class Cop implements NPC {
     }
 
     public boolean isFireReady() {
-        return System.currentTimeMillis() - lastFire > fireRate;
+        return LevelUpdater.updateTime - lastFire > fireRate;
     }
 
     public static class CopLevel {
@@ -240,8 +241,8 @@ public abstract class Cop implements NPC {
             return precioCompra * RESTRICION_VENTA;
         }
 
-        public Bullet newBullet() {
-            return new Bullet(penetration, damage);
-        }
+//        public Bullet newBullet() {
+//            return new Bullet(penetration, damage, );
+//        }
     }
 }
