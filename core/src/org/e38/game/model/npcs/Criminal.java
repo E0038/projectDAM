@@ -11,6 +11,7 @@ import org.e38.game.utils.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by sergi on 4/20/16.
@@ -43,9 +44,13 @@ public class Criminal implements Hittable {
             @Override
             public void onChange(Orientation old, Orientation nueva) {
 //                if (old != null && nueva != null)
-                animation.setAnimation(World.getRecurses().getACriminal(Criminal.this).getAnimation());
+                try {
+                    animation.setAnimation(World.getRecurses().getACriminal(Criminal.this).getAnimation());
+                }catch (NullPointerException ignored){
+                }
             }
         });
+
     }
 
     public Criminal(Level level) {

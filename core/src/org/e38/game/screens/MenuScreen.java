@@ -244,7 +244,10 @@ public class MenuScreen implements Screen {
         Profile profile = ProfileManager.getInstance().getProfile();
         if (profile.getCompleteLevels().size() > 0) {
 //            List<Level> list = new ArrayList<>(profile.getCompleteLevels());
-            Integer lastComplete = Collections.max(profile.getCompleteLevels().keySet());
+            Integer lastComplete = Collections.max(profile.getCompleteLevels().keySet()) + 1;
+            if (lastComplete >= World.levels.size()) {
+                lastComplete = World.levels.size() - 1;
+            }
             game.setScreen(new LevelScreen(World.levels.get(lastComplete), game));
         } else {
             selectLevel();
