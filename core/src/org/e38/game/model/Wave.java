@@ -3,6 +3,7 @@ package org.e38.game.model;
 import com.badlogic.gdx.Gdx;
 import org.e38.game.model.npcs.Cop;
 import org.e38.game.model.npcs.Criminal;
+import org.e38.game.model.npcs.Criminal.OnEndListener;
 import org.e38.game.model.npcs.NPC;
 import org.e38.game.screens.LevelScreen;
 import org.e38.game.utils.SheludedAction;
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * container class
  */
-public class Wave {
+public class Wave  implements OnEndListener{
     private final Object waveLocker = new Object();
     private final AtomicBoolean isAllSpawn = new AtomicBoolean(false);
     private final AtomicBoolean isClear = new AtomicBoolean(false);
@@ -127,7 +128,9 @@ public class Wave {
             int idx = spawnPointer.incrementAndGet();
             if (!isAllSpawn.get()) {
                 if (idx < criminals.size()) {
-                    criminals.get(idx).spawn();
+                    Criminal criminal = criminals.get(idx);
+                    criminal.setOnEndListener(this);
+                    criminal.spawn();
                     try {
                         Thread.sleep(gap);
                     } catch (InterruptedException e) {
@@ -152,6 +155,16 @@ public class Wave {
         isClear.set(false);
         for (Criminal criminal : criminals) {
             criminal.onRestart();
+        }
+    }
+
+    @Override
+    public void onEnd(Criminal criminal, boolean died) {
+//        System.out.println("OnEnd died : "+ died);
+        if (died) {
+            criminal.getLevel().setCoins(criminal.getLevel().getCoins() + criminal.getPoints());
+        } else {
+            criminal.getLevel().setLifes(criminal.getLevel().getLifes() - criminal.getPoints());
         }
     }
 }

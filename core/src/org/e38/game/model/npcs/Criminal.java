@@ -46,7 +46,7 @@ public class Criminal implements Hittable {
 //                if (old != null && nueva != null)
                 try {
                     animation.setAnimation(World.getRecurses().getACriminal(Criminal.this).getAnimation());
-                }catch (NullPointerException ignored){
+                } catch (NullPointerException ignored) {
                 }
             }
         });
@@ -137,7 +137,7 @@ public class Criminal implements Hittable {
      */
     public int getPoints() {
         //// TODO: 5/23/16 review formula
-        return (int) (totalHpPoins * 0.25f);
+        return (int) (totalHpPoins * 0.25f) + 1;
     }
 
     @Override
@@ -159,12 +159,13 @@ public class Criminal implements Hittable {
     }
 
     protected void nextPosition() {
-        if (pathPointer < level.getPath().size() - 1) {
+        if (pathPointer < level.getPath().size() -1) {
             int next = pathPointer + 1;
             changePoint(level.getPath().get(pathPointer), level.getPath().get(next));
             pathPointer = next;
         } else {
-            level.setLifes(level.getLifes() - getPoints());
+            // TODO: 6/8/16 check
+//            level.setLifes(level.getLifes() - getPoints());
             if (onEndListener != null) onEndListener.onEnd(this, false);
             state = State.DEAD;
         }
@@ -212,6 +213,7 @@ public class Criminal implements Hittable {
 
     @Override
     public void onDie() {
+        // TODO: 6/8/16 check
         state = State.DEAD;
         level.setCoins(level.getCoins() + getPoints());
         if (onEndListener != null) onEndListener.onEnd(this, true);
@@ -221,9 +223,12 @@ public class Criminal implements Hittable {
     public void spawn() {
         state = State.SPAWING;
         applyDificultat();
-        onSpawn();
+        state = State.ALIVE;
+        pathPointer = 0;
+        hpPoints = totalHpPoins;
         animation = World.getRecurses().getACriminal(this);
         state = State.ALIVE;
+        onSpawn();
     }
 
     private void applyDificultat() {
@@ -252,9 +257,7 @@ public class Criminal implements Hittable {
 
     @Override
     public void onSpawn() {
-        state = State.ALIVE;
-        pathPointer = 0;
-        hpPoints = totalHpPoins;
+
     }
 
     @Override

@@ -200,6 +200,7 @@ public class Level {
         List<MapObject> mapObjects = buildPath(map);
         //new otimized pre mapped path
         //noinspection ForLoopReplaceableByForEach
+        pathv2.clear();
         for (int i = 0, limit = mapObjects.size(); i < limit; i++) {
             MapObject object = mapObjects.get(i);
             pathv2.add(new Vector2((float) object.getProperties().get("x"), (float) object.getProperties().get("y")));
