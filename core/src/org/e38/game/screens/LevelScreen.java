@@ -237,6 +237,7 @@ public class LevelScreen implements Screen {
         levelUpdater.update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glLineWidth(5 * (Gdx.graphics.getWidth() / World.WORLD_WIDTH));
 
         ot.render();
         renderPlazas();

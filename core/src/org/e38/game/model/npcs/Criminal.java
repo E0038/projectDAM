@@ -1,5 +1,6 @@
 package org.e38.game.model.npcs;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -164,7 +165,6 @@ public class Criminal implements Hittable {
             changePoint(level.getPath().get(pathPointer), level.getPath().get(next));
             pathPointer = next;
         } else {
-            // TODO: 6/8/16 check
 //            level.setLifes(level.getLifes() - getPoints());
             if (onEndListener != null) onEndListener.onEnd(this, false);
             state = State.DEAD;
@@ -182,6 +182,7 @@ public class Criminal implements Hittable {
         float y1 = nextPoint.y;
         circle.set(x1, y1, 16f);
         setOritentationRelative(x0, y0, x1, y1);
+        TextureRegion.split(World.getRecurses().back,9,9);
     }
 
     private void setOritentationRelative(float x0, float y0, float x1, float y1) {
@@ -213,7 +214,6 @@ public class Criminal implements Hittable {
 
     @Override
     public void onDie() {
-        // TODO: 6/8/16 check
         state = State.DEAD;
         level.setCoins(level.getCoins() + getPoints());
         if (onEndListener != null) onEndListener.onEnd(this, true);
