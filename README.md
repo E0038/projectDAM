@@ -1,3 +1,3 @@
 # projectDAM
 
-2D Tower Defense Project maded witth libgdx.
+2D Tower Defense Project created with libgdx.
